@@ -38,10 +38,22 @@ function generateCSS(){
   right: 0 !important;
 }
 
-// fix player issues
+// fix player controls
 
-.theatre .player-hover {
-    margin-right: 340px;
+.theatre #main_col:not(.expandRight) .player-hover {
+  margin-right: 340px;
+}
+
+.theatre #main_col:not(.expandRight) #right_close {
+  margin-right: 350px;
+}
+
+.theatre #main_col:not(.expandRight) .player-streamstatus {
+  margin-right: 370px !important;
+}
+
+.theatre #main_col.expandRight .player-streamstatus {
+  margin-right: 20px !important;
 }
 
 // fix right column
