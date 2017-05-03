@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  TODO
-// @version      0.1
+// @version      0.1.1
 // @namespace    https://chylex.com
 // @include      https://www.twitch.tv/*
 // @run-at       document-end
@@ -23,6 +23,10 @@ function generateCSS(){
   style.id = "chylex-ttc-style";
   document.head.appendChild(style);
   
+  let settings = {
+    chatWidth: 350
+  };
+  
   for(let rule of `
 // simulate expandRight style
 
@@ -41,15 +45,15 @@ function generateCSS(){
 // fix player controls
 
 .theatre #main_col:not(.expandRight) .player-hover {
-  margin-right: 340px;
+  margin-right: ${settings.chatWidth - 10}px;
 }
 
 .theatre #main_col:not(.expandRight) #right_close {
-  margin-right: 350px;
+  margin-right: ${settings.chatWidth}px;
 }
 
 .theatre #main_col:not(.expandRight) .player-streamstatus {
-  margin-right: 370px !important;
+  margin-right: ${settings.chatWidth + 20}px !important;
 }
 
 .theatre #main_col.expandRight .player-streamstatus {
