@@ -56,44 +56,36 @@ function generateCSS(){
   margin-right: 20px !important;
 }
 
-// fix right column
+// change chat container
 
 .theatre #right_col {
   background: none !important;
 }
 
-// change chat container (base)
+.theatre .chat-container:not(:hover) {
+  background: #17141f40 !important;
+  color: #ece8f3 !important;
+  text-shadow: 0 0 2px #000, 0 0 3px #000;
+}
 
-.theatre .chat-header {
+.theatre .chat-container:not(:hover) .chat-header {
   background-color: #17141f40 !important;
 }
 
-.theatre .chat-container {
-  background: #17141f40 !important;
-  color: #d0ccd8 !important;
-  text-shadow: 0 0 2px #000, 0 0 3px #000;
-  //transition: background 0.075s, color 0.075s;
+.theatre .chat-container:not(:hover) .chat-messages .timestamp {
+  color: #aaa4b3 !important;
 }
 
-.theatre .chat-interface {
-  opacity: 0.5;
-  //transition: opacity 0.075s;
+.theatre .chat-container:not(:hover) .chat-messages .badges {
+  opacity: 0.6;
 }
 
-// change chat container (restore on hover)
-
-.theatre .chat-container:hover .chat-header {
-  background-color: #17141f !important;
+.theatre .chat-container:not(:hover) .chat-messages .from {
+  text-shadow: 0 0 2px #000;
 }
 
-.theatre .chat-container:hover {
-  background: #17141f !important;
-  color: #898395 !important;
-  text-shadow: none;
-}
-
-.theatre .chat-container:hover .chat-interface {
-  opacity: 1;
+.theatre .chat-container:not(:hover) .chat-interface {
+  opacity: 0.6;
 }`.split("}")){
     if (rule.length){
       let parsed = rule.replace(/^\/\/(.*?)$/gm, "")+"}";
