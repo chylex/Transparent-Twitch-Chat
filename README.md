@@ -1,1 +1,1 @@
-# Transparent-Twitch-Chat
+# Transparent Twitch Chat - user script
