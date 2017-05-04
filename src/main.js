@@ -17,17 +17,15 @@ function tryRemoveElement(ele){
 }
 
 function generateCSS(){
-  tryRemoveElement(document.getElementById("chylex-ttc-style"));
-  
-  let style = document.createElement("style");
-  style.id = "chylex-ttc-style";
-  document.head.appendChild(style);
-  
   let settings = {
     chatWidth: 350
   };
   
-  for(let rule of `
+  tryRemoveElement(document.getElementById("chylex-ttc-style"));
+  
+  let style = document.createElement("style");
+  style.id = "chylex-ttc-style";
+  style.innerHTML = `
 // simulate expandRight style
 
 .theatre .ct-bar--active.ct-bar--ember, .theatre #main_col {
@@ -90,17 +88,9 @@ function generateCSS(){
 
 .theatre .chat-container:not(:hover) .chat-interface {
   opacity: 0.6;
-}`.split("}")){
-    if (rule.length){
-      let parsed = rule.replace(/^\/\/(.*?)$/gm, "")+"}";
-
-      try{
-        style.sheet.insertRule(parsed, 0);
-      }catch(e){
-        alert("[TransparentTwitchChat] Error adding rule: "+parsed);
-      }
-    }
-  }
+}`.replace(/^\/\/(.*?)$/gm, "");
+  
+  document.head.appendChild(style);
 }
 
 generateCSS();
