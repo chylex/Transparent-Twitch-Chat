@@ -21,6 +21,10 @@ function generateCSS(){
     chatWidth: 350,
     backgroundOpacity: 0.33,
     headerOpacity: 0.42,
+    
+    hideBadgeTurbo: true,
+    hideBadgePrime: true,
+    hideBadgeSubscriber: true
   };
   
   tryRemoveElement(document.getElementById("chylex-ttc-style"));
@@ -109,7 +113,25 @@ function generateCSS(){
 
 .theatre #right_col:not(:hover) .chat-interface {
   opacity: 0.6;
-}`.replace(/^\/\/(.*?)$/gm, "");
+}
+
+// style tweaks
+${settings.hideBadgeTurbo ? `
+.badge[alt="Turbo"] {
+    display: none;
+}` : ``}
+
+${settings.hideBadgePrime ? `
+.badge[alt$="Prime"] {
+    display: none;
+}` : ``}
+
+${settings.hideBadgeSubscriber ? `
+.badge[alt~="Subscriber"] {
+    display: none;
+}` : ``}
+
+`.replace(/^\/\/(.*?)$/gm, "");
   
   document.head.appendChild(style);
 }
