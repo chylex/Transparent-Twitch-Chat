@@ -18,7 +18,9 @@ function tryRemoveElement(ele){
 
 function generateCSS(){
   let settings = {
-    chatWidth: 350
+    chatWidth: 350,
+    backgroundOpacity: 0.33,
+    headerOpacity: 0.42,
   };
   
   tryRemoveElement(document.getElementById("chylex-ttc-style"));
@@ -69,17 +71,17 @@ function generateCSS(){
 }
 
 .theatre #right_col:not(:hover) .chat-container {
-  background: #17141f40 !important;
+  background: #17141f${((settings.backgroundOpacity * 256) | 0).toString(16)} !important;
   color: #ece8f3 !important;
   text-shadow: 0 0 2px #000, 0 0 3px #000;
 }
 
 .theatre #right_col:not(:hover) .chat-header {
-  background-color: #17141f40 !important;
+  background-color: #17141f${((settings.headerOpacity * 256) | 0).toString(16)} !important;
 }
 
 .theatre #right_col:not(:hover) .chat-messages .timestamp {
-  color: #aaa4b3 !important;
+  color: #b7b5ba !important;
 }
 
 .theatre #right_col:not(:hover) .chat-messages .badges {
@@ -88,6 +90,21 @@ function generateCSS(){
 
 .theatre #right_col:not(:hover) .chat-messages .from {
   text-shadow: 0 0 2px #000;
+}
+
+.theatre #right_col:not(:hover) .chat-messages .special-message {
+  background: #201c2b50 !important;
+  color: #b7b5ba !important;
+  border-left-color: #6441a450 !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages .chat-chip {
+  background: #201c2b50 !important;
+  box-shadow: none !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages .card__info {
+  color: #b7b5ba !important;
 }
 
 .theatre #right_col:not(:hover) .chat-interface {
