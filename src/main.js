@@ -58,35 +58,39 @@ function generateCSS(){
   margin-right: 20px !important;
 }
 
+.theatre #main_col:not(.expandRight) .conversations-content {
+  right: ${settings.chatWidth}px;
+}
+
 // change chat container
 
 .theatre #right_col {
   background: none !important;
 }
 
-.theatre .chat-container:not(:hover) {
+.theatre #right_col:not(:hover) .chat-container {
   background: #17141f40 !important;
   color: #ece8f3 !important;
   text-shadow: 0 0 2px #000, 0 0 3px #000;
 }
 
-.theatre .chat-container:not(:hover) .chat-header {
+.theatre #right_col:not(:hover) .chat-header {
   background-color: #17141f40 !important;
 }
 
-.theatre .chat-container:not(:hover) .chat-messages .timestamp {
+.theatre #right_col:not(:hover) .chat-messages .timestamp {
   color: #aaa4b3 !important;
 }
 
-.theatre .chat-container:not(:hover) .chat-messages .badges {
+.theatre #right_col:not(:hover) .chat-messages .badges {
   opacity: 0.6;
 }
 
-.theatre .chat-container:not(:hover) .chat-messages .from {
+.theatre #right_col:not(:hover) .chat-messages .from {
   text-shadow: 0 0 2px #000;
 }
 
-.theatre .chat-container:not(:hover) .chat-interface {
+.theatre #right_col:not(:hover) .chat-interface {
   opacity: 0.6;
 }`.replace(/^\/\/(.*?)$/gm, "");
   
