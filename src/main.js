@@ -19,8 +19,8 @@ function tryRemoveElement(ele){
 function generateCSS(){
   let settings = {
     chatWidth: 350,
-    backgroundOpacity: 0.33,
-    headerOpacity: 0.42,
+    backgroundOpacity: 0.25,
+    headerOpacity: 0.35,
     
     hideBadgeTurbo: true,
     hideBadgePrime: true,
@@ -49,7 +49,7 @@ function generateCSS(){
 // fix player controls
 
 .theatre #main_col:not(.expandRight) .player-hover {
-  margin-right: ${settings.chatWidth - 10}px;
+  padding-right: ${settings.chatWidth - 10}px;
 }
 
 .theatre #main_col:not(.expandRight) #right_close {
