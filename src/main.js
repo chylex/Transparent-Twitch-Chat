@@ -84,6 +84,22 @@ function generateCSS(){
   background-color: #17141f${((settings.headerOpacity * 256) | 0).toString(16)} !important;
 }
 
+.theatre #right_col:not(:hover) .chat-interface {
+  opacity: 0.6;
+}
+
+// hide replay header
+
+.theatre .cn-chat-replay-header {
+  display: none;
+}
+
+.theatre .cn-chat-container {
+  top: 0 !important;
+}
+
+// change chat messages
+
 .theatre #right_col:not(:hover) .chat-messages .timestamp {
   color: #b7b5ba !important;
 }
@@ -111,11 +127,8 @@ function generateCSS(){
   color: #b7b5ba !important;
 }
 
-.theatre #right_col:not(:hover) .chat-interface {
-  opacity: 0.6;
-}
-
 // style tweaks
+
 ${settings.hideBadgeTurbo ? `
 .badge[alt="Turbo"], .badge[original-title="Turbo"] {
     display: none;
