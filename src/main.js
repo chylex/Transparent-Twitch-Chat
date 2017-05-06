@@ -77,7 +77,7 @@ function generateCSS(){
 .theatre #right_col:not(:hover) .chat-container {
   background: #17141f${((settings.backgroundOpacity * 256) | 0).toString(16)} !important;
   color: #ece8f3 !important;
-  text-shadow: 0 0 2px #000, 0 0 3px #000;
+  text-shadow: 0 0 2px #000C, -1px 0 1px #0008, 0 -1px 1px #0008, 1px 0 1px #0008, 0 1px 1px #0008; // 0 0 2px #000, 0 0 3px #000;
 }
 
 .theatre #right_col:not(:hover) .chat-header {
@@ -109,7 +109,7 @@ function generateCSS(){
 }
 
 .theatre #right_col:not(:hover) .chat-messages .from {
-  text-shadow: 0 0 2px #000;
+  text-shadow: -1px 0 1px #0008, 0 -1px 1px #0008, 1px 0 1px #0008, 0 1px 1px #0008;
 }
 
 .theatre #right_col:not(:hover) .chat-messages .special-message {
@@ -128,7 +128,7 @@ function generateCSS(){
 }
 
 .theatre #right_col:not(:hover) .chat-messages a {
-  color: #c6b4e9 !important;
+  color: #cdb9f5 !important;
 }
 
 // style tweaks
