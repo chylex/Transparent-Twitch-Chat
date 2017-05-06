@@ -21,6 +21,7 @@ function generateCSS(){
     chatWidth: 350,
     backgroundOpacity: 0.3,
     headerOpacity: 0.4,
+    badgeOpacity: 0.85,
     
     hideBadgeTurbo: true,
     hideBadgePrime: true,
@@ -105,7 +106,7 @@ function generateCSS(){
 }
 
 .theatre #right_col:not(:hover) .chat-messages .badges {
-  opacity: 0.6;
+  opacity: ${settings.badgeOpacity};
 }
 
 .theatre #right_col:not(:hover) .chat-messages .from {
