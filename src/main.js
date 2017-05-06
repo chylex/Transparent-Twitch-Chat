@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  TODO
-// @version      0.1.1
+// @version      {VERSION}
 // @namespace    https://chylex.com
 // @include      https://www.twitch.tv/*
 // @run-at       document-end

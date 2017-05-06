@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  TODO
-// @version      0.1.1
+// @version      0.1.2
 // @namespace    https://chylex.com
 // @include      https://www.twitch.tv/*
 // @run-at       document-end
@@ -17,17 +17,21 @@ function tryRemoveElement(ele){
 }
 
 function generateCSS(){
+  let settings = {
+    chatWidth: 350,
+    backgroundOpacity: 0.33,
+    headerOpacity: 0.42,
+    
+    hideBadgeTurbo: true,
+    hideBadgePrime: true,
+    hideBadgeSubscriber: true
+  };
+  
   tryRemoveElement(document.getElementById("chylex-ttc-style"));
   
   let style = document.createElement("style");
   style.id = "chylex-ttc-style";
-  document.head.appendChild(style);
-  
-  let settings = {
-    chatWidth: 350
-  };
-  
-  for(let rule of `
+  style.innerHTML = `
 // simulate expandRight style
 
 .theatre .ct-bar--active.ct-bar--ember, .theatre #main_col {
@@ -60,47 +64,89 @@ function generateCSS(){
   margin-right: 20px !important;
 }
 
+.theatre #main_col:not(.expandRight) .conversations-content {
+  right: ${settings.chatWidth}px;
+}
+
 // change chat container
 
 .theatre #right_col {
   background: none !important;
 }
 
-.theatre .chat-container:not(:hover) {
-  background: #17141f40 !important;
+.theatre #right_col:not(:hover) .chat-container {
+  background: #17141f${((settings.backgroundOpacity * 256) | 0).toString(16)} !important;
   color: #ece8f3 !important;
   text-shadow: 0 0 2px #000, 0 0 3px #000;
 }
 
-.theatre .chat-container:not(:hover) .chat-header {
-  background-color: #17141f40 !important;
+.theatre #right_col:not(:hover) .chat-header {
+  background-color: #17141f${((settings.headerOpacity * 256) | 0).toString(16)} !important;
 }
 
-.theatre .chat-container:not(:hover) .chat-messages .timestamp {
-  color: #aaa4b3 !important;
-}
-
-.theatre .chat-container:not(:hover) .chat-messages .badges {
+.theatre #right_col:not(:hover) .chat-interface {
   opacity: 0.6;
 }
 
-.theatre .chat-container:not(:hover) .chat-messages .from {
+// hide replay header
+
+.theatre .cn-chat-replay-header {
+  display: none;
+}
+
+.theatre .cn-chat-container {
+  top: 0 !important;
+}
+
+// change chat messages
+
+.theatre #right_col:not(:hover) .chat-messages .timestamp {
+  color: #b7b5ba !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages .badges {
+  opacity: 0.6;
+}
+
+.theatre #right_col:not(:hover) .chat-messages .from {
   text-shadow: 0 0 2px #000;
 }
 
-.theatre .chat-container:not(:hover) .chat-interface {
-  opacity: 0.6;
-}`.split("}")){
-    if (rule.length){
-      let parsed = rule.replace(/^\/\/(.*?)$/gm, "")+"}";
+.theatre #right_col:not(:hover) .chat-messages .special-message {
+  background: #201c2b50 !important;
+  color: #b7b5ba !important;
+  border-left-color: #6441a450 !important;
+}
 
-      try{
-        style.sheet.insertRule(parsed, 0);
-      }catch(e){
-        alert("[TransparentTwitchChat] Error adding rule: "+parsed);
-      }
-    }
-  }
+.theatre #right_col:not(:hover) .chat-messages .chat-chip {
+  background: #201c2b50 !important;
+  box-shadow: none !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages .card__info {
+  color: #b7b5ba !important;
+}
+
+// style tweaks
+
+${settings.hideBadgeTurbo ? `
+.badge[alt="Turbo"], .badge[original-title="Turbo"] {
+    display: none;
+}` : ``}
+
+${settings.hideBadgePrime ? `
+.badge[alt$="Prime"], .badge[original-title$="Prime"] {
+    display: none;
+}` : ``}
+
+${settings.hideBadgeSubscriber ? `
+.badge[alt~="Subscriber"], .badge[original-title~="Subscriber"] {
+    display: none;
+}` : ``}
+
+`.replace(/^\/\/(.*?)$/gm, "");
+  
+  document.head.appendChild(style);
 }
 
 generateCSS();
