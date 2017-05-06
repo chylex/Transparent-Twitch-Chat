@@ -127,6 +127,10 @@ function generateCSS(){
   color: #b7b5ba !important;
 }
 
+.theatre #right_col:not(:hover) .chat-messages a {
+  color: #c6b4e9 !important;
+}
+
 // style tweaks
 
 ${settings.hideBadgeTurbo ? `
