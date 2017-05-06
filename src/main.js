@@ -117,17 +117,17 @@ function generateCSS(){
 
 // style tweaks
 ${settings.hideBadgeTurbo ? `
-.badge[alt="Turbo"] {
+.badge[alt="Turbo"], .badge[original-title="Turbo"] {
     display: none;
 }` : ``}
 
 ${settings.hideBadgePrime ? `
-.badge[alt$="Prime"] {
+.badge[alt$="Prime"], .badge[original-title$="Prime"] {
     display: none;
 }` : ``}
 
 ${settings.hideBadgeSubscriber ? `
-.badge[alt~="Subscriber"] {
+.badge[alt~="Subscriber"], .badge[original-title~="Subscriber"] {
     display: none;
 }` : ``}
 
