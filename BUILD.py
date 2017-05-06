@@ -12,11 +12,14 @@ VERSION_KEY = "// @version "
 
 current_version = None
 
-with open(OUTPUT_FILE, 'r') as f:
-    for line in f:
-        if line.startswith(VERSION_KEY):
-            current_version = line[len(VERSION_KEY):].strip()
-            break
+try:
+    with open(OUTPUT_FILE, 'r') as f:
+        for line in f:
+            if line.startswith(VERSION_KEY):
+                current_version = line[len(VERSION_KEY):].strip()
+                break
+except IOError:
+    pass
 
 # Get version
 
