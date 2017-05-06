@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  TODO
-// @version      0.1.2
+// @version      0.1.3
 // @namespace    https://chylex.com
 // @include      https://www.twitch.tv/*
 // @run-at       document-end
@@ -19,8 +19,9 @@ function tryRemoveElement(ele){
 function generateCSS(){
   let settings = {
     chatWidth: 350,
-    backgroundOpacity: 0.33,
-    headerOpacity: 0.42,
+    backgroundOpacity: 0.3,
+    headerOpacity: 0.4,
+    badgeOpacity: 0.85,
     
     hideBadgeTurbo: true,
     hideBadgePrime: true,
@@ -49,7 +50,7 @@ function generateCSS(){
 // fix player controls
 
 .theatre #main_col:not(.expandRight) .player-hover {
-  margin-right: ${settings.chatWidth - 10}px;
+  padding-right: ${settings.chatWidth - 10}px;
 }
 
 .theatre #main_col:not(.expandRight) #right_close {
@@ -77,7 +78,7 @@ function generateCSS(){
 .theatre #right_col:not(:hover) .chat-container {
   background: #17141f${((settings.backgroundOpacity * 256) | 0).toString(16)} !important;
   color: #ece8f3 !important;
-  text-shadow: 0 0 2px #000, 0 0 3px #000;
+  text-shadow: 0 0 2px #000D, -1px 0 1px #0006, 0 -1px 1px #0006, 1px 0 1px #0006, 0 1px 1px #0006;
 }
 
 .theatre #right_col:not(:hover) .chat-header {
@@ -94,7 +95,7 @@ function generateCSS(){
   display: none;
 }
 
-.theatre .cn-chat-container {
+.theatre .cn-tab-container {
   top: 0 !important;
 }
 
@@ -105,11 +106,11 @@ function generateCSS(){
 }
 
 .theatre #right_col:not(:hover) .chat-messages .badges {
-  opacity: 0.6;
+  opacity: ${settings.badgeOpacity};
 }
 
 .theatre #right_col:not(:hover) .chat-messages .from {
-  text-shadow: 0 0 2px #000;
+  text-shadow: -1px 0 1px #0006, 0 -1px 1px #0006, 1px 0 1px #0006, 0 1px 1px #0006;
 }
 
 .theatre #right_col:not(:hover) .chat-messages .special-message {
@@ -125,6 +126,48 @@ function generateCSS(){
 
 .theatre #right_col:not(:hover) .chat-messages .card__info {
   color: #b7b5ba !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages a {
+  color: #cdb9f5 !important;
+}
+
+// username color tweaks (possibly figure out a better way later)
+
+.theatre .from[style="color:#0000FF"], .theatre .from[style="color:#0000DF"] {
+  color: #88F !important;
+}
+
+.theatre .from[style="color:#000000"] {
+  color: #888 !important;
+}
+
+.theatre .from[style="color:#8A2BE2"] {
+  color: #AA4BFF !important;
+}
+
+.theatre .from[style="color:#5A3A54"] {
+  color: #957C74 !important;
+}
+
+.theatre .from[style="color:#1F1FA8"] {
+  color: #5252F8 !important;
+}
+
+.theatre .from[style="color:#1945B3"] {
+  color: #4F7AC3 !important;
+}
+
+.theatre .from[style="color:#030061"] {
+  color: #6360A1 !important;
+}
+
+.theatre .from[style="color:#4B00AD"] {
+  color: #7B50D2 !important;
+}
+
+.theatre .from[style="color:#403271"] {
+  color: #8072A1 !important;
 }
 
 // style tweaks
