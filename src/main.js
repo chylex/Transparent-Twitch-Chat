@@ -19,8 +19,8 @@ function tryRemoveElement(ele){
 function generateCSS(){
   let settings = {
     chatWidth: 350,
-    backgroundOpacity: 0.25,
-    headerOpacity: 0.35,
+    backgroundOpacity: 0.3,
+    headerOpacity: 0.4,
     
     hideBadgeTurbo: true,
     hideBadgePrime: true,
@@ -77,7 +77,7 @@ function generateCSS(){
 .theatre #right_col:not(:hover) .chat-container {
   background: #17141f${((settings.backgroundOpacity * 256) | 0).toString(16)} !important;
   color: #ece8f3 !important;
-  text-shadow: 0 0 2px #000C, -1px 0 1px #0008, 0 -1px 1px #0008, 1px 0 1px #0008, 0 1px 1px #0008; // 0 0 2px #000, 0 0 3px #000;
+  text-shadow: 0 0 2px #000D, -1px 0 1px #0006, 0 -1px 1px #0006, 1px 0 1px #0006, 0 1px 1px #0006;
 }
 
 .theatre #right_col:not(:hover) .chat-header {
@@ -109,7 +109,7 @@ function generateCSS(){
 }
 
 .theatre #right_col:not(:hover) .chat-messages .from {
-  text-shadow: -1px 0 1px #0008, 0 -1px 1px #0008, 1px 0 1px #0008, 0 1px 1px #0008;
+  text-shadow: -1px 0 1px #0006, 0 -1px 1px #0006, 1px 0 1px #0006, 0 1px 1px #0006;
 }
 
 .theatre #right_col:not(:hover) .chat-messages .special-message {
