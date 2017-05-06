@@ -94,7 +94,7 @@ function generateCSS(){
   display: none;
 }
 
-.theatre .cn-chat-container {
+.theatre .cn-tab-container {
   top: 0 !important;
 }
 
