@@ -481,13 +481,18 @@ function createSettingsModal(){
 }
 
 function insertSettingsButton(){
+  let container = document.getElementsByClassName("chat-container")[0];
+  
+  if (!container){
+    return;
+  }
+  
   tryRemoveElement(document.getElementById("chylex-ttc-settings-btn"));
   tryRemoveElement(document.getElementById("chylex-ttc-settings-modal"));
   
-  let container = document.getElementsByClassName("chat-container")[0];
   let button = document.createElement("div");
   button.id = "chylex-ttc-settings-btn";
-  button.innerHTML = '<span class=" player-tip js-tip" data-tip="Transparent Twitch Chat"></span><svg><use xlink:href="#icon_settings"></use></svg>';
+  button.innerHTML = '<span class="player-tip js-tip" data-tip="Transparent Twitch Chat"></span><svg><use xlink:href="#icon_settings"></use></svg>';
   container.appendChild(button);
   
   button.addEventListener("click", function(e){
@@ -498,10 +503,15 @@ function insertSettingsButton(){
   });
 }
 
+window.setInterval(function(){
+  if (!document.getElementById("chylex-ttc-settings-btn")){
+    insertSettingsButton();
+  }
+}, 2000);
+
 document.body.addEventListener("click", function(){
   tryRemoveElement(document.getElementById("chylex-ttc-settings-modal"));
 });
 
 generateCustomCSS();
 generateSettingsCSS();
-insertSettingsButton();
