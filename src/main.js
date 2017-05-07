@@ -203,6 +203,10 @@ ${settings.chatLeftSide ? `
   border-left-color: ${convHex("6441a450")} !important;
 }
 
+.theatre #right_col:not(:hover) .chat-messages .system-msg {
+  color: #b7b5ba !important;
+}
+
 .theatre #right_col:not(:hover) .chat-messages .chat-chip {
   background: ${convHex("201c2b50")} !important;
   box-shadow: none !important;
