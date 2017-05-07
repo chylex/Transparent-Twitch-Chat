@@ -216,6 +216,10 @@ ${settings.chatLeftSide ? `
   color: #cdb9f5 !important;
 }
 
+.theatre #right_col:not(:hover) .chat-messages .admin .message {
+  color: #bd9ff5 !important;
+}
+
 // username color tweaks (possibly figure out a better way later)
 
 .theatre .from[style="color:#0000FF"], .theatre .from[style="color:#0000DF"] {
@@ -274,7 +278,7 @@ ${settings.hideBadgeSubscriber ? `
 // dynamic styles for settings
 
 #chylex-ttc-settings-btn {
-  margin-left: ${settings.chatWidth - 55}px;
+  margin-left: ${settings.chatWidth - 58}px;
 }`.replace(/^\/\/(.*?)$/gm, "");
   
   document.head.appendChild(style);
