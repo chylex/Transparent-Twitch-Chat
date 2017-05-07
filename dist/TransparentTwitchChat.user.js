@@ -1,14 +1,33 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      0.1.4
+// @version      1.0
 // @namespace    https://chylex.com
 // @include      https://www.twitch.tv/*
 // @run-at       document-end
+// @grant        GM_getValue
+// @grant        GM_setValue
 // @noframes
-// @grant  GM_getValue
-// @grant  GM_setValue
 // ==/UserScript==
+
+let settings = {
+  chatWidth: 350,
+  chatLeftSide: false,
+
+  backgroundOpacity: 30,
+  headerOpacity: 40,
+  badgeOpacity: 85,
+
+  hideBadgeTurbo: true,
+  hideBadgePrime: true,
+  hideBadgeSubscriber: true
+};
+
+if (typeof GM_getValue !== "undefined"){
+  for(let key in settings){
+    settings[key] = GM_getValue(key, settings[key]);
+  }
+}
 
 function tryRemoveElement(ele){
   if (ele && ele.parentNode){
@@ -16,23 +35,23 @@ function tryRemoveElement(ele){
   }
 }
 
-function generateCSS(){
-  let settings = {
-    chatWidth: 350,
-    backgroundOpacity: 0.3,
-    headerOpacity: 0.4,
-    badgeOpacity: 0.85,
-    
-    hideBadgeTurbo: true,
-    hideBadgePrime: true,
-    hideBadgeSubscriber: true
-  };
+function onSettingsUpdated(){
+  generateCustomCSS();
   
-  tryRemoveElement(document.getElementById("chylex-ttc-style"));
+  if (typeof GM_setValue !== "undefined"){
+    for(let key in settings){
+      GM_setValue(key, settings[key]);
+    }
+  }
+}
+
+function generateCustomCSS(){
+  tryRemoveElement(document.getElementById("chylex-ttc-style-custom"));
   
   let style = document.createElement("style");
-  style.id = "chylex-ttc-style";
+  style.id = "chylex-ttc-style-custom";
   style.innerHTML = `
+
 // simulate expandRight style
 
 .theatre .ct-bar--active.ct-bar--ember, .theatre #main_col {
@@ -79,6 +98,45 @@ function generateCSS(){
   display: none !important;
 }
 
+// chat on left side
+
+${settings.chatLeftSide ? `
+.theatre #right_col, .theatre .chat-messages .tse-scrollbar {
+  left: 0;
+  right: auto;
+}
+
+.theatre #main_col:not(.expandRight) .player-hover {
+  padding-left: ${settings.chatWidth - 10}px;
+  padding-right: 0;
+}
+
+.theatre #main_col:not(.expandRight) .conversations-content {
+  right: 10px !important;
+}
+
+.theatre #main_col #right_close {
+  left: 5px;
+  right: auto;
+  margin-left: ${settings.chatWidth}px;
+}
+
+.theatre #main_col.expandRight #right_close {
+  margin-left: 0;
+}
+
+.theatre #right_close::before {
+  border-left-width: 0;
+  border-right-width: 6px;
+  border-right-color: black;
+}
+
+.theatre #main_col.expandRight #right_close::before {
+  border-left-width: 6px;
+  border-left-color: black;
+  border-right-width: 0;
+}` : ``}
+
 // change chat container
 
 .theatre #right_col {
@@ -87,13 +145,13 @@ function generateCSS(){
 }
 
 .theatre #right_col:not(:hover) .chat-container {
-  background: #17141f${((settings.backgroundOpacity * 256) | 0).toString(16)} !important;
+  background: #17141f${((settings.backgroundOpacity * 2.56) | 0).toString(16).padStart(2, '0')} !important;
   color: #ece8f3 !important;
   text-shadow: 0 0 2px #000D, -1px 0 1px #0006, 0 -1px 1px #0006, 1px 0 1px #0006, 0 1px 1px #0006;
 }
 
 .theatre #right_col:not(:hover) .chat-header {
-  background-color: #17141f${((settings.headerOpacity * 256) | 0).toString(16)} !important;
+  background-color: #17141f${((settings.headerOpacity * 2.56) | 0).toString(16).padStart(2, '0')} !important;
 }
 
 .theatre #right_col:not(:hover) .chat-interface {
@@ -117,7 +175,8 @@ function generateCSS(){
 }
 
 .theatre #right_col:not(:hover) .chat-messages .badges {
-  opacity: ${settings.badgeOpacity};
+  opacity: ${settings.badgeOpacity / 100};
+  ${settings.badgeOpacity === 0 ? `display: none;` : ``}
 }
 
 .theatre #right_col:not(:hover) .chat-messages .from {
@@ -184,23 +243,275 @@ function generateCSS(){
 // style tweaks
 
 ${settings.hideBadgeTurbo ? `
-.badge[alt="Turbo"], .badge[original-title="Turbo"] {
-    display: none;
+.theatre .badge[alt="Turbo"], .theatre .badge[original-title="Turbo"] {
+ display: none;
 }` : ``}
 
 ${settings.hideBadgePrime ? `
-.badge[alt$="Prime"], .badge[original-title$="Prime"] {
-    display: none;
+.theatre .badge[alt$="Prime"], .theatre .badge[original-title$="Prime"] {
+ display: none;
 }` : ``}
 
 ${settings.hideBadgeSubscriber ? `
-.badge[alt~="Subscriber"], .badge[original-title~="Subscriber"] {
-    display: none;
+.theatre .badge[alt~="Subscriber"], .theatre .badge[original-title~="Subscriber"] {
+ display: none;
 }` : ``}
 
-`.replace(/^\/\/(.*?)$/gm, "");
+// dynamic styles for settings
+
+#chylex-ttc-settings-btn {
+  margin-left: ${settings.chatWidth - 55}px;
+}`.replace(/^\/\/(.*?)$/gm, "");
   
   document.head.appendChild(style);
 }
 
-generateCSS();
+function generateSettingsCSS(){
+  if (document.getElementById("chylex-ttc-style-settings")){
+    return;
+  }
+  
+  let style = document.createElement("style");
+  style.id = "chylex-ttc-style-settings";
+  style.innerHTML = `
+
+// settings button
+
+#chylex-ttc-settings-btn {
+  display: none;
+  width: 3em;
+  height: 3em;
+  position: absolute;
+  margin-top: -40px;
+  z-index: 2000;
+  cursor: pointer;
+  fill: #fffa;
+}
+
+#chylex-ttc-settings-btn:hover .player-tip {
+  display: inline-block;
+  width: auto;
+  left: 50%;
+  top: 0.5em;
+  margin-left: -13.75em;
+  z-index: 1999;
+}
+
+#chylex-ttc-settings-btn svg {
+  width: 100%;
+  height: 100%;
+}
+
+#chylex-ttc-settings-btn:hover {
+  fill: #fff;
+}
+
+.theatre #right_col:hover #chylex-ttc-settings-btn {
+  display: block;
+}
+
+// settings modal
+
+#chylex-ttc-settings-modal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 520px;
+  height: 300px;
+  margin-left: -260px;
+  margin-top: -150px;
+  z-index: 1000;
+  background-color: #0009;
+}
+
+#chylex-ttc-settings-modal h2 {
+  color: #fffe;
+  font-size: 24px;
+  text-align: center;
+  margin: 0;
+  padding: 17px 0 16px;
+  background-color: #0009;
+}
+
+#chylex-ttc-settings-modal .ttc-flex-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 8px 4px;
+}
+
+#chylex-ttc-settings-modal .ttc-flex-column {
+  flex: 0 0 calc(100% / 3);
+}
+
+#chylex-ttc-settings-modal p {
+  color: #fffd;
+  font-size: 14px;
+  margin-top: 8px;
+  padding: 0 10px;
+}
+
+#chylex-ttc-settings-modal p:first-of-type {
+  margin-top: 0;
+}
+
+#chylex-ttc-settings-modal .player-menu__header {
+  margin-bottom: 0;
+  color: #fffa;
+}
+
+#chylex-ttc-settings-modal .player-menu__item {
+  align-items: center;
+}
+
+#chylex-ttc-settings-modal .player-switch {
+  margin-bottom: 0;
+}
+
+#chylex-ttc-settings-modal input[type="range"] {
+  width: auto;
+}
+
+#chylex-ttc-settings-modal output {
+  color: #fffc;
+  width: 46px;
+  padding-left: 4px;
+  text-align: right;
+}`.replace(/^\/\/(.*?)$/gm, "");
+  
+  document.head.appendChild(style);
+}
+
+function debounce(func, wait){
+  let timeout = -1;
+  
+  return function(){
+    window.clearTimeout(timeout);
+    timeout = window.setTimeout(func, wait);
+  };
+}
+                          
+function createSettingsModal(){
+  tryRemoveElement(document.getElementById("chylex-ttc-settings-modal"));
+  
+  let generateToggle = function(title, option){
+    window.setTimeout(function(){
+      let toggle = document.getElementById("ttc-opt-"+option);
+      
+      toggle.addEventListener("click", function(){
+        settings[option] = !(toggle.getAttribute("data-value") === "on");
+        toggle.setAttribute("data-value", settings[option] ? "on" : "off");
+        onSettingsUpdated();
+      });
+    }, 1);
+    
+    return `
+<div class="player-menu__section" data-enabled="true">
+  <div class="player-menu__header">
+    <span class="js-menu-header">${title}</span>
+  </div>
+  <div class="player-menu__item pl-flex pl-flex--nowrap">
+    <a id="ttc-opt-${option}" class="player-switch" data-value="${settings[option] ? `on` : `off`}">
+      <div class="switch-label">ON</div>
+      <div class="switch-toggle"></div>
+      <div class="switch-label">OFF</div>
+    </a>
+  </div>
+</div>`;
+  };
+  
+  let generateSlider = function(title, option, cfg){
+    window.setTimeout(function(){
+      let slider = document.getElementById("ttc-opt-"+option);
+      let regenerate = debounce(onSettingsUpdated, cfg.wait);
+      
+      slider.addEventListener("input", function(){
+        settings[option] = parseInt(slider.value, 10);
+        document.getElementById("ttc-optval-"+option).value = slider.value+cfg.text;
+        regenerate();
+      });
+    }, 1);
+    
+    return `
+<div class="player-menu__section" data-enabled="true">
+  <div class="player-menu__header">
+    <span class="js-menu-header">${title}</span>
+  </div>
+  <div class="player-menu__item pl-flex pl-flex--nowrap">
+    <input id="ttc-opt-${option}" type="range" min="${cfg.min}" max="${cfg.max}" step="${cfg.step}" value="${settings[option]}">
+    <output id="ttc-optval-${option}" for="ttc-opt-${option}">${settings[option]}${cfg.text}</option>
+  </div>
+</div>
+`;
+  };
+  
+  let modal = document.createElement("div");
+  modal.id = "chylex-ttc-settings-modal";
+  modal.innerHTML = `
+<h2>Transparent Twitch Chat</h2>
+
+<div class="ttc-flex-container">
+  <div class="ttc-flex-column">
+    <p>Chat Layout</p>
+    ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 600, step: 25, wait: 500, text: "px" })}
+    ${generateToggle("Chat on Left Side", "chatLeftSide")}
+  </div>
+
+  <div class="ttc-flex-column">
+    <p>Colors &amp; Opacity</p>
+    ${generateSlider("Background Opacity", "backgroundOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
+    ${generateSlider("Header Opacity", "headerOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
+    ${generateSlider("Badge Opacity", "badgeOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
+  </div>
+
+  <div class="ttc-flex-column">
+    <p>Badges</p>
+    ${generateToggle("Hide Turbo Badge", "hideBadgeTurbo")}
+    ${generateToggle("Hide Prime Badge", "hideBadgePrime")}
+    ${generateToggle("Hide Subscriber Badge", "hideBadgeSubscriber")}
+  </div>
+</div>
+`;
+  
+  document.body.appendChild(modal);
+  
+  modal.addEventListener("click", function(e){
+    e.stopPropagation();
+  });
+}
+
+function insertSettingsButton(){
+  let container = document.getElementsByClassName("chat-container")[0];
+  
+  if (!container){
+    return;
+  }
+  
+  tryRemoveElement(document.getElementById("chylex-ttc-settings-btn"));
+  tryRemoveElement(document.getElementById("chylex-ttc-settings-modal"));
+  
+  let button = document.createElement("div");
+  button.id = "chylex-ttc-settings-btn";
+  button.innerHTML = '<span class="player-tip js-tip" data-tip="Transparent Twitch Chat"></span><svg><use xlink:href="#icon_settings"></use></svg>';
+  container.appendChild(button);
+  
+  button.addEventListener("click", function(e){
+    if (!document.getElementById("chylex-ttc-settings-modal")){
+      createSettingsModal();
+      e.stopPropagation();
+    }
+  });
+}
+
+window.setInterval(function(){
+  if (!document.getElementById("chylex-ttc-settings-btn")){
+    insertSettingsButton();
+  }
+}, 2000);
+
+document.body.addEventListener("click", function(){
+  tryRemoveElement(document.getElementById("chylex-ttc-settings-modal"));
+});
+
+generateCustomCSS();
+generateSettingsCSS();
