@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.0
+// @version      1.0.1
 // @namespace    https://chylex.com
 // @include      https://www.twitch.tv/*
 // @run-at       document-end
@@ -42,6 +42,15 @@ function onSettingsUpdated(){
     for(let key in settings){
       GM_setValue(key, settings[key]);
     }
+  }
+}
+
+function convHex(hex){
+  if (hex.length === 8){
+    return `rgba(${parseInt(hex.substr(0, 2), 16)}, ${parseInt(hex.substr(2, 2), 16)}, ${parseInt(hex.substr(4, 2), 16)}, ${parseInt(hex.substr(6, 2), 16) / 256})`;
+  }
+  else if (hex.length === 4){
+    return `rgba(${parseInt(hex[0].repeat(2), 16)}, ${parseInt(hex[1].repeat(2), 16)}, ${parseInt(hex[2].repeat(2), 16)}, ${parseInt(hex[3].repeat(2), 16) / 256})`;
   }
 }
 
@@ -145,13 +154,13 @@ ${settings.chatLeftSide ? `
 }
 
 .theatre #right_col:not(:hover) .chat-container {
-  background: #17141f${((settings.backgroundOpacity * 2.56) | 0).toString(16).padStart(2, '0')} !important;
+  background: ${convHex("17141f"+((settings.backgroundOpacity * 2.56) | 0).toString(16).padStart(2, '0'))} !important;
   color: #ece8f3 !important;
-  text-shadow: 0 0 2px #000D, -1px 0 1px #0006, 0 -1px 1px #0006, 1px 0 1px #0006, 0 1px 1px #0006;
+  text-shadow: 0 0 2px ${convHex("000D")}, -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
 }
 
 .theatre #right_col:not(:hover) .chat-header {
-  background-color: #17141f${((settings.headerOpacity * 2.56) | 0).toString(16).padStart(2, '0')} !important;
+  background-color: ${convHex("17141f"+((settings.headerOpacity * 2.56) | 0).toString(16).padStart(2, '0'))} !important;
 }
 
 .theatre #right_col:not(:hover) .chat-interface {
@@ -180,17 +189,17 @@ ${settings.chatLeftSide ? `
 }
 
 .theatre #right_col:not(:hover) .chat-messages .from {
-  text-shadow: -1px 0 1px #0006, 0 -1px 1px #0006, 1px 0 1px #0006, 0 1px 1px #0006;
+  text-shadow: -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
 }
 
 .theatre #right_col:not(:hover) .chat-messages .special-message {
-  background: #201c2b50 !important;
+  background: ${convHex("201c2b50")} !important;
   color: #b7b5ba !important;
-  border-left-color: #6441a450 !important;
+  border-left-color: ${convHex("6441a450")} !important;
 }
 
 .theatre #right_col:not(:hover) .chat-messages .chat-chip {
-  background: #201c2b50 !important;
+  background: ${convHex("201c2b50")} !important;
   box-shadow: none !important;
 }
 
@@ -285,7 +294,7 @@ function generateSettingsCSS(){
   margin-top: -40px;
   z-index: 2000;
   cursor: pointer;
-  fill: #fffa;
+  fill: ${convHex("fffa")};
 }
 
 #chylex-ttc-settings-btn:hover .player-tip {
@@ -321,16 +330,16 @@ function generateSettingsCSS(){
   margin-left: -260px;
   margin-top: -150px;
   z-index: 1000;
-  background-color: #0009;
+  background-color: ${convHex("0009")};
 }
 
 #chylex-ttc-settings-modal h2 {
-  color: #fffe;
+  color: ${convHex("fffe")};
   font-size: 24px;
   text-align: center;
   margin: 0;
   padding: 17px 0 16px;
-  background-color: #0009;
+  background-color: ${convHex("0009")};
 }
 
 #chylex-ttc-settings-modal .ttc-flex-container {
@@ -345,7 +354,7 @@ function generateSettingsCSS(){
 }
 
 #chylex-ttc-settings-modal p {
-  color: #fffd;
+  color: ${convHex("fffd")};
   font-size: 14px;
   margin-top: 8px;
   padding: 0 10px;
@@ -357,7 +366,7 @@ function generateSettingsCSS(){
 
 #chylex-ttc-settings-modal .player-menu__header {
   margin-bottom: 0;
-  color: #fffa;
+  color: ${convHex("fffa")};
 }
 
 #chylex-ttc-settings-modal .player-menu__item {
@@ -373,7 +382,7 @@ function generateSettingsCSS(){
 }
 
 #chylex-ttc-settings-modal output {
-  color: #fffc;
+  color: ${convHex("fffc")};
   width: 46px;
   padding-left: 4px;
   text-align: right;
