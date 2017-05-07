@@ -163,11 +163,6 @@ ${settings.chatLeftSide ? `
   background-color: ${convHex("17141f"+((settings.headerOpacity * 2.56) | 0).toString(16).padStart(2, '0'))} !important;
 }
 
-.theatre #right_col:not(:hover) .chat-menu {
-  text-shadow: none;
-  color: #898395;
-}
-
 .theatre #right_col:not(:hover) .chat-interface {
   opacity: 0.6;
 }
@@ -180,6 +175,17 @@ ${settings.chatLeftSide ? `
 
 .theatre .cn-tab-container {
   top: 0 !important;
+}
+
+// fix unwanted styles
+
+.theatre #right_col:not(:hover) .chat-menu {
+  text-shadow: none;
+  color: #898395;
+}
+
+.theatre #right_col:not(:hover) .mentioning {
+  text-shadow: none;
 }
 
 // change chat messages
