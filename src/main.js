@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
-// @description  TODO
+// @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
 // @version      {VERSION}
 // @namespace    https://chylex.com
 // @include      https://www.twitch.tv/*
