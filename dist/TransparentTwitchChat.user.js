@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
-// @description  TODO
-// @version      0.1.3
+// @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
+// @version      0.1.4
 // @namespace    https://chylex.com
 // @include      https://www.twitch.tv/*
 // @run-at       document-end
@@ -69,10 +69,21 @@ function generateCSS(){
   right: ${settings.chatWidth}px;
 }
 
+// fix scrollbars
+
+.theatre #main_col .tse-scrollbar {
+  display: none !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages .tse-scrollbar {
+  display: none !important;
+}
+
 // change chat container
 
 .theatre #right_col {
   background: none !important;
+  width: ${settings.chatWidth - 10}px;
 }
 
 .theatre #right_col:not(:hover) .chat-container {
