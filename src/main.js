@@ -83,6 +83,7 @@ function generateCSS(){
 
 .theatre #right_col {
   background: none !important;
+  width: ${settings.chatWidth - 10}px;
 }
 
 .theatre #right_col:not(:hover) .chat-container {
