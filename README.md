@@ -26,7 +26,7 @@ The script is only active in **Theater mode**. If you want to watch in fullscree
 
 ### Changing the Settings
 
-In order to change settings, move your cursor over the chat and click the gear icon at the bottom right. You can then close the dialog by clicking on the icon again (or anywhere outside the dialog area).
+In order to change settings, move your cursor over the chat and click the gear icon in the bottom right corner. You can then close the dialog by clicking on the icon again (or anywhere outside the dialog area).
 
 ![](https://repo.chylex.com/transparent-twitch-chat-settings.png?)
 

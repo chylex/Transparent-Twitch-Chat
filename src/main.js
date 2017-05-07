@@ -278,7 +278,13 @@ ${settings.hideBadgeSubscriber ? `
 // dynamic styles for settings
 
 #chylex-ttc-settings-btn {
+  margin-top: -152px;
   margin-left: ${settings.chatWidth - 58}px;
+}
+
+.chatReplay #chylex-ttc-settings-btn {
+  margin-top: -40px;
+  margin-left: ${settings.chatWidth - 52}px;
 }`.replace(/^\/\/(.*?)$/gm, "");
   
   document.head.appendChild(style);
@@ -300,7 +306,6 @@ function generateSettingsCSS(){
   width: 3em;
   height: 3em;
   position: absolute;
-  margin-top: -40px;
   z-index: 2000;
   cursor: pointer;
   fill: ${convHex("fffa")};
