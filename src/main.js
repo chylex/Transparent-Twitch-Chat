@@ -5,9 +5,9 @@
 // @namespace    https://chylex.com
 // @include      https://www.twitch.tv/*
 // @run-at       document-end
+// @grant        GM_getValue
+// @grant        GM_setValue
 // @noframes
-// @grant  GM_getValue
-// @grant  GM_setValue
 // ==/UserScript==
 
 let settings = {
@@ -459,9 +459,9 @@ function createSettingsModal(){
 
   <div class="ttc-flex-column">
     <p>Colors &amp; Opacity</p>
-    ${generateSlider("Background Opacity", "backgroundOpacity", { min: 0, max: 100, step: 5, wait: 40, text: "%" })}
-    ${generateSlider("Header Opacity", "headerOpacity", { min: 0, max: 100, step: 5, wait: 40, text: "%" })}
-    ${generateSlider("Badge Opacity", "badgeOpacity", { min: 0, max: 100, step: 5, wait: 40, text: "%" })}
+    ${generateSlider("Background Opacity", "backgroundOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
+    ${generateSlider("Header Opacity", "headerOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
+    ${generateSlider("Badge Opacity", "badgeOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
   </div>
 
   <div class="ttc-flex-column">
