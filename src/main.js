@@ -226,22 +226,117 @@ ${settings.chatLeftSide ? `
 
 ${settings.hideBadgeTurbo ? `
 .badge[alt="Turbo"], .badge[original-title="Turbo"] {
-    display: none;
+ display: none;
 }` : ``}
 
 ${settings.hideBadgePrime ? `
 .badge[alt$="Prime"], .badge[original-title$="Prime"] {
-    display: none;
+ display: none;
 }` : ``}
 
 ${settings.hideBadgeSubscriber ? `
 .badge[alt~="Subscriber"], .badge[original-title~="Subscriber"] {
-    display: none;
+ display: none;
 }` : ``}
+
+// settings button
+
+#chylex-ttc-settings-btn {
+  display: none;
+  width: 3em;
+  height: 3em;
+  position: absolute;
+  margin-top: -40px;
+  margin-left: ${settings.chatWidth - 55}px;
+  z-index: 2000;
+  cursor: pointer;
+  fill: #fffa;
+}
+
+#chylex-ttc-settings-btn:hover .player-tip {
+  display: inline-block;
+  width: auto;
+  left: 50%;
+  top: 0.5em;
+  margin-left: -13.75em;
+  z-index: 1999;
+}
+
+#chylex-ttc-settings-btn svg {
+  width: 100%;
+  height: 100%;
+}
+
+#chylex-ttc-settings-btn:hover {
+  fill: #fff;
+}
+
+.theatre #right_col:hover #chylex-ttc-settings-btn {
+  display: block;
+}
+
+// settings modal
+
+#chylex-ttc-settings-modal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 420px;
+  height: 480px;
+  margin-left: -210px;
+  margin-top: -240px;
+  z-index: 1000;
+  background-color: #0009;
+}
+
+#chylex-ttc-settings-modal p {
+  color: #fffc;
+  font-size: 24px;
+  text-align: center;
+  padding: 17px 0 16px;
+  background-color: #0009;
+}
 
 `.replace(/^\/\/(.*?)$/gm, "");
   
   document.head.appendChild(style);
 }
+                          
+function createSettingsModal(){
+  tryRemoveElement(document.getElementById("chylex-ttc-settings-modal"));
+  
+  let modal = document.createElement("div");
+  modal.id = "chylex-ttc-settings-modal";
+  modal.innerHTML = `
+<p>Transparent Twitch Chat</p>
+`;
+  
+  document.body.appendChild(modal);
+  
+  modal.addEventListener("click", function(e){
+    e.stopPropagation();
+  });
+}
+
+function insertSettingsButton(){
+  tryRemoveElement(document.getElementById("chylex-ttc-settings-btn"));
+  tryRemoveElement(document.getElementById("chylex-ttc-settings-modal"));
+  
+  let container = document.getElementsByClassName("chat-container")[0];
+  let button = document.createElement("div");
+  button.id = "chylex-ttc-settings-btn";
+  button.innerHTML = '<span class=" player-tip js-tip" data-tip="Transparent Twitch Chat"></span><svg><use xlink:href="#icon_settings"></use></svg>';
+  container.appendChild(button);
+  
+  button.addEventListener("click", function(e){
+    createSettingsModal();
+    e.stopPropagation();
+  });
+}
+
+document.body.addEventListener("click", function(){
+  tryRemoveElement(document.getElementById("chylex-ttc-settings-modal"));
+});
 
 generateCSS();
+insertSettingsButton();
