@@ -69,6 +69,16 @@ function generateCSS(){
   right: ${settings.chatWidth}px;
 }
 
+// fix scrollbars
+
+.theatre #main_col .tse-scrollbar {
+  display: none !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages .tse-scrollbar {
+  display: none !important;
+}
+
 // change chat container
 
 .theatre #right_col {
