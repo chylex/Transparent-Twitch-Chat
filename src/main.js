@@ -19,6 +19,8 @@ function tryRemoveElement(ele){
 function generateCSS(){
   let settings = {
     chatWidth: 350,
+    chatLeftSide: false,
+    
     backgroundOpacity: 0.3,
     headerOpacity: 0.4,
     badgeOpacity: 0.85,
@@ -78,6 +80,45 @@ function generateCSS(){
 .theatre #right_col:not(:hover) .chat-messages .tse-scrollbar {
   display: none !important;
 }
+
+// chat on left side
+
+${settings.chatLeftSide ? `
+.theatre #right_col, .theatre .chat-messages .tse-scrollbar {
+  left: 0;
+  right: auto;
+}
+
+.theatre #main_col:not(.expandRight) .player-hover {
+  padding-left: ${settings.chatWidth - 10}px;
+  padding-right: 0;
+}
+
+.theatre #main_col:not(.expandRight) .conversations-content {
+  right: 10px !important;
+}
+
+.theatre #main_col #right_close {
+  left: 5px;
+  right: auto;
+  margin-left: ${settings.chatWidth}px;
+}
+
+.theatre #main_col.expandRight #right_close {
+  margin-left: 0;
+}
+
+.theatre #right_close::before {
+  border-left-width: 0;
+  border-right-width: 6px;
+  border-right-color: black;
+}
+
+.theatre #main_col.expandRight #right_close::before {
+  border-left-width: 6px;
+  border-left-color: black;
+  border-right-width: 0;
+}` : ``}
 
 // change chat container
 
