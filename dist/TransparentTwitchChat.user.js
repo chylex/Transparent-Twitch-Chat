@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.0.1
+// @version      1.0.2
 // @namespace    https://chylex.com
 // @include      https://www.twitch.tv/*
 // @run-at       document-end
@@ -177,6 +177,17 @@ ${settings.chatLeftSide ? `
   top: 0 !important;
 }
 
+// fix unwanted styles
+
+.theatre #right_col:not(:hover) .chat-menu {
+  text-shadow: none;
+  color: #898395;
+}
+
+.theatre #right_col:not(:hover) .mentioning {
+  text-shadow: none;
+}
+
 // change chat messages
 
 .theatre #right_col:not(:hover) .chat-messages .timestamp {
@@ -198,6 +209,10 @@ ${settings.chatLeftSide ? `
   border-left-color: ${convHex("6441a450")} !important;
 }
 
+.theatre #right_col:not(:hover) .chat-messages .system-msg {
+  color: #b7b5ba !important;
+}
+
 .theatre #right_col:not(:hover) .chat-messages .chat-chip {
   background: ${convHex("201c2b50")} !important;
   box-shadow: none !important;
@@ -209,6 +224,10 @@ ${settings.chatLeftSide ? `
 
 .theatre #right_col:not(:hover) .chat-messages a {
   color: #cdb9f5 !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages .admin .message {
+  color: #bd9ff5 !important;
 }
 
 // username color tweaks (possibly figure out a better way later)
@@ -269,7 +288,13 @@ ${settings.hideBadgeSubscriber ? `
 // dynamic styles for settings
 
 #chylex-ttc-settings-btn {
-  margin-left: ${settings.chatWidth - 55}px;
+  margin-top: -152px;
+  margin-left: ${settings.chatWidth - 58}px;
+}
+
+.chatReplay #chylex-ttc-settings-btn {
+  margin-top: -40px;
+  margin-left: ${settings.chatWidth - 52}px;
 }`.replace(/^\/\/(.*?)$/gm, "");
   
   document.head.appendChild(style);
@@ -291,7 +316,6 @@ function generateSettingsCSS(){
   width: 3em;
   height: 3em;
   position: absolute;
-  margin-top: -40px;
   z-index: 2000;
   cursor: pointer;
   fill: ${convHex("fffa")};

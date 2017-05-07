@@ -34,4 +34,4 @@ In order to change settings, move your cursor over the chat and click the gear i
 
 # Report Feedback
 
-[Open a new issue](https://github.com/chylex/Transparent-Twitch-Chat/issues) if you found a bug or have a suggestion for improvements and new features.
+[Open a new issue](https://github.com/chylex/Transparent-Twitch-Chat/issues) if you found a bug or have a suggestion for improvements and new features. When reporting a bug, please include the exact name and version of your browser, and a list of all addons and userscripts you have installed.
