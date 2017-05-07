@@ -158,7 +158,8 @@ ${settings.chatLeftSide ? `
 }
 
 .theatre #right_col:not(:hover) .chat-messages .badges {
-  opacity: ${settings.badgeOpacity};
+  opacity: ${settings.badgeOpacity / 100};
+  ${settings.badgeOpacity === 0 ? `display: none;` : ``}
 }
 
 .theatre #right_col:not(:hover) .chat-messages .from {
@@ -225,17 +226,17 @@ ${settings.chatLeftSide ? `
 // style tweaks
 
 ${settings.hideBadgeTurbo ? `
-.badge[alt="Turbo"], .badge[original-title="Turbo"] {
+.theatre .badge[alt="Turbo"], .theatre .badge[original-title="Turbo"] {
  display: none;
 }` : ``}
 
 ${settings.hideBadgePrime ? `
-.badge[alt$="Prime"], .badge[original-title$="Prime"] {
+.theatre .badge[alt$="Prime"], .theatre .badge[original-title$="Prime"] {
  display: none;
 }` : ``}
 
 ${settings.hideBadgeSubscriber ? `
-.badge[alt~="Subscriber"], .badge[original-title~="Subscriber"] {
+.theatre .badge[alt~="Subscriber"], .theatre .badge[original-title~="Subscriber"] {
  display: none;
 }` : ``}
 
