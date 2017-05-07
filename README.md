@@ -9,6 +9,7 @@ Transparent Twitch Chat is a user script that becomes active when you go into **
 - Chat size and opacity are customizable
 - Individual badges can be turned off for clarity
 - Username colors are brighter
+- Fixed chat scrollbar showing up with every new message
 
 ## How to Install
 
@@ -17,7 +18,7 @@ Transparent Twitch Chat is a user script that becomes active when you go into **
 
 ### Changing the Settings
 
-In order to change settings, at the moment you will have to edit [these lines in the source code](https://github.com/chylex/Transparent-Twitch-Chat/blob/master/src/main.js#L21-L28). You will unfortunately lose your settings when the script is updated, but the next update will have a proper Settings dialog!
+In order to change settings, at the moment you will have to edit [these lines in the source code](https://github.com/chylex/Transparent-Twitch-Chat/blob/master/src/main.js#L21-L28). You will unfortunately lose your settings when the script is updated, but the next update should have a proper Settings dialog!
 
 ## Report Feedback
 
