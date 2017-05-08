@@ -340,7 +340,7 @@ ${settings.grayTheme ? `
 }
 
 .theatre .ember-chat .chat-interface .textarea-contain textarea {
-  background-color: #2a2a2a !important;
+  background-color: ${convHex("2a2a2a90")} !important;
   border: 1px solid ${convHex("00000090")} !important;
 }
 
@@ -349,7 +349,7 @@ ${settings.grayTheme ? `
 }
 
 .theatre .chat-container .button:not(.button--icon-only) {
-  background-color: #2a2a2a !important;
+  background-color: ${convHex("2a2a2a90")} !important;
   border: 1px solid ${convHex("00000090")} !important;
 }` : ``}
 
@@ -444,7 +444,7 @@ function generateSettingsCSS(){
   margin-left: -260px;
   margin-top: -150px;
   z-index: 1000;
-  background-color: ${convHex("0009")};
+  background-color: ${convHex("000a")};
 }
 
 #chylex-ttc-settings-modal h2 {
