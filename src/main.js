@@ -36,7 +36,7 @@ function tryRemoveElement(ele){
 }
 
 function onSettingsUpdated(){
-  generateCustomCSS();
+  generateDynamicCSS();
   
   if (typeof GM_setValue !== "undefined"){
     for(let key in settings){
@@ -54,12 +54,18 @@ function convHex(hex){
   }
 }
 
-function generateCustomCSS(){
-  tryRemoveElement(document.getElementById("chylex-ttc-style-custom"));
+function stripComments(str){
+  return str.replace(/^\/\/(.*?)$/gm, "");
+}
+
+function generateStaticCSS(){
+  if (document.getElementById("chylex-ttc-style-static")){
+    return;
+  }
   
   let style = document.createElement("style");
-  style.id = "chylex-ttc-style-custom";
-  style.innerHTML = `
+  style.id = "chylex-ttc-style-static";
+  style.innerHTML = stripComments(`
 
 // simulate expandRight style
 
@@ -74,6 +80,122 @@ function generateCustomCSS(){
 .theatre #main_col #player {
   right: 0 !important;
 }
+
+// fix scrollbars
+
+.theatre #main_col .tse-scrollbar {
+  display: none !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages .tse-scrollbar {
+  display: none !important;
+}
+
+// hide replay header
+
+.theatre .cn-chat-replay-header {
+  display: none;
+}
+
+.theatre .cn-tab-container {
+  top: 0 !important;
+}
+
+// change chat messages
+
+.theatre #right_col:not(:hover) .chat-messages .timestamp {
+  color: #b7b5ba !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages .from {
+  text-shadow: -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
+}
+
+.theatre #right_col:not(:hover) .chat-messages .special-message {
+  background: ${convHex("201c2b50")} !important;
+  color: #b7b5ba !important;
+  border-left-color: ${convHex("6441a450")} !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages .system-msg {
+  color: #b7b5ba !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages .chat-chip {
+  background: ${convHex("201c2b50")} !important;
+  box-shadow: none !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages .card__info {
+  color: #b7b5ba !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages a {
+  color: #cdb9f5 !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages .admin .message {
+  color: #bd9ff5 !important;
+}
+
+// fix unwanted styles
+
+.theatre #right_col:not(:hover) .chat-menu {
+  text-shadow: none;
+  color: #898395;
+}
+
+.theatre #right_col:not(:hover) .mentioning {
+  text-shadow: none;
+}
+
+// username color tweaks (possibly figure out a better way later)
+
+.theatre .from[style="color:#0000FF"], .theatre .from[style="color:#0000DF"] {
+  color: #88F !important;
+}
+
+.theatre .from[style="color:#000000"] {
+  color: #888 !important;
+}
+
+.theatre .from[style="color:#8A2BE2"] {
+  color: #AA4BFF !important;
+}
+
+.theatre .from[style="color:#5A3A54"] {
+  color: #957C74 !important;
+}
+
+.theatre .from[style="color:#1F1FA8"] {
+  color: #5252F8 !important;
+}
+
+.theatre .from[style="color:#1945B3"] {
+  color: #4F7AC3 !important;
+}
+
+.theatre .from[style="color:#030061"] {
+  color: #6360A1 !important;
+}
+
+.theatre .from[style="color:#4B00AD"] {
+  color: #7B50D2 !important;
+}
+
+.theatre .from[style="color:#403271"] {
+  color: #8072A1 !important;
+}`);
+  
+  document.head.appendChild(style);
+}
+
+function generateDynamicCSS(){
+  tryRemoveElement(document.getElementById("chylex-ttc-style-dynamic"));
+  
+  let style = document.createElement("style");
+  style.id = "chylex-ttc-style-dynamic";
+  style.innerHTML = stripComments(`
 
 // fix player controls
 
@@ -95,16 +217,6 @@ function generateCustomCSS(){
 
 .theatre #main_col:not(.expandRight) .conversations-content {
   right: ${settings.chatWidth}px;
-}
-
-// fix scrollbars
-
-.theatre #main_col .tse-scrollbar {
-  display: none !important;
-}
-
-.theatre #right_col:not(:hover) .chat-messages .tse-scrollbar {
-  display: none !important;
 }
 
 // chat on left side
@@ -167,108 +279,12 @@ ${settings.chatLeftSide ? `
   opacity: 0.6;
 }
 
-// hide replay header
-
-.theatre .cn-chat-replay-header {
-  display: none;
-}
-
-.theatre .cn-tab-container {
-  top: 0 !important;
-}
-
-// fix unwanted styles
-
-.theatre #right_col:not(:hover) .chat-menu {
-  text-shadow: none;
-  color: #898395;
-}
-
-.theatre #right_col:not(:hover) .mentioning {
-  text-shadow: none;
-}
-
-// change chat messages
-
-.theatre #right_col:not(:hover) .chat-messages .timestamp {
-  color: #b7b5ba !important;
-}
+// badge tweaks
 
 .theatre #right_col:not(:hover) .chat-messages .badges {
   opacity: ${settings.badgeOpacity / 100};
   ${settings.badgeOpacity === 0 ? `display: none;` : ``}
 }
-
-.theatre #right_col:not(:hover) .chat-messages .from {
-  text-shadow: -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
-}
-
-.theatre #right_col:not(:hover) .chat-messages .special-message {
-  background: ${convHex("201c2b50")} !important;
-  color: #b7b5ba !important;
-  border-left-color: ${convHex("6441a450")} !important;
-}
-
-.theatre #right_col:not(:hover) .chat-messages .system-msg {
-  color: #b7b5ba !important;
-}
-
-.theatre #right_col:not(:hover) .chat-messages .chat-chip {
-  background: ${convHex("201c2b50")} !important;
-  box-shadow: none !important;
-}
-
-.theatre #right_col:not(:hover) .chat-messages .card__info {
-  color: #b7b5ba !important;
-}
-
-.theatre #right_col:not(:hover) .chat-messages a {
-  color: #cdb9f5 !important;
-}
-
-.theatre #right_col:not(:hover) .chat-messages .admin .message {
-  color: #bd9ff5 !important;
-}
-
-// username color tweaks (possibly figure out a better way later)
-
-.theatre .from[style="color:#0000FF"], .theatre .from[style="color:#0000DF"] {
-  color: #88F !important;
-}
-
-.theatre .from[style="color:#000000"] {
-  color: #888 !important;
-}
-
-.theatre .from[style="color:#8A2BE2"] {
-  color: #AA4BFF !important;
-}
-
-.theatre .from[style="color:#5A3A54"] {
-  color: #957C74 !important;
-}
-
-.theatre .from[style="color:#1F1FA8"] {
-  color: #5252F8 !important;
-}
-
-.theatre .from[style="color:#1945B3"] {
-  color: #4F7AC3 !important;
-}
-
-.theatre .from[style="color:#030061"] {
-  color: #6360A1 !important;
-}
-
-.theatre .from[style="color:#4B00AD"] {
-  color: #7B50D2 !important;
-}
-
-.theatre .from[style="color:#403271"] {
-  color: #8072A1 !important;
-}
-
-// style tweaks
 
 ${settings.hideBadgeTurbo ? `
 .theatre .badge[alt="Turbo"], .theatre .badge[original-title="Turbo"] {
@@ -295,7 +311,7 @@ ${settings.hideBadgeSubscriber ? `
 .chatReplay #chylex-ttc-settings-btn {
   margin-top: -40px;
   margin-left: ${settings.chatWidth - 52}px;
-}`.replace(/^\/\/(.*?)$/gm, "");
+}`);
   
   document.head.appendChild(style);
 }
@@ -307,7 +323,7 @@ function generateSettingsCSS(){
   
   let style = document.createElement("style");
   style.id = "chylex-ttc-style-settings";
-  style.innerHTML = `
+  style.innerHTML = stripComments(`
 
 // settings button
 
@@ -410,7 +426,7 @@ function generateSettingsCSS(){
   width: 46px;
   padding-left: 4px;
   text-align: right;
-}`.replace(/^\/\/(.*?)$/gm, "");
+}`);
   
   document.head.appendChild(style);
 }
@@ -546,5 +562,6 @@ document.body.addEventListener("click", function(){
   tryRemoveElement(document.getElementById("chylex-ttc-settings-modal"));
 });
 
-generateCustomCSS();
+generateStaticCSS();
+generateDynamicCSS();
 generateSettingsCSS();
