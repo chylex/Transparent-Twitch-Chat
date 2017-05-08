@@ -274,7 +274,7 @@ ${settings.chatLeftSide ? `
 }
 
 .theatre #right_col:not(:hover) .chat-container {
-  background: ${convHex("17141f"+((settings.backgroundOpacity * 2.56) | 0).toString(16).padStart(2, '0'))} !important;
+  background: ${convHex("17141f"+(Math.round(settings.backgroundOpacity * 2.55).toString(16).padStart(2, '0')))} !important;
   color: #ece8f3 !important;
   text-shadow: 0 0 2px ${convHex("000D")}, -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
 }
