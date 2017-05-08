@@ -232,6 +232,14 @@ ${settings.chatLeftSide ? `
   padding-right: 0;
 }
 
+.theatre #main_col:not(.expandRight) .player-streaminfo {
+  margin-left: 50px;
+}
+
+.theatre #main_col.expandRight .player-streaminfo {
+  margin-left: 25px;
+}
+
 .theatre #main_col:not(.expandRight) .conversations-content {
   right: 10px !important;
 }
