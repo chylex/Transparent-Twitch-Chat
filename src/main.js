@@ -13,9 +13,9 @@
 let settings = {
   chatWidth: 350,
   chatLeftSide: false,
+  hideHeader: true,
 
   backgroundOpacity: 30,
-  headerOpacity: 40,
   badgeOpacity: 85,
 
   hideBadgeTurbo: true,
@@ -280,8 +280,17 @@ ${settings.chatLeftSide ? `
 }
 
 .theatre #right_col:not(:hover) .chat-header {
-  background-color: ${convHex("17141f"+((settings.headerOpacity * 2.56) | 0).toString(16).padStart(2, '0'))} !important;
+  background-color: ${convHex("17141f66")} !important;
 }
+
+${settings.hideHeader ? `
+.theatre #right_col:not(:hover) .chat-header {
+  display: none;
+}
+
+.theatre #right_col:not(:hover) .chat-room {
+  top: 0 !important;
+}` : ``}
 
 .theatre #right_col:not(:hover) .chat-interface {
   opacity: 0.6;
@@ -512,12 +521,12 @@ function createSettingsModal(){
     <p>Chat Layout</p>
     ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 600, step: 25, wait: 500, text: "px" })}
     ${generateToggle("Chat on Left Side", "chatLeftSide")}
+    ${generateToggle("Hide Chat Header", "hideHeader")}
   </div>
 
   <div class="ttc-flex-column">
     <p>Colors &amp; Opacity</p>
     ${generateSlider("Background Opacity", "backgroundOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
-    ${generateSlider("Header Opacity", "headerOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
     ${generateSlider("Badge Opacity", "badgeOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
   </div>
 
