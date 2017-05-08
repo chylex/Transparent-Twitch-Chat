@@ -7,13 +7,15 @@
 Transparent Twitch Chat is a user script that improves your PogChamp experience in the **Theater mode**.
 
 - Chat size, location, and opacity are customizable
-- Individual badges can be turned off for clarity
 - Fixed chat scrollbar showing up with every new message
+- Individual badges can be turned off for clarity
+- Chat header is hidden by default
 - Username colors are brighter
 
 ### Known Issues
 
-- Incompatibility problems with BetterTTV and FrankerFaceZ will be looked into shortly
+- The settings button is displayed above some menus by accident
+- FrankerFaceZ addon shows badges even if you turn them off
 
 ---
 

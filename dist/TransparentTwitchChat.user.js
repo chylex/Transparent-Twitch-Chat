@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.0.2
+// @version      1.0.3
 // @namespace    https://chylex.com
 // @include      https://www.twitch.tv/*
 // @run-at       document-end
@@ -13,9 +13,9 @@
 let settings = {
   chatWidth: 350,
   chatLeftSide: false,
+  hideHeader: true,
 
   backgroundOpacity: 30,
-  headerOpacity: 40,
   badgeOpacity: 85,
 
   hideBadgeTurbo: true,
@@ -36,7 +36,7 @@ function tryRemoveElement(ele){
 }
 
 function onSettingsUpdated(){
-  generateCustomCSS();
+  generateDynamicCSS();
   
   if (typeof GM_setValue !== "undefined"){
     for(let key in settings){
@@ -54,47 +54,33 @@ function convHex(hex){
   }
 }
 
-function generateCustomCSS(){
-  tryRemoveElement(document.getElementById("chylex-ttc-style-custom"));
+function stripComments(str){
+  return str.replace(/^\/\/(.*?)$/gm, "");
+}
+
+function generateStaticCSS(){
+  if (document.getElementById("chylex-ttc-style-static")){
+    return;
+  }
+  
+  let wa = ":not(.ttcwa)"; // selector priority workaround
   
   let style = document.createElement("style");
-  style.id = "chylex-ttc-style-custom";
-  style.innerHTML = `
+  style.id = "chylex-ttc-style-static";
+  style.innerHTML = stripComments(`
 
-// simulate expandRight style
+// simulate expandRight style, FrankerFaceZ workaround
 
 .theatre .ct-bar--active.ct-bar--ember, .theatre #main_col {
   right: 0
 }
 
-.theatre #main_col, .theatre #flash {
-  margin-right: 0;
+body${wa} .app-main.theatre${wa} #main_col, .theatre #flash {
+  margin-right: 0 !important;
 }
 
-.theatre #main_col #player {
+body${wa} .app-main.theatre${wa} #main_col #player {
   right: 0 !important;
-}
-
-// fix player controls
-
-.theatre #main_col:not(.expandRight) .player-hover {
-  padding-right: ${settings.chatWidth - 10}px;
-}
-
-.theatre #main_col:not(.expandRight) #right_close {
-  margin-right: ${settings.chatWidth}px;
-}
-
-.theatre #main_col:not(.expandRight) .player-streamstatus {
-  margin-right: ${settings.chatWidth + 20}px !important;
-}
-
-.theatre #main_col.expandRight .player-streamstatus {
-  margin-right: 20px !important;
-}
-
-.theatre #main_col:not(.expandRight) .conversations-content {
-  right: ${settings.chatWidth}px;
 }
 
 // fix scrollbars
@@ -107,66 +93,6 @@ function generateCustomCSS(){
   display: none !important;
 }
 
-// chat on left side
-
-${settings.chatLeftSide ? `
-.theatre #right_col, .theatre .chat-messages .tse-scrollbar {
-  left: 0;
-  right: auto;
-}
-
-.theatre #main_col:not(.expandRight) .player-hover {
-  padding-left: ${settings.chatWidth - 10}px;
-  padding-right: 0;
-}
-
-.theatre #main_col:not(.expandRight) .conversations-content {
-  right: 10px !important;
-}
-
-.theatre #main_col #right_close {
-  left: 5px;
-  right: auto;
-  margin-left: ${settings.chatWidth}px;
-}
-
-.theatre #main_col.expandRight #right_close {
-  margin-left: 0;
-}
-
-.theatre #right_close::before {
-  border-left-width: 0;
-  border-right-width: 6px;
-  border-right-color: black;
-}
-
-.theatre #main_col.expandRight #right_close::before {
-  border-left-width: 6px;
-  border-left-color: black;
-  border-right-width: 0;
-}` : ``}
-
-// change chat container
-
-.theatre #right_col {
-  background: none !important;
-  width: ${settings.chatWidth - 10}px;
-}
-
-.theatre #right_col:not(:hover) .chat-container {
-  background: ${convHex("17141f"+((settings.backgroundOpacity * 2.56) | 0).toString(16).padStart(2, '0'))} !important;
-  color: #ece8f3 !important;
-  text-shadow: 0 0 2px ${convHex("000D")}, -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
-}
-
-.theatre #right_col:not(:hover) .chat-header {
-  background-color: ${convHex("17141f"+((settings.headerOpacity * 2.56) | 0).toString(16).padStart(2, '0'))} !important;
-}
-
-.theatre #right_col:not(:hover) .chat-interface {
-  opacity: 0.6;
-}
-
 // hide replay header
 
 .theatre .cn-chat-replay-header {
@@ -177,26 +103,10 @@ ${settings.chatLeftSide ? `
   top: 0 !important;
 }
 
-// fix unwanted styles
-
-.theatre #right_col:not(:hover) .chat-menu {
-  text-shadow: none;
-  color: #898395;
-}
-
-.theatre #right_col:not(:hover) .mentioning {
-  text-shadow: none;
-}
-
 // change chat messages
 
 .theatre #right_col:not(:hover) .chat-messages .timestamp {
   color: #b7b5ba !important;
-}
-
-.theatre #right_col:not(:hover) .chat-messages .badges {
-  opacity: ${settings.badgeOpacity / 100};
-  ${settings.badgeOpacity === 0 ? `display: none;` : ``}
 }
 
 .theatre #right_col:not(:hover) .chat-messages .from {
@@ -228,6 +138,17 @@ ${settings.chatLeftSide ? `
 
 .theatre #right_col:not(:hover) .chat-messages .admin .message {
   color: #bd9ff5 !important;
+}
+
+// fix unwanted styles
+
+.theatre #right_col:not(:hover) .chat-menu {
+  text-shadow: none;
+  color: #898395;
+}
+
+.theatre #right_col:not(:hover) .mentioning {
+  text-shadow: none;
 }
 
 // username color tweaks (possibly figure out a better way later)
@@ -268,7 +189,136 @@ ${settings.chatLeftSide ? `
   color: #8072A1 !important;
 }
 
-// style tweaks
+// BTTV workarounds
+
+.theatre .ember-chat.roomMode${wa}, .theatre .chat-messages${wa} {
+  background: none !important;
+}
+
+.theatre .rightcol-content${wa} {
+  background: none !important;
+  z-index: 3 !important;
+}`);
+  
+  document.head.appendChild(style);
+}
+
+function generateDynamicCSS(){
+  tryRemoveElement(document.getElementById("chylex-ttc-style-dynamic"));
+  
+  let style = document.createElement("style");
+  style.id = "chylex-ttc-style-dynamic";
+  style.innerHTML = stripComments(`
+
+// fix player controls
+
+.theatre #main_col:not(.expandRight) .player-hover {
+  padding-right: ${settings.chatWidth - 10}px;
+}
+
+.theatre #main_col:not(.expandRight) #right_close {
+  margin-right: ${settings.chatWidth}px;
+}
+
+.theatre #main_col:not(.expandRight) .player-streamstatus {
+  margin-right: ${settings.chatWidth + 20}px !important;
+}
+
+.theatre #main_col.expandRight .player-streamstatus {
+  margin-right: 20px !important;
+}
+
+.theatre #main_col:not(.expandRight) .conversations-content {
+  right: ${settings.chatWidth}px;
+}
+
+// chat on left side
+
+${settings.chatLeftSide ? `
+.theatre #right_col, .theatre .chat-messages .tse-scrollbar {
+  left: 0;
+  right: auto;
+}
+
+.theatre #main_col:not(.expandRight) .player-hover {
+  padding-left: ${settings.chatWidth - 10}px;
+  padding-right: 0;
+}
+
+.theatre #main_col:not(.expandRight) .player-streaminfo {
+  margin-left: 50px;
+}
+
+.theatre #main_col.expandRight .player-streaminfo {
+  margin-left: 25px;
+}
+
+.theatre #main_col:not(.expandRight) .conversations-content {
+  right: 10px !important;
+}
+
+.theatre #main_col #right_close {
+  left: 5px;
+  right: auto;
+  margin-left: ${settings.chatWidth}px;
+}
+
+.theatre #main_col.expandRight #right_close {
+  margin-left: 0;
+}
+
+.theatre #right_close::before {
+  border-left-width: 0;
+  border-right-width: 6px;
+  border-right-color: black;
+}
+
+.theatre #main_col.expandRight #right_close::before {
+  border-left-width: 6px;
+  border-left-color: black;
+  border-right-width: 0;
+}` : ``}
+
+// change chat container
+
+.theatre #right_col {
+  background: none !important;
+  width: ${settings.chatWidth - 10}px;
+}
+
+.theatre #right_col:not(:hover) .chat-container {
+  background: ${convHex("17141f"+(Math.round(settings.backgroundOpacity * 2.55).toString(16).padStart(2, '0')))} !important;
+  color: #ece8f3 !important;
+  text-shadow: 0 0 2px ${convHex("000D")}, -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
+}
+
+.theatre #right_col:not(:hover) .chat-header {
+  background-color: ${convHex("17141f66")} !important;
+}
+
+${settings.hideHeader ? `
+.theatre #right_col:not(:hover) .chat-header {
+  display: none;
+}` : ``}
+
+.theatre #right_col:not(:hover) .chat-room {
+  top: ${settings.hideHeader ? `0` : `50px`} !important;
+}
+
+.theatre #right_col:hover .chat-room {
+  top: 50px !important;
+}
+
+.theatre #right_col:not(:hover) .chat-interface {
+  opacity: 0.6;
+}
+
+// badge tweaks
+
+.theatre #right_col:not(:hover) .chat-messages .badges {
+  opacity: ${settings.badgeOpacity / 100};
+  ${settings.badgeOpacity === 0 ? `display: none;` : ``}
+}
 
 ${settings.hideBadgeTurbo ? `
 .theatre .badge[alt="Turbo"], .theatre .badge[original-title="Turbo"] {
@@ -295,7 +345,7 @@ ${settings.hideBadgeSubscriber ? `
 .chatReplay #chylex-ttc-settings-btn {
   margin-top: -40px;
   margin-left: ${settings.chatWidth - 52}px;
-}`.replace(/^\/\/(.*?)$/gm, "");
+}`);
   
   document.head.appendChild(style);
 }
@@ -307,7 +357,7 @@ function generateSettingsCSS(){
   
   let style = document.createElement("style");
   style.id = "chylex-ttc-style-settings";
-  style.innerHTML = `
+  style.innerHTML = stripComments(`
 
 // settings button
 
@@ -410,7 +460,7 @@ function generateSettingsCSS(){
   width: 46px;
   padding-left: 4px;
   text-align: right;
-}`.replace(/^\/\/(.*?)$/gm, "");
+}`);
   
   document.head.appendChild(style);
 }
@@ -488,12 +538,12 @@ function createSettingsModal(){
     <p>Chat Layout</p>
     ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 600, step: 25, wait: 500, text: "px" })}
     ${generateToggle("Chat on Left Side", "chatLeftSide")}
+    ${generateToggle("Hide Chat Header", "hideHeader")}
   </div>
 
   <div class="ttc-flex-column">
     <p>Colors &amp; Opacity</p>
     ${generateSlider("Background Opacity", "backgroundOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
-    ${generateSlider("Header Opacity", "headerOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
     ${generateSlider("Badge Opacity", "badgeOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
   </div>
 
@@ -546,5 +596,6 @@ document.body.addEventListener("click", function(){
   tryRemoveElement(document.getElementById("chylex-ttc-settings-modal"));
 });
 
-generateCustomCSS();
+generateStaticCSS();
+generateDynamicCSS();
 generateSettingsCSS();
