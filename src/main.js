@@ -17,6 +17,7 @@ let settings = {
 
   backgroundOpacity: 30,
   badgeOpacity: 85,
+  grayTheme: false,
 
   hideBadgeTurbo: true,
   hideBadgePrime: true,
@@ -313,6 +314,39 @@ ${settings.hideHeader ? `
   opacity: 0.6;
 }
 
+// gray theme
+
+${settings.grayTheme ? `
+.theatre #right_col:not(:hover) .chat-container {
+  background: ${convHex("0d0d0d"+(Math.round(settings.backgroundOpacity * 2.55).toString(16).padStart(2, '0')))} !important;
+}
+
+.theatre #right_col:hover .chat-container {
+  background: #0d0d0d !important;
+}
+
+.theatre #right_col:not(:hover) .chat-header {
+  background-color: ${convHex("09090966")} !important;
+}
+
+.theatre #right_col:hover .chat-header {
+  background: #090909 !important;
+}
+
+.theatre .ember-chat .chat-interface .textarea-contain textarea {
+  background-color: #2a2a2a !important;
+  border: 1px solid ${convHex("00000090")} !important;
+}
+
+.theatre .chat-container .button--icon-only figure svg {
+  fill: #dedede !important;
+}
+
+.theatre .chat-container .button:not(.button--icon-only) {
+  background-color: #2a2a2a !important;
+  border: 1px solid ${convHex("00000090")} !important;
+}` : ``}
+
 // badge tweaks
 
 .theatre #right_col:not(:hover) .chat-messages .badges {
@@ -545,6 +579,7 @@ function createSettingsModal(){
     <p>Colors &amp; Opacity</p>
     ${generateSlider("Background Opacity", "backgroundOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
     ${generateSlider("Badge Opacity", "badgeOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
+    ${generateToggle("Gray Theme", "grayTheme")}
   </div>
 
   <div class="ttc-flex-column">
