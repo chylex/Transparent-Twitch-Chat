@@ -63,21 +63,23 @@ function generateStaticCSS(){
     return;
   }
   
+  let wa = ":not(.ttcwa)"; // selector priority workaround
+  
   let style = document.createElement("style");
   style.id = "chylex-ttc-style-static";
   style.innerHTML = stripComments(`
 
-// simulate expandRight style
+// simulate expandRight style, FrankerFaceZ workaround
 
 .theatre .ct-bar--active.ct-bar--ember, .theatre #main_col {
   right: 0
 }
 
-.theatre #main_col, .theatre #flash {
-  margin-right: 0;
+body${wa} .app-main.theatre${wa} #main_col, .theatre #flash {
+  margin-right: 0 !important;
 }
 
-.theatre #main_col #player {
+body${wa} .app-main.theatre${wa} #main_col #player {
   right: 0 !important;
 }
 
@@ -185,6 +187,17 @@ function generateStaticCSS(){
 
 .theatre .from[style="color:#403271"] {
   color: #8072A1 !important;
+}
+
+// BTTV workarounds
+
+.theatre .ember-chat.roomMode${wa}, .theatre .chat-messages${wa} {
+  background: none !important;
+}
+
+.theatre .rightcol-content${wa} {
+  background: none !important;
+  z-index: 3 !important;
 }`);
   
   document.head.appendChild(style);
@@ -286,11 +299,15 @@ ${settings.chatLeftSide ? `
 ${settings.hideHeader ? `
 .theatre #right_col:not(:hover) .chat-header {
   display: none;
-}
+}` : ``}
 
 .theatre #right_col:not(:hover) .chat-room {
-  top: 0 !important;
-}` : ``}
+  top: ${settings.hideHeader ? `0` : `50px`} !important;
+}
+
+.theatre #right_col:hover .chat-room {
+  top: 50px !important;
+}
 
 .theatre #right_col:not(:hover) .chat-interface {
   opacity: 0.6;
