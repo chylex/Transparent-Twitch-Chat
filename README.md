@@ -15,7 +15,7 @@ Transparent Twitch Chat is a user script that improves your PogChamp experience 
 ### Known Issues
 
 - The settings button is displayed above some menus by accident
-- FrankerFaceZ addon shows badges even if you turn them off
+- If FrankerFaceZ is installed, hiding badges must be done separately (FFZ Settings -> Chat Appearance -> Hidden Badges)
 
 ---
 
