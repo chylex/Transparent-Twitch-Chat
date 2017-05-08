@@ -32,8 +32,10 @@ In order to change settings, move your cursor over the chat and click the gear i
 
 ![](https://repo.chylex.com/transparent-twitch-chat-settings.png?)
 
----
-
-# Report Feedback
+### Report Feedback
 
 [Open a new issue](https://github.com/chylex/Transparent-Twitch-Chat/issues) if you found a bug or have a suggestion for improvements and new features. When reporting a bug, please include the exact name and version of your browser, and a list of all addons and userscripts you have installed.
+
+### Support Development
+
+Please, consider supporting the development by donating via [PayPal](https://paypal.me/chylex) or [Patreon](https://www.patreon.com/chylex).
