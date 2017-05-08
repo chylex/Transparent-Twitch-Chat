@@ -314,6 +314,12 @@ ${settings.hideHeader ? `
   opacity: 0.6;
 }
 
+// conversation menu
+
+.theatre .conversations-list-container:not(.list-displayed):not(:hover) {
+  opacity: ${settings.backgroundOpacity / 100};
+}
+
 // gray theme
 
 ${settings.grayTheme ? `
