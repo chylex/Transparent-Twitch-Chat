@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.0.3
+// @version      1.0.4
 // @namespace    https://chylex.com
 // @include      https://www.twitch.tv/*
 // @run-at       document-end
@@ -17,6 +17,7 @@ let settings = {
 
   backgroundOpacity: 30,
   badgeOpacity: 85,
+  grayTheme: false,
 
   hideBadgeTurbo: true,
   hideBadgePrime: true,
@@ -79,7 +80,7 @@ body${wa} .app-main.theatre${wa} #main_col, .theatre #flash {
   margin-right: 0 !important;
 }
 
-body${wa} .app-main.theatre${wa} #main_col #player {
+body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
   right: 0 !important;
 }
 
@@ -100,6 +101,10 @@ body${wa} .app-main.theatre${wa} #main_col #player {
 }
 
 .theatre .cn-tab-container {
+  top: 0 !important;
+}
+
+.theatre #right_col${wa} .chatReplay .chat-room {
   top: 0 !important;
 }
 
@@ -191,7 +196,7 @@ body${wa} .app-main.theatre${wa} #main_col #player {
 
 // BTTV workarounds
 
-.theatre .ember-chat.roomMode${wa}, .theatre .chat-messages${wa} {
+.theatre .ember-chat.roomMode${wa}, .theatre .chat-messages${wa}, .theatre .ember-chat${wa} {
   background: none !important;
 }
 
@@ -313,6 +318,52 @@ ${settings.hideHeader ? `
   opacity: 0.6;
 }
 
+// conversation menu
+
+.theatre .conversations-list-container:not(.list-displayed):not(:hover) {
+  opacity: ${settings.backgroundOpacity / 100};
+}
+
+// gray theme
+
+${settings.grayTheme ? `
+.theatre #right_col:not(:hover) .chat-container {
+  background: ${convHex("141414"+(Math.round(settings.backgroundOpacity * 2.55).toString(16).padStart(2, '0')))} !important;
+}
+
+.theatre #right_col:hover .chat-container {
+  background: #141414 !important;
+}
+
+.theatre #right_col:not(:hover) .chat-header {
+  background-color: ${convHex("09090966")} !important;
+}
+
+.theatre #right_col:hover .chat-header {
+  background: #090909 !important;
+}
+
+.theatre .ember-chat .chat-interface .textarea-contain textarea {
+  background-color: ${convHex("2a2a2a90")} !important;
+  border: 1px solid ${convHex("00000090")} !important;
+  box-shadow: none !important;
+}
+
+.theatre .chat-container .button--icon-only figure svg {
+  fill: #dedede !important;
+  opacity: 0.5;
+}
+
+.theatre #right_col:hover .chat-container .button--icon-only figure svg {
+  fill: #dedede !important;
+  opacity: 1;
+}
+
+.theatre .chat-container .button:not(.button--icon-only) {
+  background-color: ${convHex("2a2a2a90")} !important;
+  border: 1px solid ${convHex("00000090")} !important;
+}` : ``}
+
 // badge tweaks
 
 .theatre #right_col:not(:hover) .chat-messages .badges {
@@ -321,17 +372,17 @@ ${settings.hideHeader ? `
 }
 
 ${settings.hideBadgeTurbo ? `
-.theatre .badge[alt="Turbo"], .theatre .badge[original-title="Turbo"] {
+.theatre .badge[alt="Turbo"], .theatre .badge[original-title="Turbo"], .theatre .badge.turbo {
  display: none;
 }` : ``}
 
 ${settings.hideBadgePrime ? `
-.theatre .badge[alt$="Prime"], .theatre .badge[original-title$="Prime"] {
+.theatre .badge[alt$="Prime"], .theatre .badge[original-title$="Prime"], .theatre .badge.premium {
  display: none;
 }` : ``}
 
 ${settings.hideBadgeSubscriber ? `
-.theatre .badge[alt~="Subscriber"], .theatre .badge[original-title~="Subscriber"] {
+.theatre .badge[alt~="Subscriber"], .theatre .badge[original-title~="Subscriber"], .theatre .badge.subscriber {
  display: none;
 }` : ``}
 
@@ -404,7 +455,7 @@ function generateSettingsCSS(){
   margin-left: -260px;
   margin-top: -150px;
   z-index: 1000;
-  background-color: ${convHex("0009")};
+  background-color: ${convHex("000b")};
 }
 
 #chylex-ttc-settings-modal h2 {
@@ -545,6 +596,7 @@ function createSettingsModal(){
     <p>Colors &amp; Opacity</p>
     ${generateSlider("Background Opacity", "backgroundOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
     ${generateSlider("Badge Opacity", "badgeOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
+    ${generateToggle("Gray Theme", "grayTheme")}
   </div>
 
   <div class="ttc-flex-column">
