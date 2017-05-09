@@ -30,6 +30,9 @@ if current_version is None:
 else:
     new_version = input("Current version is {}. New version: ".format(current_version))
 
+if not new_version:
+    new_version = current_version
+
 # Build
 
 with open(OUTPUT_FILE, 'w') as out:
