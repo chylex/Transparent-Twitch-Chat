@@ -80,7 +80,7 @@ body${wa} .app-main.theatre${wa} #main_col, .theatre #flash {
   margin-right: 0 !important;
 }
 
-body${wa} .app-main.theatre${wa} #main_col #player {
+body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
   right: 0 !important;
 }
 
@@ -101,6 +101,10 @@ body${wa} .app-main.theatre${wa} #main_col #player {
 }
 
 .theatre .cn-tab-container {
+  top: 0 !important;
+}
+
+.theatre #right_col${wa} .chatReplay .chat-room {
   top: 0 !important;
 }
 
@@ -192,7 +196,7 @@ body${wa} .app-main.theatre${wa} #main_col #player {
 
 // BTTV workarounds
 
-.theatre .ember-chat.roomMode${wa}, .theatre .chat-messages${wa} {
+.theatre .ember-chat.roomMode${wa}, .theatre .chat-messages${wa}, .theatre .ember-chat${wa} {
   background: none !important;
 }
 
@@ -368,17 +372,17 @@ ${settings.grayTheme ? `
 }
 
 ${settings.hideBadgeTurbo ? `
-.theatre .badge[alt="Turbo"], .theatre .badge[original-title="Turbo"] {
+.theatre .badge[alt="Turbo"], .theatre .badge[original-title="Turbo"], .theatre .badge.turbo {
  display: none;
 }` : ``}
 
 ${settings.hideBadgePrime ? `
-.theatre .badge[alt$="Prime"], .theatre .badge[original-title$="Prime"] {
+.theatre .badge[alt$="Prime"], .theatre .badge[original-title$="Prime"], .theatre .badge.premium {
  display: none;
 }` : ``}
 
 ${settings.hideBadgeSubscriber ? `
-.theatre .badge[alt~="Subscriber"], .theatre .badge[original-title~="Subscriber"] {
+.theatre .badge[alt~="Subscriber"], .theatre .badge[original-title~="Subscriber"], .theatre .badge.subscriber {
  display: none;
 }` : ``}
 
