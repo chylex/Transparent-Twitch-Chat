@@ -243,6 +243,7 @@ function generateDynamicCSS(){
 
 .theatre #main_col:not(.expandRight) .player-streamstatus {
   margin-right: ${settings.chatWidth + 20}px !important;
+  padding-right: 1.5em !important;
 }
 
 .theatre #main_col.expandRight .player-streamstatus {
