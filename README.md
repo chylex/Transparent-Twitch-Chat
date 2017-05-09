@@ -8,7 +8,8 @@ Transparent Twitch Chat is a user script that improves your PogChamp experience 
 
 - Chat size, location, and opacity are customizable
 - Fixed chat scrollbar showing up with every new message
-- Individual badges can be turned off for clarity
+- Individual badges can be turned off for less clutter
+- Toggle between default purple theme and gray theme
 - Chat header is hidden by default
 - Username colors are brighter
 
@@ -30,6 +31,10 @@ The script is only active in **Theater mode**. If you want to watch in fullscree
 In order to change settings, move your cursor over the chat and click the gear icon in the bottom right corner. You can then close the dialog by clicking on the icon again (or anywhere outside the dialog area).
 
 ![](https://repo.chylex.com/transparent-twitch-chat-settings.png?)
+
+### Release Notes
+
+Visit the [Release notes](https://github.com/chylex/Transparent-Twitch-Chat/wiki/Release-Notes) page to see a list of changes across all updates.
 
 ### Report Feedback
 
