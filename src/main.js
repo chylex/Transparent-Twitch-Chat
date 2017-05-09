@@ -108,6 +108,10 @@ body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
   top: 0 !important;
 }
 
+.theatre .chat-messages {
+  top: 0 !important;
+}
+
 // change chat messages
 
 .theatre #right_col:not(:hover) .chat-messages .timestamp {
