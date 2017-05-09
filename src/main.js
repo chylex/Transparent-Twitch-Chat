@@ -324,11 +324,11 @@ ${settings.hideHeader ? `
 
 ${settings.grayTheme ? `
 .theatre #right_col:not(:hover) .chat-container {
-  background: ${convHex("0d0d0d"+(Math.round(settings.backgroundOpacity * 2.55).toString(16).padStart(2, '0')))} !important;
+  background: ${convHex("141414"+(Math.round(settings.backgroundOpacity * 2.55).toString(16).padStart(2, '0')))} !important;
 }
 
 .theatre #right_col:hover .chat-container {
-  background: #0d0d0d !important;
+  background: #141414 !important;
 }
 
 .theatre #right_col:not(:hover) .chat-header {
@@ -342,10 +342,17 @@ ${settings.grayTheme ? `
 .theatre .ember-chat .chat-interface .textarea-contain textarea {
   background-color: ${convHex("2a2a2a90")} !important;
   border: 1px solid ${convHex("00000090")} !important;
+  box-shadow: none !important;
 }
 
 .theatre .chat-container .button--icon-only figure svg {
   fill: #dedede !important;
+  opacity: 0.5;
+}
+
+.theatre #right_col:hover .chat-container .button--icon-only figure svg {
+  fill: #dedede !important;
+  opacity: 1;
 }
 
 .theatre .chat-container .button:not(.button--icon-only) {
@@ -444,7 +451,7 @@ function generateSettingsCSS(){
   margin-left: -260px;
   margin-top: -150px;
   z-index: 1000;
-  background-color: ${convHex("000a")};
+  background-color: ${convHex("000b")};
 }
 
 #chylex-ttc-settings-modal h2 {
