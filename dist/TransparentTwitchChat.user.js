@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.0.4
+// @version      1.0.5
 // @namespace    https://chylex.com
 // @include      https://www.twitch.tv/*
 // @run-at       document-end
@@ -11,6 +11,8 @@
 // ==/UserScript==
 
 let settings = {
+  globalSwitch: true,
+  
   chatWidth: 350,
   chatLeftSide: false,
   hideHeader: true,
@@ -37,6 +39,7 @@ function tryRemoveElement(ele){
 }
 
 function onSettingsUpdated(){
+  generateStaticCSS();
   generateDynamicCSS();
   
   if (typeof GM_setValue !== "undefined"){
@@ -60,6 +63,11 @@ function stripComments(str){
 }
 
 function generateStaticCSS(){
+  if (!settings.globalSwitch){
+    tryRemoveElement(document.getElementById("chylex-ttc-style-static"));
+    return;
+  }
+  
   if (document.getElementById("chylex-ttc-style-static")){
     return;
   }
@@ -105,6 +113,10 @@ body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
 }
 
 .theatre #right_col${wa} .chatReplay .chat-room {
+  top: 0 !important;
+}
+
+.theatre .chat-messages {
   top: 0 !important;
 }
 
@@ -211,6 +223,10 @@ body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
 function generateDynamicCSS(){
   tryRemoveElement(document.getElementById("chylex-ttc-style-dynamic"));
   
+  if (!settings.globalSwitch){
+    return;
+  }
+  
   let style = document.createElement("style");
   style.id = "chylex-ttc-style-dynamic";
   style.innerHTML = stripComments(`
@@ -227,6 +243,7 @@ function generateDynamicCSS(){
 
 .theatre #main_col:not(.expandRight) .player-streamstatus {
   margin-right: ${settings.chatWidth + 20}px !important;
+  padding-right: 1.5em !important;
 }
 
 .theatre #main_col.expandRight .player-streamstatus {
@@ -386,7 +403,7 @@ ${settings.hideBadgeSubscriber ? `
  display: none;
 }` : ``}
 
-// dynamic styles for settings
+// dynamic styles for settings, replaces default style
 
 #chylex-ttc-settings-btn {
   margin-top: -152px;
@@ -420,6 +437,13 @@ function generateSettingsCSS(){
   z-index: 2000;
   cursor: pointer;
   fill: ${convHex("fffa")};
+  margin-top: -152px;
+  margin-left: 292px;
+}
+
+.chatReplay #chylex-ttc-settings-btn {
+  margin-top: -40px;
+  margin-left: 298px;
 }
 
 #chylex-ttc-settings-btn:hover .player-tip {
@@ -456,6 +480,11 @@ function generateSettingsCSS(){
   margin-top: -150px;
   z-index: 1000;
   background-color: ${convHex("000b")};
+}
+
+#chylex-ttc-settings-modal #ttc-opt-global {
+  margin-left: -69px;
+  margin-right: 14px;
 }
 
 #chylex-ttc-settings-modal h2 {
@@ -545,7 +574,7 @@ function createSettingsModal(){
     <span class="js-menu-header">${title}</span>
   </div>
   <div class="player-menu__item pl-flex pl-flex--nowrap">
-    <a id="ttc-opt-${option}" class="player-switch" data-value="${settings[option] ? `on` : `off`}">
+    <a id="ttc-opt-${option}" class="player-switch" data-value="${settings[option] ? "on" : "off"}">
       <div class="switch-label">ON</div>
       <div class="switch-toggle"></div>
       <div class="switch-label">OFF</div>
@@ -582,7 +611,14 @@ function createSettingsModal(){
   let modal = document.createElement("div");
   modal.id = "chylex-ttc-settings-modal";
   modal.innerHTML = `
-<h2>Transparent Twitch Chat</h2>
+<h2>
+  <a id="ttc-opt-global" class="player-switch" data-value="${settings.globalSwitch ? "on" : "off"}">
+    <div class="switch-label">ON</div>
+    <div class="switch-toggle"></div>
+    <div class="switch-label">OFF</div>
+  </a>
+  <span>Transparent Twitch Chat</span>
+</h2>
 
 <div class="ttc-flex-container">
   <div class="ttc-flex-column">
@@ -609,6 +645,14 @@ function createSettingsModal(){
 `;
   
   document.body.appendChild(modal);
+  
+  document.getElementById("ttc-opt-global").addEventListener("click", function(e){
+    let me = e.currentTarget;
+    
+    settings.globalSwitch = !(me.getAttribute("data-value") === "on");
+    me.setAttribute("data-value", settings.globalSwitch ? "on" : "off");
+    onSettingsUpdated();
+  });
   
   modal.addEventListener("click", function(e){
     e.stopPropagation();
@@ -648,6 +692,9 @@ document.body.addEventListener("click", function(){
   tryRemoveElement(document.getElementById("chylex-ttc-settings-modal"));
 });
 
-generateStaticCSS();
-generateDynamicCSS();
 generateSettingsCSS();
+
+if (settings.globalSwitch){
+  generateStaticCSS();
+  generateDynamicCSS();
+}
