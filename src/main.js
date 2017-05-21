@@ -485,11 +485,11 @@ function generateSettingsCSS(){
   left: 50%;
   top: 50%;
   width: 520px;
-  height: 300px;
+  height: 310px;
   margin-left: -260px;
-  margin-top: -150px;
+  margin-top: -155px;
   z-index: 1000;
-  background-color: ${convHex("000b")};
+  background-color: ${convHex("111b")};
 }
 
 #chylex-ttc-settings-modal #ttc-opt-global {
