@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.0.5
+// @version      1.0.6
 // @namespace    https://chylex.com
 // @include      https://www.twitch.tv/*
 // @run-at       document-end
@@ -19,6 +19,7 @@ let settings = {
 
   backgroundOpacity: 30,
   badgeOpacity: 85,
+  smoothTextShadow: true,
   grayTheme: false,
 
   hideBadgeTurbo: true,
@@ -127,7 +128,11 @@ body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
 }
 
 .theatre #right_col:not(:hover) .chat-messages .from {
+  ${settings.smoothTextShadow ? `
   text-shadow: -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
+  ` : `
+  text-shadow: -1px 0 0 ${convHex("0008")}, 0 -1px 0 ${convHex("0008")}, 1px 0 0 ${convHex("0008")}, 0 1px 0 ${convHex("0008")};
+  `}
 }
 
 .theatre #right_col:not(:hover) .chat-messages .special-message {
@@ -311,7 +316,12 @@ ${settings.chatLeftSide ? `
 .theatre #right_col:not(:hover) .chat-container {
   background: ${convHex("17141f"+(Math.round(settings.backgroundOpacity * 2.55).toString(16).padStart(2, '0')))} !important;
   color: #ece8f3 !important;
+  
+  ${settings.smoothTextShadow ? `
   text-shadow: 0 0 2px ${convHex("000D")}, -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
+  ` : `
+  text-shadow: -1px 0 0 ${convHex("000A")}, 0 -1px 0 ${convHex("000A")}, 1px 0 0 ${convHex("000A")}, 0 1px 0 ${convHex("000A")};
+  `}
 }
 
 .theatre #right_col:not(:hover) .chat-header {
@@ -475,11 +485,11 @@ function generateSettingsCSS(){
   left: 50%;
   top: 50%;
   width: 520px;
-  height: 300px;
+  height: 310px;
   margin-left: -260px;
-  margin-top: -150px;
+  margin-top: -155px;
   z-index: 1000;
-  background-color: ${convHex("000b")};
+  background-color: ${convHex("111b")};
 }
 
 #chylex-ttc-settings-modal #ttc-opt-global {
@@ -632,6 +642,7 @@ function createSettingsModal(){
     <p>Colors &amp; Opacity</p>
     ${generateSlider("Background Opacity", "backgroundOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
     ${generateSlider("Badge Opacity", "badgeOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
+    ${generateToggle("Smooth Text Shadow", "smoothTextShadow")}
     ${generateToggle("Gray Theme", "grayTheme")}
   </div>
 
