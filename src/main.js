@@ -19,7 +19,7 @@ let settings = {
 
   backgroundOpacity: 30,
   badgeOpacity: 85,
-  smoothTextShadow: true,
+  smoothTextShadow: false,
   grayTheme: false,
 
   hideBadgeTurbo: true,
