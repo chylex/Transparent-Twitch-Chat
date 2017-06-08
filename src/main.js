@@ -121,18 +121,10 @@ body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
   top: 0 !important;
 }
 
-// change chat messages
+// chat messages
 
 .theatre #right_col:not(:hover) .chat-messages .timestamp {
   color: #b7b5ba !important;
-}
-
-.theatre #right_col:not(:hover) .chat-messages .from {
-  ${settings.smoothTextShadow ? `
-  text-shadow: -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
-  ` : `
-  text-shadow: -1px 0 0 ${convHex("0008")}, 0 -1px 0 ${convHex("0008")}, 1px 0 0 ${convHex("0008")}, 0 1px 0 ${convHex("0008")};
-  `}
 }
 
 .theatre #right_col:not(:hover) .chat-messages .special-message {
@@ -316,12 +308,6 @@ ${settings.chatLeftSide ? `
 .theatre #right_col:not(:hover) .chat-container {
   background: ${convHex("17141f"+(Math.round(settings.backgroundOpacity * 2.55).toString(16).padStart(2, '0')))} !important;
   color: #ece8f3 !important;
-  
-  ${settings.smoothTextShadow ? `
-  text-shadow: 0 0 2px ${convHex("000D")}, -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
-  ` : `
-  text-shadow: -1px 0 0 ${convHex("000A")}, 0 -1px 0 ${convHex("000A")}, 1px 0 0 ${convHex("000A")}, 0 1px 0 ${convHex("000A")};
-  `}
 }
 
 .theatre #right_col:not(:hover) .chat-header {
@@ -343,6 +329,24 @@ ${settings.hideHeader ? `
 
 .theatre #right_col:not(:hover) .chat-interface {
   opacity: 0.6;
+}
+
+// chat messages
+
+.theatre #right_col:not(:hover) .chat-container {
+  ${settings.smoothTextShadow ? `
+  text-shadow: 0 0 2px ${convHex("000D")}, -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
+  ` : `
+  text-shadow: -1px 0 0 ${convHex("000A")}, 0 -1px 0 ${convHex("000A")}, 1px 0 0 ${convHex("000A")}, 0 1px 0 ${convHex("000A")};
+  `}
+}
+
+.theatre #right_col:not(:hover) .chat-messages .from {
+  ${settings.smoothTextShadow ? `
+  text-shadow: -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
+  ` : `
+  text-shadow: -1px 0 0 ${convHex("0008")}, 0 -1px 0 ${convHex("0008")}, 1px 0 0 ${convHex("0008")}, 0 1px 0 ${convHex("0008")};
+  `}
 }
 
 // conversation menu
