@@ -14,17 +14,18 @@ let settings = {
   globalSwitch: true,
   
   chatWidth: 350,
-  chatLeftSide: false,
   hideHeader: true,
   grayTheme: false,
   
-  backgroundOpacity: 30,
+  transparentChat: true,
   smoothTextShadow: false,
+  chatLeftSide: false,
+  backgroundOpacity: 30,
   
-  badgeOpacity: 85,
   hideBadgeTurbo: true,
   hideBadgePrime: true,
-  hideBadgeSubscriber: true
+  hideBadgeSubscriber: true,
+  badgeOpacity: 85
 };
 
 if (typeof GM_getValue !== "undefined"){
@@ -79,20 +80,6 @@ function generateStaticCSS(){
   style.id = "chylex-ttc-style-static";
   style.innerHTML = stripComments(`
 
-// simulate expandRight style, FrankerFaceZ workaround
-
-.theatre .ct-bar--active.ct-bar--ember, .theatre #main_col {
-  right: 0
-}
-
-body${wa} .app-main.theatre${wa} #main_col, .theatre #flash {
-  margin-right: 0 !important;
-}
-
-body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
-  right: 0 !important;
-}
-
 // fix scrollbars
 
 .theatre #main_col .tse-scrollbar {
@@ -119,50 +106,6 @@ body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
 
 .theatre .chat-messages {
   top: 0 !important;
-}
-
-// chat messages
-
-.theatre #right_col:not(:hover) .chat-messages .timestamp {
-  color: #b7b5ba !important;
-}
-
-.theatre #right_col:not(:hover) .chat-messages .special-message {
-  background: ${convHex("201c2b50")} !important;
-  color: #b7b5ba !important;
-  border-left-color: ${convHex("6441a450")} !important;
-}
-
-.theatre #right_col:not(:hover) .chat-messages .system-msg {
-  color: #b7b5ba !important;
-}
-
-.theatre #right_col:not(:hover) .chat-messages .chat-chip {
-  background: ${convHex("201c2b50")} !important;
-  box-shadow: none !important;
-}
-
-.theatre #right_col:not(:hover) .chat-messages .card__info {
-  color: #b7b5ba !important;
-}
-
-.theatre #right_col:not(:hover) .chat-messages a {
-  color: #cdb9f5 !important;
-}
-
-.theatre #right_col:not(:hover) .chat-messages .admin .message {
-  color: #bd9ff5 !important;
-}
-
-// fix unwanted styles
-
-.theatre #right_col:not(:hover) .chat-menu {
-  text-shadow: none;
-  color: #898395;
-}
-
-.theatre #right_col:not(:hover) .mentioning {
-  text-shadow: none;
 }
 
 // username color tweaks (possibly figure out a better way later)
@@ -223,6 +166,7 @@ function generateDynamicCSS(){
     return;
   }
   
+  let wa = ":not(.ttcwa)"; // selector priority workaround
   let style = document.getElementById("chylex-ttc-style-dynamic");
   
   if (!style){
@@ -232,7 +176,23 @@ function generateDynamicCSS(){
   
   style.innerHTML = stripComments(`
 
-// fix player controls
+${settings.transparentChat ? `
+
+// simulate expandRight style, FrankerFaceZ workaround
+
+.theatre .ct-bar--active.ct-bar--ember, .theatre #main_col {
+  right: 0;
+}
+
+body${wa} .app-main.theatre${wa} #main_col, .theatre #flash {
+  margin-right: 0 !important;
+}
+
+body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
+  right: 0 !important;
+}
+
+// fix player controls and status
 
 .theatre #main_col:not(.expandRight) .player-hover {
   padding-right: ${settings.chatWidth - 10}px;
@@ -251,13 +211,106 @@ function generateDynamicCSS(){
   margin-right: 20px !important;
 }
 
+// chat messages
+
+.theatre #right_col:not(:hover) .chat-messages .timestamp {
+  color: #b7b5ba !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages .special-message {
+  background: ${convHex("201c2b50")} !important;
+  color: #b7b5ba !important;
+  border-left-color: ${convHex("6441a450")} !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages .system-msg {
+  color: #b7b5ba !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages .chat-chip {
+  background: ${convHex("201c2b50")} !important;
+  box-shadow: none !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages .card__info {
+  color: #b7b5ba !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages a {
+  color: #cdb9f5 !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages .admin .message {
+  color: #bd9ff5 !important;
+}
+
+// fix unwanted styles
+
+.theatre #right_col:not(:hover) .chat-menu {
+  text-shadow: none;
+  color: #898395;
+}
+
+.theatre #right_col:not(:hover) .mentioning {
+  text-shadow: none;
+}
+
+// chat container
+
+.theatre #right_col:not(:hover) .chat-container {
+  background: ${convHex("17141f"+(Math.round(settings.backgroundOpacity * 2.55).toString(16).padStart(2, '0')))} !important;
+  color: #ece8f3 !important;
+}
+
+.theatre #right_col:not(:hover) .chat-header {
+  background-color: ${convHex("17141f66")} !important;
+}
+
+.theatre #right_col:not(:hover) .chat-interface {
+  opacity: 0.6;
+}
+
+// chat messages
+
+.theatre #right_col:not(:hover) .chat-container {
+  ${settings.smoothTextShadow ? `
+  text-shadow: 0 0 2px ${convHex("000D")}, -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
+  ` : `
+  text-shadow: -1px 0 0 ${convHex("000A")}, 0 -1px 0 ${convHex("000A")}, 1px 0 0 ${convHex("000A")}, 0 1px 0 ${convHex("000A")};
+  `}
+}
+
+.theatre #right_col:not(:hover) .chat-messages .from {
+  ${settings.smoothTextShadow ? `
+  text-shadow: -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
+  ` : `
+  text-shadow: -1px 0 0 ${convHex("0008")}, 0 -1px 0 ${convHex("0008")}, 1px 0 0 ${convHex("0008")}, 0 1px 0 ${convHex("0008")};
+  `}
+}
+
+// conversation menu
+
 .theatre #main_col:not(.expandRight) .conversations-content {
   right: ${settings.chatWidth}px;
 }
 
+.theatre .conversations-list-container:not(.list-displayed):not(:hover) {
+  opacity: ${settings.backgroundOpacity / 100};
+}` : `
+
+// fix player controls
+
+.theatre .ct-bar--active.ct-bar--ember, .theatre #main_col {
+  margin-right: ${settings.chatWidth - 10}px;
+}
+
+body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
+  right: ${settings.chatWidth - 10}px !important;
+}`}
+
 // chat on left side
 
-${settings.chatLeftSide ? `
+${settings.chatLeftSide && settings.transparentChat ? `
 .theatre #right_col, .theatre .chat-messages .tse-scrollbar {
   left: 0;
   right: auto;
@@ -302,21 +355,18 @@ ${settings.chatLeftSide ? `
   border-right-width: 0;
 }` : ``}
 
-// change chat container
+// chat container
 
 .theatre #right_col {
   background: none !important;
   width: ${settings.chatWidth - 10}px;
 }
 
-.theatre #right_col:not(:hover) .chat-container {
-  background: ${convHex("17141f"+(Math.round(settings.backgroundOpacity * 2.55).toString(16).padStart(2, '0')))} !important;
-  color: #ece8f3 !important;
+.theatre #right_col:hover .chat-room {
+  top: 50px !important;
 }
 
-.theatre #right_col:not(:hover) .chat-header {
-  background-color: ${convHex("17141f66")} !important;
-}
+// chat container
 
 ${settings.hideHeader ? `
 .theatre #right_col:not(:hover) .chat-header {
@@ -327,43 +377,11 @@ ${settings.hideHeader ? `
   top: ${settings.hideHeader ? `0` : `50px`} !important;
 }
 
-.theatre #right_col:hover .chat-room {
-  top: 50px !important;
-}
-
-.theatre #right_col:not(:hover) .chat-interface {
-  opacity: 0.6;
-}
-
-// chat messages
-
-.theatre #right_col:not(:hover) .chat-container {
-  ${settings.smoothTextShadow ? `
-  text-shadow: 0 0 2px ${convHex("000D")}, -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
-  ` : `
-  text-shadow: -1px 0 0 ${convHex("000A")}, 0 -1px 0 ${convHex("000A")}, 1px 0 0 ${convHex("000A")}, 0 1px 0 ${convHex("000A")};
-  `}
-}
-
-.theatre #right_col:not(:hover) .chat-messages .from {
-  ${settings.smoothTextShadow ? `
-  text-shadow: -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
-  ` : `
-  text-shadow: -1px 0 0 ${convHex("0008")}, 0 -1px 0 ${convHex("0008")}, 1px 0 0 ${convHex("0008")}, 0 1px 0 ${convHex("0008")};
-  `}
-}
-
-// conversation menu
-
-.theatre .conversations-list-container:not(.list-displayed):not(:hover) {
-  opacity: ${settings.backgroundOpacity / 100};
-}
-
 // gray theme
 
 ${settings.grayTheme ? `
 .theatre #right_col:not(:hover) .chat-container {
-  background: ${convHex("141414"+(Math.round(settings.backgroundOpacity * 2.55).toString(16).padStart(2, '0')))} !important;
+  background: ${convHex("141414"+(Math.round(settings.transparentChat ? (settings.backgroundOpacity * 2.55) : 255).toString(16).padStart(2, '0')))} !important;
 }
 
 .theatre #right_col:hover .chat-container {
@@ -379,8 +397,8 @@ ${settings.grayTheme ? `
 }
 
 .theatre .ember-chat .chat-interface .textarea-contain textarea {
-  background-color: ${convHex("2a2a2a90")} !important;
-  border: 1px solid ${convHex("00000090")} !important;
+  background-color: ${convHex(settings.transparentChat ? "2a2a2a90" : "2a2a2aff")} !important;
+  border: 1px solid ${convHex(settings.transparentChat ? "00000090" : "000000ff")} !important;
   box-shadow: none !important;
 }
 
@@ -395,8 +413,8 @@ ${settings.grayTheme ? `
 }
 
 .theatre .chat-container .button:not(.button--icon-only) {
-  background-color: ${convHex("2a2a2a90")} !important;
-  border: 1px solid ${convHex("00000090")} !important;
+  background-color: ${convHex(settings.transparentChat ? "2a2a2a90" : "2a2a2aff")} !important;
+  border: 1px solid ${convHex(settings.transparentChat ? "00000090" : "000000ff")} !important;
 }` : ``}
 
 // badge tweaks
@@ -664,14 +682,15 @@ function createSettingsModal(){
   <div class="ttc-flex-column">
     <p>General</p>
     ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 600, step: 25, wait: 500, text: "px" })}
-    ${generateToggle("Chat on Left Side", "chatLeftSide")}
     ${generateToggle("Hide Chat Header", "hideHeader")}
     ${generateToggle("Gray Theme", "grayTheme")}
   </div>
 
   <div class="ttc-flex-column">
     <p>Transparency</p>
+    ${generateToggle("Transparent Chat", "transparentChat")}
     ${generateToggle("Smooth Text Shadow", "smoothTextShadow")}
+    ${generateToggle("Chat on Left Side", "chatLeftSide")}
     ${generateSlider("Background Opacity", "backgroundOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
   </div>
 
