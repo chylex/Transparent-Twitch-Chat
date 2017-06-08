@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.0.6
+// @version      1.0.7
 // @namespace    https://chylex.com
 // @include      https://www.twitch.tv/*
 // @run-at       document-end
@@ -14,17 +14,18 @@ let settings = {
   globalSwitch: true,
   
   chatWidth: 350,
-  chatLeftSide: false,
   hideHeader: true,
-
-  backgroundOpacity: 30,
-  badgeOpacity: 85,
-  smoothTextShadow: true,
   grayTheme: false,
-
+  
+  transparentChat: true,
+  smoothTextShadow: false,
+  chatLeftSide: false,
+  backgroundOpacity: 30,
+  
   hideBadgeTurbo: true,
   hideBadgePrime: true,
-  hideBadgeSubscriber: true
+  hideBadgeSubscriber: true,
+  badgeOpacity: 85
 };
 
 if (typeof GM_getValue !== "undefined"){
@@ -79,20 +80,6 @@ function generateStaticCSS(){
   style.id = "chylex-ttc-style-static";
   style.innerHTML = stripComments(`
 
-// simulate expandRight style, FrankerFaceZ workaround
-
-.theatre .ct-bar--active.ct-bar--ember, .theatre #main_col {
-  right: 0
-}
-
-body${wa} .app-main.theatre${wa} #main_col, .theatre #flash {
-  margin-right: 0 !important;
-}
-
-body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
-  right: 0 !important;
-}
-
 // fix scrollbars
 
 .theatre #main_col .tse-scrollbar {
@@ -119,58 +106,6 @@ body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
 
 .theatre .chat-messages {
   top: 0 !important;
-}
-
-// change chat messages
-
-.theatre #right_col:not(:hover) .chat-messages .timestamp {
-  color: #b7b5ba !important;
-}
-
-.theatre #right_col:not(:hover) .chat-messages .from {
-  ${settings.smoothTextShadow ? `
-  text-shadow: -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
-  ` : `
-  text-shadow: -1px 0 0 ${convHex("0008")}, 0 -1px 0 ${convHex("0008")}, 1px 0 0 ${convHex("0008")}, 0 1px 0 ${convHex("0008")};
-  `}
-}
-
-.theatre #right_col:not(:hover) .chat-messages .special-message {
-  background: ${convHex("201c2b50")} !important;
-  color: #b7b5ba !important;
-  border-left-color: ${convHex("6441a450")} !important;
-}
-
-.theatre #right_col:not(:hover) .chat-messages .system-msg {
-  color: #b7b5ba !important;
-}
-
-.theatre #right_col:not(:hover) .chat-messages .chat-chip {
-  background: ${convHex("201c2b50")} !important;
-  box-shadow: none !important;
-}
-
-.theatre #right_col:not(:hover) .chat-messages .card__info {
-  color: #b7b5ba !important;
-}
-
-.theatre #right_col:not(:hover) .chat-messages a {
-  color: #cdb9f5 !important;
-}
-
-.theatre #right_col:not(:hover) .chat-messages .admin .message {
-  color: #bd9ff5 !important;
-}
-
-// fix unwanted styles
-
-.theatre #right_col:not(:hover) .chat-menu {
-  text-shadow: none;
-  color: #898395;
-}
-
-.theatre #right_col:not(:hover) .mentioning {
-  text-shadow: none;
 }
 
 // username color tweaks (possibly figure out a better way later)
@@ -226,17 +161,38 @@ body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
 }
 
 function generateDynamicCSS(){
-  tryRemoveElement(document.getElementById("chylex-ttc-style-dynamic"));
-  
   if (!settings.globalSwitch){
+    tryRemoveElement(document.getElementById("chylex-ttc-style-dynamic"));
     return;
   }
   
-  let style = document.createElement("style");
-  style.id = "chylex-ttc-style-dynamic";
+  let wa = ":not(.ttcwa)"; // selector priority workaround
+  let style = document.getElementById("chylex-ttc-style-dynamic");
+  
+  if (!style){
+    style = document.createElement("style");
+    style.id = "chylex-ttc-style-dynamic";
+  }
+  
   style.innerHTML = stripComments(`
 
-// fix player controls
+${settings.transparentChat ? `
+
+// simulate expandRight style, FrankerFaceZ workaround
+
+.theatre .ct-bar--active.ct-bar--ember, .theatre #main_col {
+  right: 0;
+}
+
+body${wa} .app-main.theatre${wa} #main_col, .theatre #flash {
+  margin-right: 0 !important;
+}
+
+body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
+  right: 0 !important;
+}
+
+// fix player controls and status
 
 .theatre #main_col:not(.expandRight) .player-hover {
   padding-right: ${settings.chatWidth - 10}px;
@@ -255,13 +211,106 @@ function generateDynamicCSS(){
   margin-right: 20px !important;
 }
 
+// chat messages
+
+.theatre #right_col:not(:hover) .chat-messages .timestamp {
+  color: #b7b5ba !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages .special-message {
+  background: ${convHex("201c2b50")} !important;
+  color: #b7b5ba !important;
+  border-left-color: ${convHex("6441a450")} !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages .system-msg {
+  color: #b7b5ba !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages .chat-chip {
+  background: ${convHex("201c2b50")} !important;
+  box-shadow: none !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages .card__info {
+  color: #b7b5ba !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages a {
+  color: #cdb9f5 !important;
+}
+
+.theatre #right_col:not(:hover) .chat-messages .admin .message {
+  color: #bd9ff5 !important;
+}
+
+// fix unwanted styles
+
+.theatre #right_col:not(:hover) .chat-menu {
+  text-shadow: none;
+  color: #898395;
+}
+
+.theatre #right_col:not(:hover) .mentioning {
+  text-shadow: none;
+}
+
+// chat container
+
+.theatre #right_col:not(:hover) .chat-container {
+  background: ${convHex("17141f"+(Math.round(settings.backgroundOpacity * 2.55).toString(16).padStart(2, '0')))} !important;
+  color: #ece8f3 !important;
+}
+
+.theatre #right_col:not(:hover) .chat-header {
+  background-color: ${convHex("17141f66")} !important;
+}
+
+.theatre #right_col:not(:hover) .chat-interface {
+  opacity: 0.6;
+}
+
+// chat messages
+
+.theatre #right_col:not(:hover) .chat-container {
+  ${settings.smoothTextShadow ? `
+  text-shadow: 0 0 2px ${convHex("000D")}, -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
+  ` : `
+  text-shadow: -1px 0 0 ${convHex("000A")}, 0 -1px 0 ${convHex("000A")}, 1px 0 0 ${convHex("000A")}, 0 1px 0 ${convHex("000A")};
+  `}
+}
+
+.theatre #right_col:not(:hover) .chat-messages .from {
+  ${settings.smoothTextShadow ? `
+  text-shadow: -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
+  ` : `
+  text-shadow: -1px 0 0 ${convHex("0008")}, 0 -1px 0 ${convHex("0008")}, 1px 0 0 ${convHex("0008")}, 0 1px 0 ${convHex("0008")};
+  `}
+}
+
+// conversation menu
+
 .theatre #main_col:not(.expandRight) .conversations-content {
   right: ${settings.chatWidth}px;
 }
 
+.theatre .conversations-list-container:not(.list-displayed):not(:hover) {
+  opacity: ${settings.backgroundOpacity / 100};
+}` : `
+
+// fix player controls
+
+.theatre .ct-bar--active.ct-bar--ember, .theatre #main_col {
+  margin-right: ${settings.chatWidth - 10}px;
+}
+
+body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
+  right: ${settings.chatWidth - 10}px !important;
+}`}
+
 // chat on left side
 
-${settings.chatLeftSide ? `
+${settings.chatLeftSide && settings.transparentChat ? `
 .theatre #right_col, .theatre .chat-messages .tse-scrollbar {
   left: 0;
   right: auto;
@@ -306,27 +355,18 @@ ${settings.chatLeftSide ? `
   border-right-width: 0;
 }` : ``}
 
-// change chat container
+// chat container
 
 .theatre #right_col {
   background: none !important;
   width: ${settings.chatWidth - 10}px;
 }
 
-.theatre #right_col:not(:hover) .chat-container {
-  background: ${convHex("17141f"+(Math.round(settings.backgroundOpacity * 2.55).toString(16).padStart(2, '0')))} !important;
-  color: #ece8f3 !important;
-  
-  ${settings.smoothTextShadow ? `
-  text-shadow: 0 0 2px ${convHex("000D")}, -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
-  ` : `
-  text-shadow: -1px 0 0 ${convHex("000A")}, 0 -1px 0 ${convHex("000A")}, 1px 0 0 ${convHex("000A")}, 0 1px 0 ${convHex("000A")};
-  `}
+.theatre #right_col:hover .chat-room {
+  top: 50px !important;
 }
 
-.theatre #right_col:not(:hover) .chat-header {
-  background-color: ${convHex("17141f66")} !important;
-}
+// chat container
 
 ${settings.hideHeader ? `
 .theatre #right_col:not(:hover) .chat-header {
@@ -337,25 +377,11 @@ ${settings.hideHeader ? `
   top: ${settings.hideHeader ? `0` : `50px`} !important;
 }
 
-.theatre #right_col:hover .chat-room {
-  top: 50px !important;
-}
-
-.theatre #right_col:not(:hover) .chat-interface {
-  opacity: 0.6;
-}
-
-// conversation menu
-
-.theatre .conversations-list-container:not(.list-displayed):not(:hover) {
-  opacity: ${settings.backgroundOpacity / 100};
-}
-
 // gray theme
 
 ${settings.grayTheme ? `
 .theatre #right_col:not(:hover) .chat-container {
-  background: ${convHex("141414"+(Math.round(settings.backgroundOpacity * 2.55).toString(16).padStart(2, '0')))} !important;
+  background: ${convHex("141414"+(Math.round(settings.transparentChat ? (settings.backgroundOpacity * 2.55) : 255).toString(16).padStart(2, '0')))} !important;
 }
 
 .theatre #right_col:hover .chat-container {
@@ -371,8 +397,8 @@ ${settings.grayTheme ? `
 }
 
 .theatre .ember-chat .chat-interface .textarea-contain textarea {
-  background-color: ${convHex("2a2a2a90")} !important;
-  border: 1px solid ${convHex("00000090")} !important;
+  background-color: ${convHex(settings.transparentChat ? "2a2a2a90" : "2a2a2aff")} !important;
+  border: 1px solid ${convHex(settings.transparentChat ? "00000090" : "000000ff")} !important;
   box-shadow: none !important;
 }
 
@@ -387,8 +413,8 @@ ${settings.grayTheme ? `
 }
 
 .theatre .chat-container .button:not(.button--icon-only) {
-  background-color: ${convHex("2a2a2a90")} !important;
-  border: 1px solid ${convHex("00000090")} !important;
+  background-color: ${convHex(settings.transparentChat ? "2a2a2a90" : "2a2a2aff")} !important;
+  border: 1px solid ${convHex(settings.transparentChat ? "00000090" : "000000ff")} !important;
 }` : ``}
 
 // badge tweaks
@@ -484,17 +510,17 @@ function generateSettingsCSS(){
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 520px;
+  width: 560px;
   height: 310px;
-  margin-left: -260px;
+  margin-left: -280px;
   margin-top: -155px;
   z-index: 1000;
   background-color: ${convHex("111b")};
 }
 
 #chylex-ttc-settings-modal #ttc-opt-global {
-  margin-left: -69px;
-  margin-right: 14px;
+  position: absolute;
+  margin: 6px 0 0 -69px;
 }
 
 #chylex-ttc-settings-modal h2 {
@@ -521,11 +547,15 @@ function generateSettingsCSS(){
   color: ${convHex("fffd")};
   font-size: 14px;
   margin-top: 8px;
-  padding: 0 10px;
+  padding: 0 12px;
 }
 
 #chylex-ttc-settings-modal p:first-of-type {
-  margin-top: 0;
+  margin: 0 0 4px;
+}
+
+#chylex-ttc-settings-modal .player-menu__section {
+  padding: 0 12px;
 }
 
 #chylex-ttc-settings-modal .player-menu__header {
@@ -535,10 +565,36 @@ function generateSettingsCSS(){
 
 #chylex-ttc-settings-modal .player-menu__item {
   align-items: center;
+  margin-bottom: 10px;
 }
 
-#chylex-ttc-settings-modal .player-switch {
-  margin-bottom: 0;
+#chylex-ttc-settings-modal .switch {
+  font-size: 10px;
+  height: 17px;
+  line-height: 17px;
+}
+
+#chylex-ttc-settings-modal .switch span {
+  width: 27px;
+}
+
+#chylex-ttc-settings-modal .switch.active span {
+  left: 25px;
+}
+
+#chylex-ttc-settings-modal .switch::before, #chylex-ttc-settings-modal .switch::after {
+  width: 26px;
+  box-sizing: border-box;
+}
+
+#chylex-ttc-settings-modal .switch::before {
+  text-align: left;
+  padding-left: 5px;
+}
+
+#chylex-ttc-settings-modal .switch::after {
+  text-align: right;
+  padding-right: 3px;
 }
 
 #chylex-ttc-settings-modal input[type="range"] {
@@ -572,8 +628,8 @@ function createSettingsModal(){
       let toggle = document.getElementById("ttc-opt-"+option);
       
       toggle.addEventListener("click", function(){
-        settings[option] = !(toggle.getAttribute("data-value") === "on");
-        toggle.setAttribute("data-value", settings[option] ? "on" : "off");
+        settings[option] = !toggle.classList.contains("active");
+        toggle.setAttribute("class", (settings[option] ? "active" : "disabled")+" switch");
         onSettingsUpdated();
       });
     }, 1);
@@ -584,11 +640,7 @@ function createSettingsModal(){
     <span class="js-menu-header">${title}</span>
   </div>
   <div class="player-menu__item pl-flex pl-flex--nowrap">
-    <a id="ttc-opt-${option}" class="player-switch" data-value="${settings[option] ? "on" : "off"}">
-      <div class="switch-label">ON</div>
-      <div class="switch-toggle"></div>
-      <div class="switch-label">OFF</div>
-    </a>
+    <a id="ttc-opt-${option}" class="${settings[option] ? "active" : "disabled"} switch"><span></span></a>
   </div>
 </div>`;
   };
@@ -622,28 +674,24 @@ function createSettingsModal(){
   modal.id = "chylex-ttc-settings-modal";
   modal.innerHTML = `
 <h2>
-  <a id="ttc-opt-global" class="player-switch" data-value="${settings.globalSwitch ? "on" : "off"}">
-    <div class="switch-label">ON</div>
-    <div class="switch-toggle"></div>
-    <div class="switch-label">OFF</div>
-  </a>
+  <a id="ttc-opt-global" class="${settings.globalSwitch ? "active" : "disabled"} switch"><span></span></a>
   <span>Transparent Twitch Chat</span>
 </h2>
 
 <div class="ttc-flex-container">
   <div class="ttc-flex-column">
-    <p>Chat Layout</p>
+    <p>General</p>
     ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 600, step: 25, wait: 500, text: "px" })}
-    ${generateToggle("Chat on Left Side", "chatLeftSide")}
     ${generateToggle("Hide Chat Header", "hideHeader")}
+    ${generateToggle("Gray Theme", "grayTheme")}
   </div>
 
   <div class="ttc-flex-column">
-    <p>Colors &amp; Opacity</p>
-    ${generateSlider("Background Opacity", "backgroundOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
-    ${generateSlider("Badge Opacity", "badgeOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
+    <p>Transparency</p>
+    ${generateToggle("Transparent Chat", "transparentChat")}
     ${generateToggle("Smooth Text Shadow", "smoothTextShadow")}
-    ${generateToggle("Gray Theme", "grayTheme")}
+    ${generateToggle("Chat on Left Side", "chatLeftSide")}
+    ${generateSlider("Background Opacity", "backgroundOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
   </div>
 
   <div class="ttc-flex-column">
@@ -651,6 +699,7 @@ function createSettingsModal(){
     ${generateToggle("Hide Turbo Badge", "hideBadgeTurbo")}
     ${generateToggle("Hide Prime Badge", "hideBadgePrime")}
     ${generateToggle("Hide Subscriber Badge", "hideBadgeSubscriber")}
+    ${generateSlider("Badge Opacity", "badgeOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
   </div>
 </div>
 `;
@@ -658,10 +707,8 @@ function createSettingsModal(){
   document.body.appendChild(modal);
   
   document.getElementById("ttc-opt-global").addEventListener("click", function(e){
-    let me = e.currentTarget;
-    
-    settings.globalSwitch = !(me.getAttribute("data-value") === "on");
-    me.setAttribute("data-value", settings.globalSwitch ? "on" : "off");
+    settings.globalSwitch = !e.currentTarget.classList.contains("active");
+    e.currentTarget.setAttribute("class", (settings.globalSwitch ? "active" : "disabled")+" switch");
     onSettingsUpdated();
   });
   
