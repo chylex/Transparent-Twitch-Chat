@@ -16,12 +16,12 @@ let settings = {
   chatWidth: 350,
   chatLeftSide: false,
   hideHeader: true,
-
-  backgroundOpacity: 30,
-  badgeOpacity: 85,
-  smoothTextShadow: false,
   grayTheme: false,
-
+  
+  backgroundOpacity: 30,
+  smoothTextShadow: false,
+  
+  badgeOpacity: 85,
   hideBadgeTurbo: true,
   hideBadgePrime: true,
   hideBadgeSubscriber: true
@@ -218,14 +218,18 @@ body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
 }
 
 function generateDynamicCSS(){
-  tryRemoveElement(document.getElementById("chylex-ttc-style-dynamic"));
-  
   if (!settings.globalSwitch){
+    tryRemoveElement(document.getElementById("chylex-ttc-style-dynamic"));
     return;
   }
   
-  let style = document.createElement("style");
-  style.id = "chylex-ttc-style-dynamic";
+  let style = document.getElementById("chylex-ttc-style-dynamic");
+  
+  if (!style){
+    style = document.createElement("style");
+    style.id = "chylex-ttc-style-dynamic";
+  }
+  
   style.innerHTML = stripComments(`
 
 // fix player controls
@@ -658,18 +662,17 @@ function createSettingsModal(){
 
 <div class="ttc-flex-container">
   <div class="ttc-flex-column">
-    <p>Chat Layout</p>
+    <p>General</p>
     ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 600, step: 25, wait: 500, text: "px" })}
     ${generateToggle("Chat on Left Side", "chatLeftSide")}
     ${generateToggle("Hide Chat Header", "hideHeader")}
+    ${generateToggle("Gray Theme", "grayTheme")}
   </div>
 
   <div class="ttc-flex-column">
-    <p>Colors &amp; Opacity</p>
-    ${generateSlider("Background Opacity", "backgroundOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
-    ${generateSlider("Badge Opacity", "badgeOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
+    <p>Transparency</p>
     ${generateToggle("Smooth Text Shadow", "smoothTextShadow")}
-    ${generateToggle("Gray Theme", "grayTheme")}
+    ${generateSlider("Background Opacity", "backgroundOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
   </div>
 
   <div class="ttc-flex-column">
@@ -677,6 +680,7 @@ function createSettingsModal(){
     ${generateToggle("Hide Turbo Badge", "hideBadgeTurbo")}
     ${generateToggle("Hide Prime Badge", "hideBadgePrime")}
     ${generateToggle("Hide Subscriber Badge", "hideBadgeSubscriber")}
+    ${generateSlider("Badge Opacity", "badgeOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
   </div>
 </div>
 `;
