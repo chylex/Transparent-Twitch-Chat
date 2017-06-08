@@ -484,17 +484,17 @@ function generateSettingsCSS(){
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 520px;
+  width: 560px;
   height: 310px;
-  margin-left: -260px;
+  margin-left: -280px;
   margin-top: -155px;
   z-index: 1000;
   background-color: ${convHex("111b")};
 }
 
 #chylex-ttc-settings-modal #ttc-opt-global {
-  margin-left: -69px;
-  margin-right: 14px;
+  position: absolute;
+  margin: 6px 0 0 -69px;
 }
 
 #chylex-ttc-settings-modal h2 {
@@ -521,11 +521,15 @@ function generateSettingsCSS(){
   color: ${convHex("fffd")};
   font-size: 14px;
   margin-top: 8px;
-  padding: 0 10px;
+  padding: 0 12px;
 }
 
 #chylex-ttc-settings-modal p:first-of-type {
-  margin-top: 0;
+  margin: 0 0 4px;
+}
+
+#chylex-ttc-settings-modal .player-menu__section {
+  padding: 0 12px;
 }
 
 #chylex-ttc-settings-modal .player-menu__header {
@@ -535,10 +539,36 @@ function generateSettingsCSS(){
 
 #chylex-ttc-settings-modal .player-menu__item {
   align-items: center;
+  margin-bottom: 10px;
 }
 
-#chylex-ttc-settings-modal .player-switch {
-  margin-bottom: 0;
+#chylex-ttc-settings-modal .switch {
+  font-size: 10px;
+  height: 17px;
+  line-height: 17px;
+}
+
+#chylex-ttc-settings-modal .switch span {
+  width: 27px;
+}
+
+#chylex-ttc-settings-modal .switch.active span {
+  left: 25px;
+}
+
+#chylex-ttc-settings-modal .switch::before, #chylex-ttc-settings-modal .switch::after {
+  width: 26px;
+  box-sizing: border-box;
+}
+
+#chylex-ttc-settings-modal .switch::before {
+  text-align: left;
+  padding-left: 5px;
+}
+
+#chylex-ttc-settings-modal .switch::after {
+  text-align: right;
+  padding-right: 3px;
 }
 
 #chylex-ttc-settings-modal input[type="range"] {
@@ -572,8 +602,8 @@ function createSettingsModal(){
       let toggle = document.getElementById("ttc-opt-"+option);
       
       toggle.addEventListener("click", function(){
-        settings[option] = !(toggle.getAttribute("data-value") === "on");
-        toggle.setAttribute("data-value", settings[option] ? "on" : "off");
+        settings[option] = !toggle.classList.contains("active");
+        toggle.setAttribute("class", (settings[option] ? "active" : "disabled")+" switch");
         onSettingsUpdated();
       });
     }, 1);
@@ -584,11 +614,7 @@ function createSettingsModal(){
     <span class="js-menu-header">${title}</span>
   </div>
   <div class="player-menu__item pl-flex pl-flex--nowrap">
-    <a id="ttc-opt-${option}" class="player-switch" data-value="${settings[option] ? "on" : "off"}">
-      <div class="switch-label">ON</div>
-      <div class="switch-toggle"></div>
-      <div class="switch-label">OFF</div>
-    </a>
+    <a id="ttc-opt-${option}" class="${settings[option] ? "active" : "disabled"} switch"><span></span></a>
   </div>
 </div>`;
   };
@@ -622,11 +648,7 @@ function createSettingsModal(){
   modal.id = "chylex-ttc-settings-modal";
   modal.innerHTML = `
 <h2>
-  <a id="ttc-opt-global" class="player-switch" data-value="${settings.globalSwitch ? "on" : "off"}">
-    <div class="switch-label">ON</div>
-    <div class="switch-toggle"></div>
-    <div class="switch-label">OFF</div>
-  </a>
+  <a id="ttc-opt-global" class="${settings.globalSwitch ? "active" : "disabled"} switch"><span></span></a>
   <span>Transparent Twitch Chat</span>
 </h2>
 
@@ -658,10 +680,8 @@ function createSettingsModal(){
   document.body.appendChild(modal);
   
   document.getElementById("ttc-opt-global").addEventListener("click", function(e){
-    let me = e.currentTarget;
-    
-    settings.globalSwitch = !(me.getAttribute("data-value") === "on");
-    me.setAttribute("data-value", settings.globalSwitch ? "on" : "off");
+    settings.globalSwitch = !e.currentTarget.classList.contains("active");
+    e.currentTarget.setAttribute("class", (settings.globalSwitch ? "active" : "disabled")+" switch");
     onSettingsUpdated();
   });
   
