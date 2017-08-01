@@ -262,6 +262,10 @@ body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
   border-left: none;
 }
 
+.theatre #right_col .sticky-message--pinned-cheers {
+  border: none !important;
+}
+
 .theatre #right_col:not(:hover) .chat-container {
   background: ${convHex("17141f"+(Math.round(settings.backgroundOpacity * 2.55).toString(16).padStart(2, '0')))} !important;
   color: #ece8f3 !important;
