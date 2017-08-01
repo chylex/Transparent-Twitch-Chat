@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.0.7
+// @version      1.0.8
 // @namespace    https://chylex.com
 // @include      https://www.twitch.tv/*
 // @run-at       document-end
@@ -225,6 +225,7 @@ body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
 
 .theatre #right_col:not(:hover) .chat-messages .system-msg {
   color: #b7b5ba !important;
+  background: none !important;
 }
 
 .theatre #right_col:not(:hover) .chat-messages .chat-chip {
@@ -256,6 +257,14 @@ body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
 }
 
 // chat container
+
+.theatre #right_col .chat-container {
+  border-left: none;
+}
+
+.theatre #right_col .sticky-message--pinned-cheers {
+  border: none !important;
+}
 
 .theatre #right_col:not(:hover) .chat-container {
   background: ${convHex("17141f"+(Math.round(settings.backgroundOpacity * 2.55).toString(16).padStart(2, '0')))} !important;
@@ -365,8 +374,6 @@ ${settings.chatLeftSide && settings.transparentChat ? `
 .theatre #right_col:hover .chat-room {
   top: 50px !important;
 }
-
-// chat container
 
 ${settings.hideHeader ? `
 .theatre #right_col:not(:hover) .chat-header {
