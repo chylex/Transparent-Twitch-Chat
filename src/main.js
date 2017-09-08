@@ -376,11 +376,11 @@ ${settings.chatLeftSide && settings.transparentChat ? `
 }
 
 ${settings.hideHeader ? `
-.theatre #right_col:not(:hover) .chat-header {
+.theatre #right_col .chat-header {
   display: none;
 }` : ``}
 
-.theatre #right_col:not(:hover) .chat-room {
+.theatre #right_col .chat-room {
   top: ${settings.hideHeader ? `0` : `50px`} !important;
 }
 
