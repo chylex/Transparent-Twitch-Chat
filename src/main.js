@@ -383,10 +383,6 @@ ${settings.chatLeftSide && settings.transparentChat ? `
   width: ${settings.chatWidth - 10}px;
 }
 
-.theatre #right_col:hover .chat-room {
-  top: 50px !important;
-}
-
 ${settings.hideHeader ? `
 .theatre #right_col .chat-header {
   display: none;
