@@ -147,6 +147,13 @@ function generateStaticCSS(){
   color: #8072A1 !important;
 }
 
+// restyle vod chat input
+
+.theatre .vod-chat__input {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
 // BTTV workarounds
 
 .theatre .ember-chat.roomMode${wa}, .theatre .chat-messages${wa}, .theatre .ember-chat${wa} {
@@ -166,6 +173,10 @@ function generateDynamicCSS(){
     tryRemoveElement(document.getElementById("chylex-ttc-style-dynamic"));
     return;
   }
+  
+  let multiselect = (str, selectors) => selectors.map(selector => str.replace("$", selector)).join(",");
+  let $chatContainer = [ ".chat-container", ".vod-chat" ];
+  let $chatInterface = [ ".chat-interface", ".vod-chat__input" ];
   
   let wa = ":not(.ttcwa)"; // selector priority workaround
   let style = document.getElementById("chylex-ttc-style-dynamic");
@@ -259,7 +270,7 @@ body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
 
 // chat container
 
-.theatre #right_col .chat-container {
+${multiselect(".theatre #right_col $", $chatContainer)} {
   border-left: none;
 }
 
@@ -267,7 +278,7 @@ body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
   border: none !important;
 }
 
-.theatre #right_col:not(:hover) .chat-container {
+${multiselect(".theatre #right_col:not(:hover) $", $chatContainer)} {
   background: ${convHex("17141f"+(Math.round(settings.backgroundOpacity * 2.55).toString(16).padStart(2, '0')))} !important;
   color: #ece8f3 !important;
 }
@@ -276,13 +287,13 @@ body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
   background-color: ${convHex("17141f66")} !important;
 }
 
-.theatre #right_col:not(:hover) .chat-interface {
+${multiselect(".theatre #right_col:not(:hover) $", $chatInterface)} {
   opacity: 0.6;
 }
 
 // chat messages
 
-.theatre #right_col:not(:hover) .chat-container {
+${multiselect(".theatre #right_col:not(:hover) $", $chatContainer)} {
   ${settings.smoothTextShadow ? `
   text-shadow: 0 0 2px ${convHex("000D")}, -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
   ` : `
@@ -306,6 +317,12 @@ body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
 
 .theatre .conversations-list-container:not(.list-displayed):not(:hover) {
   opacity: ${settings.backgroundOpacity / 100};
+}
+
+// fix autoscroll popup
+
+.theatre #right_col:not(:hover) .vod-chat__sync-button:not(.vod-chat__sync-button--show) {
+  display: none;
 }` : `
 
 // fix player controls
@@ -395,39 +412,54 @@ ${settings.hideHeader ? `
 // gray theme
 
 ${settings.grayTheme ? `
-.theatre #right_col:not(:hover) .chat-container {
+${multiselect(".theatre #right_col:not(:hover) $", $chatContainer)} {
   background: ${convHex("141414"+(Math.round(settings.transparentChat ? (settings.backgroundOpacity * 2.55) : 255).toString(16).padStart(2, '0')))} !important;
 }
 
-.theatre #right_col:hover .chat-container {
+${multiselect(".theatre #right_col:hover $", $chatContainer)} {
   background: #141414 !important;
 }
 
 .theatre #right_col:not(:hover) .chat-header {
   background-color: ${convHex("09090966")} !important;
+  box-shadow: inset 0 -1px 0 0 ${convHex("3336")} !important;
 }
 
 .theatre #right_col:hover .chat-header {
   background: #090909 !important;
+  box-shadow: inset 0 -1px 0 0 #333 !important;
 }
 
-.theatre .ember-chat .chat-interface .textarea-contain textarea {
+.theatre #right_col:not(:hover) .vod-chat__header {
+  box-shadow: inset 0 -1px 0 0 ${convHex("4446")} !important;
+}
+
+.theatre #right_col:hover .vod-chat__header {
+  box-shadow: inset 0 -1px 0 0 #444 !important;
+}
+
+${multiselect(".theatre $ textarea", $chatInterface)} {
   background-color: ${convHex(settings.transparentChat ? "2a2a2a90" : "2a2a2aff")} !important;
   border: 1px solid ${convHex(settings.transparentChat ? "00000090" : "000000ff")} !important;
   box-shadow: none !important;
 }
 
-.theatre .chat-container .button--icon-only figure svg {
+${multiselect(".theatre #right_col:hover $ textarea", $chatInterface)} {
+  background-color: #2a2a2a !important;
+  border: 1px solid #000000 !important;
+}
+
+${multiselect(".theatre $ .button--icon-only figure svg", $chatContainer)} {
   fill: #dedede !important;
   opacity: 0.5;
 }
 
-.theatre #right_col:hover .chat-container .button--icon-only figure svg {
+${multiselect(".theatre #right_col:hover $ .button--icon-only figure svg", $chatContainer)} {
   fill: #dedede !important;
   opacity: 1;
 }
 
-.theatre .chat-container .button:not(.button--icon-only) {
+.theatre .chat-container .button:not(.button--icon-only), .theatre .vod-chat-input__submit {
   background-color: ${convHex(settings.transparentChat ? "2a2a2a90" : "2a2a2aff")} !important;
   border: 1px solid ${convHex(settings.transparentChat ? "00000090" : "000000ff")} !important;
 }` : ``}
@@ -495,6 +527,10 @@ function generateSettingsCSS(){
 .chatReplay #chylex-ttc-settings-btn {
   margin-top: -40px;
   margin-left: 298px;
+}
+
+.vod-chat #chylex-ttc-settings-btn {
+  margin-top: 6px;
 }
 
 #chylex-ttc-settings-btn:hover .player-tip {
@@ -734,7 +770,7 @@ function createSettingsModal(){
 }
 
 function insertSettingsButton(){
-  let container = document.getElementsByClassName("chat-container")[0];
+  let container = document.querySelector(".js-chat-container,.vod-chat");
   
   if (!container){
     return;
