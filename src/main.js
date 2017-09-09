@@ -435,11 +435,11 @@ ${multiselect(".theatre #right_col:hover $", $chatContainer)} {
 }
 
 .theatre #right_col:not(:hover) .vod-chat__header {
-  box-shadow: inset 0 -1px 0 0 ${convHex(settings.transparentChat ? "4446" : "444f")} !important;
+  box-shadow: inset 0 -1px 0 0 ${convHex(settings.transparentChat ? "3336" : "333f")} !important;
 }
 
 .theatre #right_col:hover .vod-chat__header {
-  box-shadow: inset 0 -1px 0 0 #444 !important;
+  box-shadow: inset 0 -1px 0 0 #333 !important;
 }
 
 ${multiselect(".theatre $ textarea", $chatInterface)} {
