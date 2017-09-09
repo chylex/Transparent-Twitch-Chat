@@ -412,6 +412,10 @@ ${settings.hideHeader ? `
 // gray theme
 
 ${settings.grayTheme ? `
+${multiselect(".theatre #right_col $", $chatContainer)} {
+  border-left-color: #333;
+}
+
 ${multiselect(".theatre #right_col:not(:hover) $", $chatContainer)} {
   background: ${convHex("141414"+(Math.round(settings.transparentChat ? (settings.backgroundOpacity * 2.55) : 255).toString(16).padStart(2, '0')))} !important;
 }
@@ -421,8 +425,8 @@ ${multiselect(".theatre #right_col:hover $", $chatContainer)} {
 }
 
 .theatre #right_col:not(:hover) .chat-header {
-  background-color: ${convHex("09090966")} !important;
-  box-shadow: inset 0 -1px 0 0 ${convHex("3336")} !important;
+  background-color: ${convHex(settings.transparentChat ? "09090966" : "090909ff")} !important;
+  box-shadow: inset 0 -1px 0 0 ${convHex(settings.transparentChat ? "3336" : "333f")} !important;
 }
 
 .theatre #right_col:hover .chat-header {
@@ -431,7 +435,7 @@ ${multiselect(".theatre #right_col:hover $", $chatContainer)} {
 }
 
 .theatre #right_col:not(:hover) .vod-chat__header {
-  box-shadow: inset 0 -1px 0 0 ${convHex("4446")} !important;
+  box-shadow: inset 0 -1px 0 0 ${convHex(settings.transparentChat ? "4446" : "444f")} !important;
 }
 
 .theatre #right_col:hover .vod-chat__header {
