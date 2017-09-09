@@ -15,6 +15,7 @@ let settings = {
   
   chatWidth: 350,
   hideHeader: true,
+  hideConversations: false,
   grayTheme: false,
   
   transparentChat: true,
@@ -316,6 +317,17 @@ body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
 body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
   right: ${settings.chatWidth - 10}px !important;
 }`}
+
+// hide conversations and remove bottom margin
+
+${settings.hideConversations ? `
+.theatre .conversations-wrapper {
+  display: none;
+}
+
+.theatre .player-whispers-padding {
+  margin-bottom: 0 !important;
+}` : ``}
 
 // chat on left side
 
@@ -690,6 +702,7 @@ function createSettingsModal(){
     <p>General</p>
     ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 600, step: 25, wait: 500, text: "px" })}
     ${generateToggle("Hide Chat Header", "hideHeader")}
+    ${generateToggle("Hide Conversations", "hideConversations")}
     ${generateToggle("Gray Theme", "grayTheme")}
   </div>
 
