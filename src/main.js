@@ -15,6 +15,7 @@ let settings = {
   
   chatWidth: 350,
   hideHeader: true,
+  hideTimestamps: false,
   hideConversations: false,
   grayTheme: false,
   
@@ -291,7 +292,7 @@ ${multiselect(".theatre #right_col:not(:hover) $", $chatInterface)} {
   opacity: 0.6;
 }
 
-// chat messages
+// chat message shadow
 
 ${multiselect(".theatre #right_col:not(:hover) $", $chatContainer)} {
   ${settings.smoothTextShadow ? `
@@ -301,7 +302,7 @@ ${multiselect(".theatre #right_col:not(:hover) $", $chatContainer)} {
   `}
 }
 
-.theatre #right_col:not(:hover) .chat-messages .from {
+${multiselect(".theatre #right_col:not(:hover) .chat-messages $", [ ".from", ".vod-message__timestamp" ])} {
   ${settings.smoothTextShadow ? `
   text-shadow: -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
   ` : `
@@ -345,6 +346,15 @@ ${settings.hideConversations ? `
 .theatre .player-whispers-padding {
   margin-bottom: 0 !important;
 }` : ``}
+
+// hide timestamps
+
+${settings.hideTimestamps ? `
+.theatre .vod-message__timestamp {
+  visibility: hidden;
+  width: 0 !important;
+}
+` : ``}
 
 // chat on left side
 
@@ -566,9 +576,9 @@ function generateSettingsCSS(){
   left: 50%;
   top: 50%;
   width: 560px;
-  height: 310px;
+  height: 350px;
   margin-left: -280px;
-  margin-top: -155px;
+  margin-top: -175px;
   z-index: 1000;
   background-color: ${convHex("111b")};
 }
@@ -738,6 +748,7 @@ function createSettingsModal(){
     <p>General</p>
     ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 600, step: 25, wait: 500, text: "px" })}
     ${generateToggle("Hide Chat Header", "hideHeader")}
+    ${generateToggle("Hide Timestamps", "hideTimestamps")}
     ${generateToggle("Hide Conversations", "hideConversations")}
     ${generateToggle("Gray Theme", "grayTheme")}
   </div>
