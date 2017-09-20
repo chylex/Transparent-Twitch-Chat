@@ -354,9 +354,9 @@ ${settings.hideTimestamps ? `
 }
 ` : ``}
 
-// fix autoscroll popup
+// fix VOD sync and settings
 
-.theatre .video-chat__sync-button {
+.theatre .video-chat__sync-button, .theatre .video-chat__settings {
   width: ${settings.chatWidth - 50}px;
 }
 
