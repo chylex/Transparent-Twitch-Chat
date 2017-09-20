@@ -482,17 +482,17 @@ ${multiselect(".theatre #right_col:hover $ .button--icon-only figure svg", $chat
 }
 
 ${settings.hideBadgeTurbo ? `
-.theatre .badge[alt="Turbo"], .theatre .badge[original-title="Turbo"], .theatre .badge.turbo {
+.theatre .badge[alt="Turbo"], .theatre .chat-badge[alt="Turbo"] {
  display: none;
 }` : ``}
 
 ${settings.hideBadgePrime ? `
-.theatre .badge[alt$="Prime"], .theatre .badge[original-title$="Prime"], .theatre .badge.premium {
+.theatre .badge[alt$="Prime"], .theatre .chat-badge[alt$="Prime"] {
  display: none;
 }` : ``}
 
 ${settings.hideBadgeSubscriber ? `
-.theatre .badge[alt~="Subscriber"], .theatre .badge[original-title~="Subscriber"], .theatre .badge.subscriber {
+.theatre .badge[alt~="Subscriber"], .theatre .chat-badge[alt~="Subscriber"] {
  display: none;
 }` : ``}
 
