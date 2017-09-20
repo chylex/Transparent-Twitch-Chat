@@ -149,7 +149,7 @@ function generateStaticCSS(){
 
 // restyle vod chat input
 
-.theatre .vod-chat__input {
+.theatre .video-chat__input {
   background: transparent !important;
   box-shadow: none !important;
 }
@@ -175,8 +175,8 @@ function generateDynamicCSS(){
   }
   
   let multiselect = (str, selectors) => selectors.map(selector => str.replace("$", selector)).join(",");
-  let $chatContainer = [ ".chat-container", ".vod-chat" ];
-  let $chatInterface = [ ".chat-interface", ".vod-chat__input" ];
+  let $chatContainer = [ ".chat-container", ".video-chat" ];
+  let $chatInterface = [ ".chat-interface", ".video-chat__input" ];
   
   let wa = ":not(.ttcwa)"; // selector priority workaround
   let style = document.getElementById("chylex-ttc-style-dynamic");
@@ -321,7 +321,7 @@ ${multiselect(".theatre #right_col:not(:hover) $", $chatContainer)} {
 
 // fix autoscroll popup
 
-.theatre #right_col:not(:hover) .vod-chat__sync-button:not(.vod-chat__sync-button--show) {
+.theatre #right_col:not(:hover) .video-chat__sync-button:not(.video-chat__sync-button--show) {
   display: none;
 }` : `
 
@@ -434,11 +434,11 @@ ${multiselect(".theatre #right_col:hover $", $chatContainer)} {
   box-shadow: inset 0 -1px 0 0 #333 !important;
 }
 
-.theatre #right_col:not(:hover) .vod-chat__header {
+.theatre #right_col:not(:hover) .video-chat__header {
   box-shadow: inset 0 -1px 0 0 ${convHex(settings.transparentChat ? "3336" : "333f")} !important;
 }
 
-.theatre #right_col:hover .vod-chat__header {
+.theatre #right_col:hover .video-chat__header {
   box-shadow: inset 0 -1px 0 0 #333 !important;
 }
 
@@ -463,7 +463,7 @@ ${multiselect(".theatre #right_col:hover $ .button--icon-only figure svg", $chat
   opacity: 1;
 }
 
-.theatre .chat-container .button:not(.button--icon-only), .theatre .vod-chat-input__submit {
+.theatre .chat-container .button:not(.button--icon-only), .theatre .video-chat__input [data-a-target="video-chat-submit-button"] {
   background-color: ${convHex(settings.transparentChat ? "2a2a2a90" : "2a2a2aff")} !important;
   border: 1px solid ${convHex(settings.transparentChat ? "00000090" : "000000ff")} !important;
 }` : ``}
@@ -533,7 +533,7 @@ function generateSettingsCSS(){
   margin-left: 298px;
 }
 
-.vod-chat #chylex-ttc-settings-btn {
+.video-chat #chylex-ttc-settings-btn {
   margin-top: 6px;
 }
 
@@ -774,7 +774,7 @@ function createSettingsModal(){
 }
 
 function insertSettingsButton(){
-  let container = document.querySelector(".js-chat-container,.vod-chat");
+  let container = document.querySelector(".js-chat-container,.video-chat");
   
   if (!container){
     return;
