@@ -98,15 +98,7 @@ function generateStaticCSS(){
 
 // hide replay header
 
-.theatre .cn-chat-replay-header {
-  display: none;
-}
-
 .theatre .cn-tab-container {
-  top: 0 !important;
-}
-
-.theatre #right_col${wa} .chatReplay .chat-room {
   top: 0 !important;
 }
 
@@ -509,11 +501,6 @@ ${settings.hideBadgeSubscriber ? `
 #chylex-ttc-settings-btn {
   margin-top: -152px;
   margin-left: ${settings.chatWidth - 58}px;
-}
-
-.chatReplay #chylex-ttc-settings-btn {
-  margin-top: -40px;
-  margin-left: ${settings.chatWidth - 52}px;
 }`);
   
   document.head.appendChild(style);
@@ -540,11 +527,6 @@ function generateSettingsCSS(){
   fill: ${convHex("fffa")};
   margin-top: -152px;
   margin-left: 292px;
-}
-
-.chatReplay #chylex-ttc-settings-btn {
-  margin-top: -40px;
-  margin-left: 298px;
 }
 
 .video-chat #chylex-ttc-settings-btn {
