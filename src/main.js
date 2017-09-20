@@ -92,6 +92,10 @@ function generateStaticCSS(){
   display: none !important;
 }
 
+.theatre #right_col:not(:hover) .video-chat__message-list-wrapper {
+  overflow-y: hidden !important;
+}
+
 // hide replay header
 
 .theatre .cn-chat-replay-header {
@@ -318,12 +322,6 @@ ${multiselect(".theatre #right_col:not(:hover) .chat-messages $", [ ".from", ".v
 
 .theatre .conversations-list-container:not(.list-displayed):not(:hover) {
   opacity: ${settings.backgroundOpacity / 100};
-}
-
-// fix autoscroll popup
-
-.theatre #right_col:not(:hover) .video-chat__sync-button:not(.video-chat__sync-button--show) {
-  display: none;
 }` : `
 
 // fix player controls
@@ -355,6 +353,12 @@ ${settings.hideTimestamps ? `
   width: 0 !important;
 }
 ` : ``}
+
+// fix autoscroll popup
+
+.theatre .video-chat__sync-button {
+  width: ${settings.chatWidth - 50}px;
+}
 
 // chat on left side
 
