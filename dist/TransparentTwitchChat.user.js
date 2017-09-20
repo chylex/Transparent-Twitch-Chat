@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.0.9
+// @version      1.0.10
 // @namespace    https://chylex.com
 // @include      https://www.twitch.tv/*
 // @run-at       document-end
@@ -15,6 +15,7 @@ let settings = {
   
   chatWidth: 350,
   hideHeader: true,
+  hideTimestamps: false,
   hideConversations: false,
   grayTheme: false,
   
@@ -91,17 +92,13 @@ function generateStaticCSS(){
   display: none !important;
 }
 
+.theatre #right_col:not(:hover) .video-chat__message-list-wrapper {
+  overflow-y: hidden !important;
+}
+
 // hide replay header
 
-.theatre .cn-chat-replay-header {
-  display: none;
-}
-
 .theatre .cn-tab-container {
-  top: 0 !important;
-}
-
-.theatre #right_col${wa} .chatReplay .chat-room {
   top: 0 !important;
 }
 
@@ -149,7 +146,7 @@ function generateStaticCSS(){
 
 // restyle vod chat input
 
-.theatre .vod-chat__input {
+.theatre .video-chat__input {
   background: transparent !important;
   box-shadow: none !important;
 }
@@ -175,8 +172,8 @@ function generateDynamicCSS(){
   }
   
   let multiselect = (str, selectors) => selectors.map(selector => str.replace("$", selector)).join(",");
-  let $chatContainer = [ ".chat-container", ".vod-chat" ];
-  let $chatInterface = [ ".chat-interface", ".vod-chat__input" ];
+  let $chatContainer = [ ".chat-container", ".video-chat" ];
+  let $chatInterface = [ ".chat-interface", ".video-chat__input" ];
   
   let wa = ":not(.ttcwa)"; // selector priority workaround
   let style = document.getElementById("chylex-ttc-style-dynamic");
@@ -291,7 +288,7 @@ ${multiselect(".theatre #right_col:not(:hover) $", $chatInterface)} {
   opacity: 0.6;
 }
 
-// chat messages
+// chat message shadow
 
 ${multiselect(".theatre #right_col:not(:hover) $", $chatContainer)} {
   ${settings.smoothTextShadow ? `
@@ -301,7 +298,7 @@ ${multiselect(".theatre #right_col:not(:hover) $", $chatContainer)} {
   `}
 }
 
-.theatre #right_col:not(:hover) .chat-messages .from {
+${multiselect(".theatre #right_col:not(:hover) .chat-messages $", [ ".from", ".vod-message__timestamp" ])} {
   ${settings.smoothTextShadow ? `
   text-shadow: -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
   ` : `
@@ -317,12 +314,6 @@ ${multiselect(".theatre #right_col:not(:hover) $", $chatContainer)} {
 
 .theatre .conversations-list-container:not(.list-displayed):not(:hover) {
   opacity: ${settings.backgroundOpacity / 100};
-}
-
-// fix autoscroll popup
-
-.theatre #right_col:not(:hover) .vod-chat__sync-button:not(.vod-chat__sync-button--show) {
-  display: none;
 }` : `
 
 // fix player controls
@@ -345,6 +336,21 @@ ${settings.hideConversations ? `
 .theatre .player-whispers-padding {
   margin-bottom: 0 !important;
 }` : ``}
+
+// hide timestamps
+
+${settings.hideTimestamps ? `
+.theatre .vod-message__timestamp {
+  visibility: hidden;
+  width: 0 !important;
+}
+` : ``}
+
+// fix VOD sync and settings
+
+.theatre .video-chat__sync-button, .theatre .video-chat__settings {
+  width: ${settings.chatWidth - 50}px;
+}
 
 // chat on left side
 
@@ -434,11 +440,11 @@ ${multiselect(".theatre #right_col:hover $", $chatContainer)} {
   box-shadow: inset 0 -1px 0 0 #333 !important;
 }
 
-.theatre #right_col:not(:hover) .vod-chat__header {
+.theatre #right_col:not(:hover) .video-chat__header {
   box-shadow: inset 0 -1px 0 0 ${convHex(settings.transparentChat ? "3336" : "333f")} !important;
 }
 
-.theatre #right_col:hover .vod-chat__header {
+.theatre #right_col:hover .video-chat__header {
   box-shadow: inset 0 -1px 0 0 #333 !important;
 }
 
@@ -463,7 +469,7 @@ ${multiselect(".theatre #right_col:hover $ .button--icon-only figure svg", $chat
   opacity: 1;
 }
 
-.theatre .chat-container .button:not(.button--icon-only), .theatre .vod-chat-input__submit {
+.theatre .chat-container .button:not(.button--icon-only), .theatre .video-chat__input [data-a-target="video-chat-submit-button"] {
   background-color: ${convHex(settings.transparentChat ? "2a2a2a90" : "2a2a2aff")} !important;
   border: 1px solid ${convHex(settings.transparentChat ? "00000090" : "000000ff")} !important;
 }` : ``}
@@ -476,17 +482,17 @@ ${multiselect(".theatre #right_col:hover $ .button--icon-only figure svg", $chat
 }
 
 ${settings.hideBadgeTurbo ? `
-.theatre .badge[alt="Turbo"], .theatre .badge[original-title="Turbo"], .theatre .badge.turbo {
+.theatre .badge[alt="Turbo"], .theatre .chat-badge[alt="Turbo"] {
  display: none;
 }` : ``}
 
 ${settings.hideBadgePrime ? `
-.theatre .badge[alt$="Prime"], .theatre .badge[original-title$="Prime"], .theatre .badge.premium {
+.theatre .badge[alt$="Prime"], .theatre .chat-badge[alt$="Prime"] {
  display: none;
 }` : ``}
 
 ${settings.hideBadgeSubscriber ? `
-.theatre .badge[alt~="Subscriber"], .theatre .badge[original-title~="Subscriber"], .theatre .badge.subscriber {
+.theatre .badge[alt~="Subscriber"], .theatre .chat-badge[alt~="Subscriber"] {
  display: none;
 }` : ``}
 
@@ -495,11 +501,6 @@ ${settings.hideBadgeSubscriber ? `
 #chylex-ttc-settings-btn {
   margin-top: -152px;
   margin-left: ${settings.chatWidth - 58}px;
-}
-
-.chatReplay #chylex-ttc-settings-btn {
-  margin-top: -40px;
-  margin-left: ${settings.chatWidth - 52}px;
 }`);
   
   document.head.appendChild(style);
@@ -528,12 +529,7 @@ function generateSettingsCSS(){
   margin-left: 292px;
 }
 
-.chatReplay #chylex-ttc-settings-btn {
-  margin-top: -40px;
-  margin-left: 298px;
-}
-
-.vod-chat #chylex-ttc-settings-btn {
+.video-chat #chylex-ttc-settings-btn {
   margin-top: 6px;
 }
 
@@ -566,9 +562,9 @@ function generateSettingsCSS(){
   left: 50%;
   top: 50%;
   width: 560px;
-  height: 310px;
+  height: 350px;
   margin-left: -280px;
-  margin-top: -155px;
+  margin-top: -175px;
   z-index: 1000;
   background-color: ${convHex("111b")};
 }
@@ -738,6 +734,7 @@ function createSettingsModal(){
     <p>General</p>
     ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 600, step: 25, wait: 500, text: "px" })}
     ${generateToggle("Hide Chat Header", "hideHeader")}
+    ${generateToggle("Hide Timestamps", "hideTimestamps")}
     ${generateToggle("Hide Conversations", "hideConversations")}
     ${generateToggle("Gray Theme", "grayTheme")}
   </div>
@@ -774,7 +771,7 @@ function createSettingsModal(){
 }
 
 function insertSettingsButton(){
-  let container = document.querySelector(".js-chat-container,.vod-chat");
+  let container = document.querySelector(".js-chat-container,.video-chat");
   
   if (!container){
     return;
