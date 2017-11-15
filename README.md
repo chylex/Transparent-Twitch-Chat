@@ -25,10 +25,13 @@ Transparent Twitch Chat is a user script that improves your PogChamp experience 
 
 # How to Install
 
-1. Make sure you have [Greasemonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/) (Firefox) or [Tampermonkey](https://tampermonkey.net/) (Chrome, Edge, Opera) installed in your browser
+1. Make sure you have [Greasemonkey 3](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/versions/) (Firefox) or [Tampermonkey](https://tampermonkey.net/) (Chrome, Edge, Opera) installed in your browser
 2. Visit [TransparentTwitchChat.user.js](https://github.com/chylex/Transparent-Twitch-Chat/raw/master/dist/TransparentTwitchChat.user.js) to prompt the install
 
 The script is only active in **Theater mode**. If you want to watch in fullscreen, press **F11** in Firefox/Chrome/Opera, or **Shift+Win+Enter** in Edge.
+
+#### Greasemonkey Warning
+This script and many others **will not work with Greasemonkey 4**. Please, make sure you're using version 3, and disable addon updates until the issue is resolved.
 
 ### Changing the Settings
 
