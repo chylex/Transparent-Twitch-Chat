@@ -522,7 +522,7 @@ function generateSettingsCSS(){
   width: 3em;
   height: 3em;
   position: absolute;
-  z-index: 2000;
+  z-index: 20000;
   cursor: pointer;
   fill: ${convHex("fffa")};
   margin-top: -152px;
@@ -539,7 +539,7 @@ function generateSettingsCSS(){
   left: 50%;
   top: 0.5em;
   margin-left: -13.75em;
-  z-index: 1999;
+  z-index: 19999;
 }
 
 #chylex-ttc-settings-btn svg {
@@ -551,7 +551,7 @@ function generateSettingsCSS(){
   fill: #fff;
 }
 
-.theatre #right_col:hover #chylex-ttc-settings-btn {
+.right-column--theatre:hover #chylex-ttc-settings-btn {
   display: block;
 }
 
@@ -565,13 +565,14 @@ function generateSettingsCSS(){
   height: 350px;
   margin-left: -280px;
   margin-top: -175px;
-  z-index: 1000;
+  z-index: 10000;
   background-color: ${convHex("111b")};
 }
 
-#chylex-ttc-settings-modal #ttc-opt-global {
+#chylex-ttc-settings-modal #ttc-opt-global-wrapper {
   position: absolute;
-  margin: 6px 0 0 -69px;
+  margin: 5px 0 0 -69px;
+  display: inline-block;
 }
 
 #chylex-ttc-settings-modal h2 {
@@ -616,7 +617,8 @@ function generateSettingsCSS(){
 
 #chylex-ttc-settings-modal .player-menu__item {
   align-items: center;
-  margin-bottom: 10px;
+  margin: 1px 0 9px;
+  padding-left: 1px;
 }
 
 #chylex-ttc-settings-modal .switch {
@@ -679,8 +681,7 @@ function createSettingsModal(){
       let toggle = document.getElementById("ttc-opt-"+option);
       
       toggle.addEventListener("click", function(){
-        settings[option] = !toggle.classList.contains("active");
-        toggle.setAttribute("class", (settings[option] ? "active" : "disabled")+" switch");
+        settings[option] = toggle.checked;
         onSettingsUpdated();
       });
     }, 1);
@@ -690,8 +691,11 @@ function createSettingsModal(){
   <div class="player-menu__header">
     <span class="js-menu-header">${title}</span>
   </div>
-  <div class="player-menu__item pl-flex pl-flex--nowrap">
-    <a id="ttc-opt-${option}" class="${settings[option] ? "active" : "disabled"} switch"><span></span></a>
+  <div class="player-menu__item pl-flex pl-flex--nowrap flex-shrink-0">
+    <div class="tw-toggle">
+      <input class="tw-toggle__input" id="ttc-opt-${option}" data-a-target="tw-toggle" value="${settings[option] ? "on" : "off"}" type="checkbox"${settings[option] ? " checked" : ""}>
+      <label for="ttc-opt-${option}" class="tw-toggle__button"></label>
+    </div>
   </div>
 </div>`;
   };
@@ -725,7 +729,11 @@ function createSettingsModal(){
   modal.id = "chylex-ttc-settings-modal";
   modal.innerHTML = `
 <h2>
-  <a id="ttc-opt-global" class="${settings.globalSwitch ? "active" : "disabled"} switch"><span></span></a>
+  <div id="ttc-opt-global-wrapper" class="tw-toggle">
+    <input class="tw-toggle__input" id="ttc-opt-global" data-a-target="tw-toggle" value="${settings.globalSwitch ? "on" : "off"}" type="checkbox"${settings.globalSwitch ? " checked" : ""}>
+    <label for="ttc-opt-global" class="tw-toggle__button"></label>
+  </div>
+
   <span>Transparent Twitch Chat</span>
 </h2>
 
@@ -760,8 +768,7 @@ function createSettingsModal(){
   document.body.appendChild(modal);
   
   document.getElementById("ttc-opt-global").addEventListener("click", function(e){
-    settings.globalSwitch = !e.currentTarget.classList.contains("active");
-    e.currentTarget.setAttribute("class", (settings.globalSwitch ? "active" : "disabled")+" switch");
+    settings.globalSwitch = e.currentTarget.checked;
     onSettingsUpdated();
   });
   
