@@ -106,44 +106,6 @@ function generateStaticCSS(){
   top: 0 !important;
 }
 
-// username color tweaks (possibly figure out a better way later)
-
-.theatre .from[style="color:#0000FF"], .theatre .from[style="color:#0000DF"] {
-  color: #88F !important;
-}
-
-.theatre .from[style="color:#000000"] {
-  color: #888 !important;
-}
-
-.theatre .from[style="color:#8A2BE2"] {
-  color: #AA4BFF !important;
-}
-
-.theatre .from[style="color:#5A3A54"] {
-  color: #957C74 !important;
-}
-
-.theatre .from[style="color:#1F1FA8"] {
-  color: #5252F8 !important;
-}
-
-.theatre .from[style="color:#1945B3"] {
-  color: #4F7AC3 !important;
-}
-
-.theatre .from[style="color:#030061"] {
-  color: #6360A1 !important;
-}
-
-.theatre .from[style="color:#4B00AD"] {
-  color: #7B50D2 !important;
-}
-
-.theatre .from[style="color:#403271"] {
-  color: #8072A1 !important;
-}
-
 // restyle vod chat input
 
 .theatre .video-chat__input {
