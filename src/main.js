@@ -43,8 +43,7 @@ function tryRemoveElement(ele){
 }
 
 function onSettingsUpdated(){
-  generateStaticCSS();
-  generateDynamicCSS();
+  generateCustomCSS();
   
   if (typeof GM_setValue !== "undefined"){
     for(let key in settings){
@@ -63,55 +62,61 @@ function convHex(hex){
 }
 
 function stripComments(str){
-  return str.replace(/^\/\/(.*?)$/gm, "");
+  return str.replace(/\/\/(.*?)$/gm, "");
 }
 
-function generateStaticCSS(){
+function generateCustomCSS(){
   if (!settings.globalSwitch){
-    tryRemoveElement(document.getElementById("chylex-ttc-style-static"));
+    tryRemoveElement(document.getElementById("chylex-ttc-style-custom"));
     return;
   }
   
-  if (document.getElementById("chylex-ttc-style-static")){
-    return;
-  }
+  let multiselect = (str, selectors) => selectors.map(selector => str.replace("$", selector)).join(",");
+  let $chatContainer = [ ".chat__container", ".video-chat" ];
+  let $chatInterface = [ ".chat__pane > div:last-child", ".video-chat__input" ];
+  
+  let rcol = ".right-column--theatre";
+  let rcolHover = ".right-column--theatre:hover";
+  let rcolBlur = ".right-column--theatre:not(:hover)";
   
   let wa = ":not(.ttcwa)"; // selector priority workaround
+  let style = document.getElementById("chylex-ttc-style-custom");
   
-  let style = document.createElement("style");
-  style.id = "chylex-ttc-style-static";
+  if (!style){
+    style = document.createElement("style");
+    style.id = "chylex-ttc-style-custom";
+  }
+  
   style.innerHTML = stripComments(`
 
 // fix scrollbars
 
-.theatre #main_col .tse-scrollbar {
-  display: none !important;
+${rcolBlur} .chat-list__lines .simplebar-track.vertical {
+  visibility: hidden !important;
 }
 
-.theatre #right_col:not(:hover) .chat-messages .tse-scrollbar {
-  display: none !important;
-}
-
-.theatre #right_col:not(:hover) .video-chat__message-list-wrapper {
+${rcolBlur} .video-chat__message-list-wrapper {
   overflow-y: hidden !important;
 }
 
-// hide replay header
+// general chat styles
 
-.theatre .cn-tab-container {
-  top: 0 !important;
+${rcol} .video-watch-page__right-column${wa}, ${rcol} .channel-page__right-column${wa} {
+  background: none !important;
+  width: ${settings.chatWidth - 10}px;
 }
 
-.theatre .chat-messages {
-  top: 0 !important;
-}
+${settings.hideHeader ? `
+  ${rcol} .chat__header {
+    display: none !important;
+  }
+` : ``}
 
-// restyle vod chat input
-
-.theatre .video-chat__input {
-  background: transparent !important;
-  box-shadow: none !important;
-}
+${settings.chatWidth < 300 ? `
+  ${rcol} .video-chat__sync-button, ${rcol} .video-chat__settings, ${rcol} .chat-settings {
+    width: ${settings.chatWidth - 50}px;
+  }
+` : ``}
 
 // BTTV workarounds
 
@@ -122,34 +127,11 @@ function generateStaticCSS(){
 .theatre .rightcol-content${wa} {
   background: none !important;
   z-index: 3 !important;
-}`);
-  
-  document.head.appendChild(style);
 }
-
-function generateDynamicCSS(){
-  if (!settings.globalSwitch){
-    tryRemoveElement(document.getElementById("chylex-ttc-style-dynamic"));
-    return;
-  }
-  
-  let multiselect = (str, selectors) => selectors.map(selector => str.replace("$", selector)).join(",");
-  let $chatContainer = [ ".chat-container", ".video-chat" ];
-  let $chatInterface = [ ".chat-interface", ".video-chat__input" ];
-  
-  let wa = ":not(.ttcwa)"; // selector priority workaround
-  let style = document.getElementById("chylex-ttc-style-dynamic");
-  
-  if (!style){
-    style = document.createElement("style");
-    style.id = "chylex-ttc-style-dynamic";
-  }
-  
-  style.innerHTML = stripComments(`
 
 ${settings.transparentChat ? `
 
-// simulate expandRight style, FrankerFaceZ workaround
+  // expand player width, FrankerFaceZ workaround
 
 .theatre .ct-bar--active.ct-bar--ember, .theatre #main_col {
   right: 0;
@@ -163,156 +145,127 @@ body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
   right: 0 !important;
 }
 
-// fix player controls and status
+  .channel-page__video-player--theatre-mode {
+    width: 100% !important;
+  }
 
-.theatre #main_col:not(.expandRight) .player-hover {
-  padding-right: ${settings.chatWidth - 10}px;
-}
+  // fix player controls and status
 
-.theatre #main_col:not(.expandRight) #right_close {
-  margin-right: ${settings.chatWidth}px;
-}
+  .channel-page__video-player--theatre-mode:not(.full-width) .player-hover {
+    padding-right: ${settings.chatWidth - 10}px;
+  }
 
-.theatre #main_col:not(.expandRight) .player-streamstatus {
-  margin-right: ${settings.chatWidth + 20}px !important;
-  padding-right: 1.5em !important;
-}
+  .channel-page__video-player--theatre-mode .player-streamstatus {
+    margin-right: ${settings.chatWidth + 10}px !important;
+    padding-right: 1.5em !important;
+  }
 
-.theatre #main_col.expandRight .player-streamstatus {
-  margin-right: 20px !important;
-}
+  .channel-page__video-player--theatre-mode.full-width .player-streamstatus {
+    margin-right: 20px !important;
+  }
 
-// chat messages
+  // chat container transparency
 
-.theatre #right_col:not(:hover) .chat-messages .timestamp {
-  color: #b7b5ba !important;
-}
+  ${rcol} .chat__pane${wa}, ${rcol} .video-chat${wa} {
+    border-left: none !important;
+  }
 
-.theatre #right_col:not(:hover) .chat-messages .special-message {
-  background: ${convHex("201c2b50")} !important;
-  color: #b7b5ba !important;
-  border-left-color: ${convHex("6441a450")} !important;
-}
+  ${rcolBlur} .chat__pane${wa} {
+    background: none !important;
+  }
 
-.theatre #right_col:not(:hover) .chat-messages .system-msg {
-  color: #b7b5ba !important;
-  background: none !important;
-}
 
-.theatre #right_col:not(:hover) .chat-messages .chat-chip {
-  background: ${convHex("201c2b50")} !important;
-  box-shadow: none !important;
-}
+  ${rcolBlur} .video-chat__header {
+    background-color: ${convHex("17141f66")} !important;
+    box-shadow: none !important;
+  }
 
-.theatre #right_col:not(:hover) .chat-messages .card__info {
-  color: #b7b5ba !important;
-}
+  ${rcolBlur} .video-chat__input {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
 
-.theatre #right_col:not(:hover) .chat-messages a {
-  color: #cdb9f5 !important;
-}
+  ${rcolBlur} .chat__container, ${rcolBlur} .video-chat {
+    background: ${convHex("17141f"+(Math.round(settings.backgroundOpacity * 2.55).toString(16).padStart(2, '0')))} !important;
+    color: #ece8f3 !important;
+  }
 
-.theatre #right_col:not(:hover) .chat-messages .admin .message {
-  color: #bd9ff5 !important;
-}
+  ${rcolBlur} .chat__pane > div:last-child, ${rcolBlur} .video-chat__input {
+    opacity: 0.6;
+  }
 
-// fix unwanted styles
+  // chat message shadow
 
-.theatre #right_col:not(:hover) .chat-menu {
-  text-shadow: none;
-  color: #898395;
-}
+  ${rcolBlur} .chat__container, ${rcolBlur} .video-chat {
+    ${settings.smoothTextShadow ? `
+    text-shadow: 0 0 2px ${convHex("000D")}, -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
+    ` : `
+    text-shadow: -1px 0 0 ${convHex("000A")}, 0 -1px 0 ${convHex("000A")}, 1px 0 0 ${convHex("000A")}, 0 1px 0 ${convHex("000A")};
+    `}
+  }
 
-.theatre #right_col:not(:hover) .mentioning {
-  text-shadow: none;
-}
+  ${rcolBlur} .chat-author__display-name, ${rcolBlur} .vod-message__timestamp {
+    ${settings.smoothTextShadow ? `
+    text-shadow: -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
+    ` : `
+    text-shadow: -1px 0 0 ${convHex("0008")}, 0 -1px 0 ${convHex("0008")}, 1px 0 0 ${convHex("0008")}, 0 1px 0 ${convHex("0008")};
+    `}
+  }
 
-// chat container
+  // chat messages
 
-${multiselect(".theatre #right_col $", $chatContainer)} {
-  border-left: none;
-}
+  ${rcolBlur} .vod-message__timestamp {
+    color: #b7b5ba !important;
+  }
 
-.theatre #right_col .sticky-message--pinned-cheers {
-  border: none !important;
-}
 
-${multiselect(".theatre #right_col:not(:hover) $", $chatContainer)} {
-  background: ${convHex("17141f"+(Math.round(settings.backgroundOpacity * 2.55).toString(16).padStart(2, '0')))} !important;
-  color: #ece8f3 !important;
-}
 
-.theatre #right_col:not(:hover) .chat-header {
-  background-color: ${convHex("17141f66")} !important;
-}
 
-${multiselect(".theatre #right_col:not(:hover) $", $chatInterface)} {
-  opacity: 0.6;
-}
 
-// chat message shadow
 
-${multiselect(".theatre #right_col:not(:hover) $", $chatContainer)} {
-  ${settings.smoothTextShadow ? `
-  text-shadow: 0 0 2px ${convHex("000D")}, -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
-  ` : `
-  text-shadow: -1px 0 0 ${convHex("000A")}, 0 -1px 0 ${convHex("000A")}, 1px 0 0 ${convHex("000A")}, 0 1px 0 ${convHex("000A")};
-  `}
-}
 
-${multiselect(".theatre #right_col:not(:hover) .chat-messages $", [ ".from", ".vod-message__timestamp" ])} {
-  ${settings.smoothTextShadow ? `
-  text-shadow: -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
-  ` : `
-  text-shadow: -1px 0 0 ${convHex("0008")}, 0 -1px 0 ${convHex("0008")}, 1px 0 0 ${convHex("0008")}, 0 1px 0 ${convHex("0008")};
-  `}
-}
+  // fix unwanted styles
 
-// conversation menu
 
-.theatre #main_col:not(.expandRight) .conversations-content {
-  right: ${settings.chatWidth}px;
-}
 
-.theatre .conversations-list-container:not(.list-displayed):not(:hover) {
-  opacity: ${settings.backgroundOpacity / 100};
-}` : `
+  // conversation menu
 
-// fix player controls
+  .whispers-threads-box__container:not(.whispers-threads-box__container--open):not(:hover) {
+    opacity: ${settings.backgroundOpacity / 100};
+  }
+` : `
 
-.theatre .ct-bar--active.ct-bar--ember, .theatre #main_col {
-  margin-right: ${settings.chatWidth - 10}px;
-}
+  // adapt player size with disabled transparency
 
-body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
+  .channel-page__video-player--theatre-mode {
+    width: calc(100% - ${settings.chatWidth - 10}px) !important;
+  }
+`}
+
+// conversation menu and bottom margin
+
+.whispers--theatre-mode.whispers--right-column-expanded {
   right: ${settings.chatWidth - 10}px !important;
-}`}
-
-// hide conversations and remove bottom margin
+}
 
 ${settings.hideConversations ? `
-.theatre .conversations-wrapper {
-  display: none;
-}
+  .whispers--theatre-mode {
+    display: none;
+  }
 
-.theatre .player-whispers-padding {
-  margin-bottom: 0 !important;
-}` : ``}
+  .video-player--theatre .video-player__container {
+    bottom: 0 !important;
+  }
+` : ``}
 
 // hide timestamps
 
 ${settings.hideTimestamps ? `
-.theatre .vod-message__timestamp {
-  visibility: hidden;
-  width: 0 !important;
-}
+  ${rcol} .vod-message__timestamp {
+    visibility: hidden;
+    width: 0 !important;
+  }
 ` : ``}
-
-// fix VOD sync and settings
-
-.theatre .video-chat__sync-button, .theatre .video-chat__settings {
-  width: ${settings.chatWidth - 50}px;
-}
 
 // chat on left side
 
@@ -361,21 +314,9 @@ ${settings.chatLeftSide && settings.transparentChat ? `
   border-right-width: 0;
 }` : ``}
 
-// chat container
 
-.theatre #right_col {
-  background: none !important;
-  width: ${settings.chatWidth - 10}px;
-}
 
-${settings.hideHeader ? `
-.theatre #right_col .chat-header {
-  display: none;
-}` : ``}
 
-.theatre #right_col .chat-room {
-  top: ${settings.hideHeader ? `0` : `50px`} !important;
-}
 
 // gray theme
 
@@ -438,30 +379,32 @@ ${multiselect(".theatre #right_col:hover $ .button--icon-only figure svg", $chat
 
 // badge tweaks
 
-.theatre #right_col:not(:hover) .chat-messages .badges {
+${rcolBlur} div[data-a-target="chat-badge"] {
   opacity: ${settings.badgeOpacity / 100};
-  ${settings.badgeOpacity === 0 ? `display: none;` : ``}
+  ${settings.badgeOpacity === 0 ? `display: none !important;` : ``}
 }
 
 ${settings.hideBadgeTurbo ? `
-.theatre .badge[alt="Turbo"], .theatre .chat-badge[alt="Turbo"] {
- display: none;
-}` : ``}
+  ${rcol} .chat-badge[alt="Turbo"] {
+   display: none;
+  }
+` : ``}
 
 ${settings.hideBadgePrime ? `
-.theatre .badge[alt$="Prime"], .theatre .chat-badge[alt$="Prime"] {
- display: none;
-}` : ``}
+  ${rcol} .chat-badge[alt$="Prime"] {
+   display: none;
+  }
+` : ``}
 
 ${settings.hideBadgeSubscriber ? `
-.theatre .badge[alt~="Subscriber"], .theatre .chat-badge[alt~="Subscriber"] {
- display: none;
-}` : ``}
+  ${rcol} .chat-badge[alt~="Subscriber"] {
+   display: none;
+  }
+` : ``}
 
 // dynamic styles for settings, replaces default style
 
 #chylex-ttc-settings-btn {
-  margin-top: -152px;
   margin-left: ${settings.chatWidth - 58}px;
 }`);
   
@@ -487,8 +430,11 @@ function generateSettingsCSS(){
   z-index: 20000;
   cursor: pointer;
   fill: ${convHex("fffa")};
-  margin-top: -152px;
   margin-left: 292px;
+}
+
+.chat__container #chylex-ttc-settings-btn {
+  bottom: 130px;
 }
 
 .video-chat #chylex-ttc-settings-btn {
@@ -740,7 +686,7 @@ function createSettingsModal(){
 }
 
 function insertSettingsButton(){
-  let container = document.querySelector(".js-chat-container,.video-chat");
+  let container = document.querySelector(".chat__container,.video-chat");
   
   if (!container){
     return;
@@ -775,6 +721,5 @@ document.body.addEventListener("click", function(){
 generateSettingsCSS();
 
 if (settings.globalSwitch){
-  generateStaticCSS();
-  generateDynamicCSS();
+  generateCustomCSS();
 }
