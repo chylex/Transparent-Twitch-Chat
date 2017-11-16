@@ -106,6 +106,10 @@ ${rcol} .video-watch-page__right-column${wa}, ${rcol} .channel-page__right-colum
   width: ${settings.chatWidth - 10}px;
 }
 
+${rcol} .video-chat {
+  flex-basis: auto !important;
+}
+
 ${settings.hideHeader ? `
   ${rcol} .chat__header {
     display: none !important;
