@@ -270,53 +270,45 @@ ${settings.hideTimestamps ? `
 // chat on left side
 
 ${settings.chatLeftSide && settings.transparentChat ? `
-.theatre #right_col, .theatre .chat-messages .tse-scrollbar {
-  left: 0;
-  right: auto;
-}
+  ${rcol}${wa}, ${rcol} .chat-list__lines .simplebar-track.vertical {
+    left: 0 !important;
+    right: auto !important;
+  }
 
-.theatre #main_col:not(.expandRight) .player-hover {
-  padding-left: ${settings.chatWidth - 10}px;
-  padding-right: 0;
-}
+  .channel-page__video-player--theatre-mode:not(.full-width) .player-hover {
+    padding-left: ${settings.chatWidth - 10}px;
+    padding-right: 0;
+  }
 
-.theatre #main_col:not(.expandRight) .player-streaminfo {
-  margin-left: 50px;
-}
+  .channel-page__video-player--theatre-mode:not(.full-width) .player-streaminfo {
+    margin-left: 40px;
+  }
 
-.theatre #main_col.expandRight .player-streaminfo {
-  margin-left: 25px;
-}
+  .channel-page__video-player--theatre-mode.full-width .player-streaminfo {
+    margin-left: 25px;
+  }
 
-.theatre #main_col:not(.expandRight) .conversations-content {
-  right: 10px !important;
-}
+  .channel-page__video-player--theatre-mode .player-streamstatus${wa} {
+    margin-right: 0px !important;
+    padding-right: 1.5em !important;
+  }
 
-.theatre #main_col #right_close {
-  left: 5px;
-  right: auto;
-  margin-left: ${settings.chatWidth}px;
-}
+  .whispers--theatre-mode${wa} {
+    right: 0px !important;
+  }
 
-.theatre #main_col.expandRight #right_close {
-  margin-left: 0;
-}
+  ${rcol} .right-column__toggle-visibility {
+    left: 5px;
+    right: auto;
+    margin-left: ${settings.chatWidth - 10}px;
+    transform: rotate(90deg) !important;
+  }
 
-.theatre #right_close::before {
-  border-left-width: 0;
-  border-right-width: 6px;
-  border-right-color: black;
-}
-
-.theatre #main_col.expandRight #right_close::before {
-  border-left-width: 6px;
-  border-left-color: black;
-  border-right-width: 0;
-}` : ``}
-
-
-
-
+  ${rcol}.right-column--collapsed .right-column__toggle-visibility {
+    margin-left: 0;
+    transform: rotate(-90deg) !important;
+  }
+` : ``}
 
 // gray theme
 
