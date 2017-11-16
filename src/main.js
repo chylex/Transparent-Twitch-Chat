@@ -308,61 +308,51 @@ ${settings.chatLeftSide && settings.transparentChat ? `
 // gray theme
 
 ${settings.grayTheme ? `
-${multiselect(".theatre #right_col $", $chatContainer)} {
-  border-left-color: #333;
-}
+  ${rcol} .chat__pane${wa} {
+    background: none !important;
+  }
 
-${multiselect(".theatre #right_col:not(:hover) $", $chatContainer)} {
-  background: ${convHex("141414"+(Math.round(settings.transparentChat ? (settings.backgroundOpacity * 2.55) : 255).toString(16).padStart(2, '0')))} !important;
-}
+  ${rcol} .chat__pane${wa}, ${rcol} .video-chat${wa} {
+    border-left-color: #333;
+  }
 
-${multiselect(".theatre #right_col:hover $", $chatContainer)} {
-  background: #141414 !important;
-}
+  ${rcolBlur} .chat__container, ${rcolBlur} .video-chat {
+    background: ${convHex("141414"+(Math.round(settings.transparentChat ? (settings.backgroundOpacity * 2.55) : 255).toString(16).padStart(2, '0')))} !important;
+  }
 
-.theatre #right_col:not(:hover) .chat-header {
-  background-color: ${convHex(settings.transparentChat ? "09090966" : "090909ff")} !important;
-  box-shadow: inset 0 -1px 0 0 ${convHex(settings.transparentChat ? "3336" : "333f")} !important;
-}
+  ${rcol} .chat__container, ${rcol} .video-chat {
+    background: #141414 !important;
+  }
 
-.theatre #right_col:hover .chat-header {
-  background: #090909 !important;
-  box-shadow: inset 0 -1px 0 0 #333 !important;
-}
+  ${rcol} .chat__header {
+    background-color: #171717 !important;
+    box-shadow: inset 0 -1px 0 0 #333 !important;
+  }
 
-.theatre #right_col:not(:hover) .video-chat__header {
-  box-shadow: inset 0 -1px 0 0 ${convHex(settings.transparentChat ? "3336" : "333f")} !important;
-}
+  ${rcol} .video-chat__header {
+    background-color: ${convHex("17171766")} !important;
+    box-shadow: inset 0 -1px 0 0 #333 !important;
+  }
 
-.theatre #right_col:hover .video-chat__header {
-  box-shadow: inset 0 -1px 0 0 #333 !important;
-}
+  ${rcol} .video-chat__input .form__input, ${rcol} [data-a-target="chat-input"] {
+    background-color: #1d1d1d !important;
+    box-shadow: inset 0 0 0 1px #414141, 0 0 0 transparent !important;
+  }
 
-${multiselect(".theatre $ textarea", $chatInterface)} {
-  background-color: ${convHex(settings.transparentChat ? "2a2a2a90" : "2a2a2aff")} !important;
-  border: 1px solid ${convHex(settings.transparentChat ? "00000090" : "000000ff")} !important;
-  box-shadow: none !important;
-}
+  ${rcol} .video-chat__input .form__input:focus, ${rcol} [data-a-target="chat-input"]:focus {
+    box-shadow: inset 0 0 0 1px #696969, 0 0 6px -2px #696969 !important;
+  }
 
-${multiselect(".theatre #right_col:hover $ textarea", $chatInterface)} {
-  background-color: #2a2a2a !important;
-  border: 1px solid #000000 !important;
-}
+  ${rcol} [data-a-target="chat-send-button"], ${rcol} [data-a-target="video-chat-submit-button"] {
+    background-color: #2a2a2a !important;
+    border: 1px solid #000000 !important;
+  }
 
-${multiselect(".theatre $ .button--icon-only figure svg", $chatContainer)} {
-  fill: #dedede !important;
-  opacity: 0.5;
-}
-
-${multiselect(".theatre #right_col:hover $ .button--icon-only figure svg", $chatContainer)} {
-  fill: #dedede !important;
-  opacity: 1;
-}
-
-.theatre .chat-container .button:not(.button--icon-only), .theatre .video-chat__input [data-a-target="video-chat-submit-button"] {
-  background-color: ${convHex(settings.transparentChat ? "2a2a2a90" : "2a2a2aff")} !important;
-  border: 1px solid ${convHex(settings.transparentChat ? "00000090" : "000000ff")} !important;
-}` : ``}
+  ${rcol} [data-a-target="chat-send-button"]:active, ${rcol} [data-a-target="chat-send-button"]:focus,
+  ${rcol} [data-a-target="video-chat-submit-button"]:active, ${rcol} [data-a-target="video-chat-submit-button"]:focus {
+    box-shadow: 0 0 6px 0 #696969 !important;
+  }
+` : ``}
 
 // badge tweaks
 
