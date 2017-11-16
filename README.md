@@ -17,10 +17,6 @@ Transparent Twitch Chat is a user script that improves your PogChamp experience 
 
 - The *Smooth Text Shadow* option makes chat look nicer but is quite CPU intensive, you can disable it for better performance
 
-### Known Issues
-
-- The settings button is displayed above some menus by accident
-
 ---
 
 # How to Install
