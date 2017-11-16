@@ -219,6 +219,9 @@ ${settings.transparentChat ? `
     color: #b7b5ba !important;
   }
 
+  ${rcolBlur} .chat-line__message a {
+    color: #cdb9f5 !important;
+  }
 
   // conversation menu
 
