@@ -124,36 +124,34 @@ ${settings.chatWidth < 300 ? `
 
 // BTTV workarounds
 
-.theatre .ember-chat.roomMode${wa}, .theatre .chat-messages${wa}, .theatre .ember-chat${wa} {
-  background: none !important;
-}
+// .theatre .ember-chat.roomMode${wa}, .theatre .chat-messages${wa}, .theatre .ember-chat${wa} { // TODO
+//   background: none !important;
+// }
 
-.theatre .rightcol-content${wa} {
-  background: none !important;
-  z-index: 3 !important;
-}
+// .theatre .rightcol-content${wa} { // TODO
+//   background: none !important;
+//   z-index: 3 !important;
+// }
 
 ${settings.transparentChat ? `
 
   // expand player width, FrankerFaceZ workaround
 
-.theatre .ct-bar--active.ct-bar--ember, .theatre #main_col {
-  right: 0;
-}
+  // .theatre .ct-bar--active.ct-bar--ember, .theatre #main_col { // TODO
+  //   right: 0;
+  // }
 
-body${wa} .app-main.theatre${wa} #main_col, .theatre #flash {
-  margin-right: 0 !important;
-}
+  // body${wa} .app-main.theatre${wa} #main_col, .theatre #flash { // TODO
+  //   margin-right: 0 !important;
+  // }
 
-body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
-  right: 0 !important;
-}
+  // body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} { // TODO
+  //   right: 0 !important;
+  // }
 
   .channel-page__video-player--theatre-mode {
     width: 100% !important;
   }
-
-  // fix player controls and status
 
   .channel-page__video-player--theatre-mode:not(.full-width) .player-hover {
     padding-right: ${settings.chatWidth - 10}px;
@@ -177,7 +175,6 @@ body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
   ${rcolBlur} .chat__pane${wa} {
     background: none !important;
   }
-
 
   ${rcolBlur} .video-chat__header {
     background-color: ${convHex("17141f66")} !important;
@@ -221,15 +218,6 @@ body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} {
   ${rcolBlur} .vod-message__timestamp {
     color: #b7b5ba !important;
   }
-
-
-
-
-
-
-
-  // fix unwanted styles
-
 
 
   // conversation menu
