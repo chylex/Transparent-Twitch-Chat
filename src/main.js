@@ -419,7 +419,7 @@ function generateSettingsCSS(){
   width: 3em;
   height: 3em;
   position: absolute;
-  z-index: 20000;
+  z-index: 9;
   cursor: pointer;
   fill: ${convHex("fffa")};
   margin-left: 292px;
@@ -439,7 +439,7 @@ function generateSettingsCSS(){
   left: 50%;
   top: 0.5em;
   margin-left: -13.75em;
-  z-index: 19999;
+  z-index: 8;
 }
 
 #chylex-ttc-settings-btn svg {
