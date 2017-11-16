@@ -11,7 +11,7 @@ Transparent Twitch Chat is a user script that improves your PogChamp experience 
 - Individual badges can be turned off for less clutter
 - Toggle between default purple theme and gray theme
 - Chat header is hidden by default
-- Username colors are brighter
+- Username colors are brighter (broken in newest update)
 
 ### Tips
 
