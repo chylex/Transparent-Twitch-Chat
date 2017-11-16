@@ -62,7 +62,7 @@ function convHex(hex){
 }
 
 function stripComments(str){
-  return str.replace(/\/\/(.*?)$/gm, "");
+  return str.replace(/^\s*\/\/(.*?)$/gm, "");
 }
 
 function generateCustomCSS(){
@@ -71,15 +71,10 @@ function generateCustomCSS(){
     return;
   }
   
-  let multiselect = (str, selectors) => selectors.map(selector => str.replace("$", selector)).join(",");
-  let $chatContainer = [ ".chat__container", ".video-chat" ];
-  let $chatInterface = [ ".chat__pane > div:last-child", ".video-chat__input" ];
-  
+  let wa = ":not(.ttcwa)"; // selector priority workaround
   let rcol = ".right-column--theatre";
-  let rcolHover = ".right-column--theatre:hover";
   let rcolBlur = ".right-column--theatre:not(:hover)";
   
-  let wa = ":not(.ttcwa)"; // selector priority workaround
   let style = document.getElementById("chylex-ttc-style-custom");
   
   if (!style){
