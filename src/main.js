@@ -10,7 +10,7 @@
 // @noframes
 // ==/UserScript==
 
-let settings = {
+const settings = {
   globalSwitch: true,
   
   chatWidth: 350,
@@ -671,7 +671,7 @@ function createSettingsModal(){
 }
 
 function insertSettingsButton(){
-  let container = document.querySelector(".chat-room__container,.video-chat");
+  const container = document.querySelector(".chat-room__container,.video-chat");
   
   if (!container){
     return;
@@ -680,7 +680,7 @@ function insertSettingsButton(){
   tryRemoveElement(document.getElementById("chylex-ttc-settings-btn"));
   tryRemoveElement(document.getElementById("chylex-ttc-settings-modal"));
   
-  let button = document.createElement("div");
+  const button = document.createElement("div");
   button.id = "chylex-ttc-settings-btn";
   button.innerHTML = '<span class="player-tip js-tip" data-tip="Transparent Twitch Chat"></span><svg><use xlink:href="#icon_settings"></use></svg>';
   container.appendChild(button);
@@ -692,9 +692,9 @@ function insertSettingsButton(){
     }
   });
   
-  if (isFirefox){
-    let wrapper = document.querySelector(".video-chat__message-list-wrapper");
-    let unsynced = "video-chat__message-list-wrapper--unsynced";
+  if (isFirefox && container.classList.contains("video-chat")){
+    const wrapper = document.querySelector(".video-chat__message-list-wrapper");
+    const unsynced = "video-chat__message-list-wrapper--unsynced";
     
     wrapper.addEventListener("wheel", function(e){
       if (e.deltaY < 0){
