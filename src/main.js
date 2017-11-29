@@ -117,9 +117,11 @@ ${settings.hideHeader ? `
 
 ${rcol} .video-chat__sync-button {
   width: ${settings.chatWidth - 50}px;
+  z-index: 10;
+  background-color: #b8b5c0 !important;
 }
 
-${settings.chatWidth < 300 ? `
+${settings.chatWidth < 350 ? `
   ${rcol} .video-chat__settings, ${rcol} .chat-settings {
     width: ${settings.chatWidth - 50}px;
   }
@@ -387,12 +389,8 @@ ${settings.hideBadgeSubscriber ? `
 
 // dynamic styles for settings, replaces default style
 
-.chat-room__container #chylex-ttc-settings-btn {
+#chylex-ttc-settings-btn {
   margin-left: ${settings.chatWidth - 58}px;
-}
-
-.video-chat #chylex-ttc-settings-btn {
-  margin-left: ${settings.chatWidth - 62}px;
 }`);
   
   document.head.appendChild(style);
@@ -414,6 +412,7 @@ function generateSettingsCSS(){
   width: 3em;
   height: 3em;
   position: absolute;
+  margin-left: 292px;
   z-index: 9;
   cursor: pointer;
   fill: ${convHex("fffa")};
@@ -421,12 +420,10 @@ function generateSettingsCSS(){
 
 .chat-room__container #chylex-ttc-settings-btn {
   bottom: 130px;
-  margin-left: 292px;
 }
 
 .video-chat #chylex-ttc-settings-btn {
-  bottom: 122px;
-  margin-left: 288px;
+  bottom: 120px;
 }
 
 #chylex-ttc-settings-btn:hover .player-tip {
