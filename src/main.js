@@ -111,8 +111,12 @@ ${settings.hideHeader ? `
   }
 ` : ``}
 
+${rcol} .video-chat__sync-button {
+  width: ${settings.chatWidth - 50}px;
+}
+
 ${settings.chatWidth < 300 ? `
-  ${rcol} .video-chat__sync-button, ${rcol} .video-chat__settings, ${rcol} .chat-settings {
+  ${rcol} .video-chat__settings, ${rcol} .chat-settings {
     width: ${settings.chatWidth - 50}px;
   }
 ` : ``}
@@ -308,7 +312,7 @@ ${settings.grayTheme ? `
   }
 
   ${rcol} .chat-room__pane${wa}, ${rcol} .video-chat${wa} {
-    border-left-color: #333;
+    border-left-color: #333 !important;
   }
 
   ${rcolBlur} .chat-room__container, ${rcolBlur} .video-chat {
@@ -325,16 +329,19 @@ ${settings.grayTheme ? `
   }
 
   ${rcol} .video-chat__header {
-    background-color: ${convHex("17171766")} !important;
-    box-shadow: inset 0 -1px 0 0 #333 !important;
+    display: none !important;
   }
 
-  ${rcol} .video-chat__input .form__input, ${rcol} [data-a-target="chat-input"] {
+  ${rcol} .video-chat__input {
+    box-shadow: inset 0 1px 0 0 #333 !important;
+  }
+
+  ${rcol} [data-a-target="video-chat-input"], ${rcol} [data-a-target="chat-input"] {
     background-color: #1d1d1d !important;
     box-shadow: inset 0 0 0 1px #414141, 0 0 0 transparent !important;
   }
 
-  ${rcol} .video-chat__input .form__input:focus, ${rcol} [data-a-target="chat-input"]:focus {
+  ${rcol} [data-a-target="video-chat-input"]:focus, ${rcol} [data-a-target="chat-input"]:focus {
     box-shadow: inset 0 0 0 1px #696969, 0 0 6px -2px #696969 !important;
   }
 
@@ -376,8 +383,12 @@ ${settings.hideBadgeSubscriber ? `
 
 // dynamic styles for settings, replaces default style
 
-#chylex-ttc-settings-btn {
+.chat-room__container #chylex-ttc-settings-btn {
   margin-left: ${settings.chatWidth - 58}px;
+}
+
+.video-chat #chylex-ttc-settings-btn {
+  margin-left: ${settings.chatWidth - 62}px;
 }`);
   
   document.head.appendChild(style);
@@ -402,15 +413,16 @@ function generateSettingsCSS(){
   z-index: 9;
   cursor: pointer;
   fill: ${convHex("fffa")};
-  margin-left: 292px;
 }
 
 .chat-room__container #chylex-ttc-settings-btn {
   bottom: 130px;
+  margin-left: 292px;
 }
 
 .video-chat #chylex-ttc-settings-btn {
-  margin-top: 6px;
+  bottom: 122px;
+  margin-left: 288px;
 }
 
 #chylex-ttc-settings-btn:hover .player-tip {
