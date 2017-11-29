@@ -36,6 +36,8 @@ if (typeof GM_getValue !== "undefined"){
   }
 }
 
+const isFirefox = "mozPaintCount" in window;
+
 function tryRemoveElement(ele){
   if (ele && ele.parentNode){
     ele.parentNode.removeChild(ele);
@@ -90,9 +92,11 @@ ${rcolBlur} .chat-list__lines .simplebar-track.vertical {
   visibility: hidden !important;
 }
 
-${rcolBlur} .video-chat__message-list-wrapper {
-  overflow-y: hidden !important;
-}
+${isFirefox ? `
+  ${rcol} .video-chat__message-list-wrapper:not(.video-chat__message-list-wrapper--unsynced) {
+    overflow-y: hidden !important;
+  }
+` : ``}
 
 // general chat styles
 
@@ -690,6 +694,16 @@ function insertSettingsButton(){
       e.stopPropagation();
     }
   });
+  
+  if (isFirefox){
+    let wrapper = document.querySelector(".video-chat__message-list-wrapper");
+    
+    wrapper.addEventListener("wheel", function(e){
+      if (e.deltaY < 0){
+        wrapper.classList.add("video-chat__message-list-wrapper--unsynced");
+      }
+    });
+  }
 }
 
 window.setInterval(function(){
