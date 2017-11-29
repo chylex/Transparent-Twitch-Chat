@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.1.0
+// @version      1.1.1
 // @namespace    https://chylex.com
 // @include      https://www.twitch.tv/*
 // @run-at       document-end
@@ -10,7 +10,7 @@
 // @noframes
 // ==/UserScript==
 
-let settings = {
+const settings = {
   globalSwitch: true,
   
   chatWidth: 350,
@@ -35,6 +35,8 @@ if (typeof GM_getValue !== "undefined"){
     settings[key] = GM_getValue(key, settings[key]);
   }
 }
+
+const isFirefox = "mozPaintCount" in window;
 
 function tryRemoveElement(ele){
   if (ele && ele.parentNode){
@@ -90,9 +92,11 @@ ${rcolBlur} .chat-list__lines .simplebar-track.vertical {
   visibility: hidden !important;
 }
 
-${rcolBlur} .video-chat__message-list-wrapper {
-  overflow-y: hidden !important;
-}
+${isFirefox ? `
+  ${rcol} .video-chat__message-list-wrapper:not(.video-chat__message-list-wrapper--unsynced) {
+    overflow-y: hidden !important;
+  }
+` : ``}
 
 // general chat styles
 
@@ -106,13 +110,19 @@ ${rcol} .video-chat {
 }
 
 ${settings.hideHeader ? `
-  ${rcol} .chat__header {
+  ${rcol} .chat-room__header {
     display: none !important;
   }
 ` : ``}
 
-${settings.chatWidth < 300 ? `
-  ${rcol} .video-chat__sync-button, ${rcol} .video-chat__settings, ${rcol} .chat-settings {
+${rcol} .video-chat__sync-button {
+  width: ${settings.chatWidth - 50}px;
+  z-index: 10;
+  background-color: #b8b5c0 !important;
+}
+
+${settings.chatWidth < 350 ? `
+  ${rcol} .video-chat__settings, ${rcol} .chat-settings {
     width: ${settings.chatWidth - 50}px;
   }
 ` : ``}
@@ -163,11 +173,11 @@ ${settings.transparentChat ? `
 
   // chat container transparency
 
-  ${rcol} .chat__pane${wa}, ${rcol} .video-chat${wa} {
+  ${rcol} .chat-room__pane${wa}, ${rcol} .video-chat${wa} {
     border-left: none !important;
   }
 
-  ${rcolBlur} .chat__pane${wa} {
+  ${rcolBlur} .chat-room__pane${wa} {
     background: none !important;
   }
 
@@ -181,18 +191,18 @@ ${settings.transparentChat ? `
     box-shadow: none !important;
   }
 
-  ${rcolBlur} .chat__container, ${rcolBlur} .video-chat {
+  ${rcolBlur} .chat-room__container, ${rcolBlur} .video-chat {
     background: ${convHex("17141f"+(Math.round(settings.backgroundOpacity * 2.55).toString(16).padStart(2, '0')))} !important;
     color: #ece8f3 !important;
   }
 
-  ${rcolBlur} .chat__pane > div:last-child, ${rcolBlur} .video-chat__input {
+  ${rcolBlur} .chat-room__pane > div:last-child, ${rcolBlur} .video-chat__input {
     opacity: 0.6;
   }
 
   // chat message shadow
 
-  ${rcolBlur} .chat__container, ${rcolBlur} .video-chat {
+  ${rcolBlur} .chat-room__container, ${rcolBlur} .video-chat {
     ${settings.smoothTextShadow ? `
     text-shadow: 0 0 2px ${convHex("000D")}, -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
     ` : `
@@ -303,38 +313,41 @@ ${settings.chatLeftSide && settings.transparentChat ? `
 // gray theme
 
 ${settings.grayTheme ? `
-  ${rcol} .chat__pane${wa} {
+  ${rcol} .chat-room__pane${wa} {
     background: none !important;
   }
 
-  ${rcol} .chat__pane${wa}, ${rcol} .video-chat${wa} {
-    border-left-color: #333;
+  ${rcol} .chat-room__pane${wa}, ${rcol} .video-chat${wa} {
+    border-left-color: #333 !important;
   }
 
-  ${rcolBlur} .chat__container, ${rcolBlur} .video-chat {
+  ${rcolBlur} .chat-room__container, ${rcolBlur} .video-chat {
     background: ${convHex("141414"+(Math.round(settings.transparentChat ? (settings.backgroundOpacity * 2.55) : 255).toString(16).padStart(2, '0')))} !important;
   }
 
-  ${rcol} .chat__container, ${rcol} .video-chat {
+  ${rcol} .chat-room__container, ${rcol} .video-chat {
     background: #141414 !important;
   }
 
-  ${rcol} .chat__header {
+  ${rcol} .chat-room__header {
     background-color: #171717 !important;
     box-shadow: inset 0 -1px 0 0 #333 !important;
   }
 
   ${rcol} .video-chat__header {
-    background-color: ${convHex("17171766")} !important;
-    box-shadow: inset 0 -1px 0 0 #333 !important;
+    display: none !important;
   }
 
-  ${rcol} .video-chat__input .form__input, ${rcol} [data-a-target="chat-input"] {
+  ${rcol} .video-chat__input {
+    box-shadow: inset 0 1px 0 0 #333 !important;
+  }
+
+  ${rcol} [data-a-target="video-chat-input"], ${rcol} [data-a-target="chat-input"] {
     background-color: #1d1d1d !important;
     box-shadow: inset 0 0 0 1px #414141, 0 0 0 transparent !important;
   }
 
-  ${rcol} .video-chat__input .form__input:focus, ${rcol} [data-a-target="chat-input"]:focus {
+  ${rcol} [data-a-target="video-chat-input"]:focus, ${rcol} [data-a-target="chat-input"]:focus {
     box-shadow: inset 0 0 0 1px #696969, 0 0 6px -2px #696969 !important;
   }
 
@@ -399,18 +412,18 @@ function generateSettingsCSS(){
   width: 3em;
   height: 3em;
   position: absolute;
+  margin-left: 292px;
   z-index: 9;
   cursor: pointer;
   fill: ${convHex("fffa")};
-  margin-left: 292px;
 }
 
-.chat__container #chylex-ttc-settings-btn {
+.chat-room__container #chylex-ttc-settings-btn {
   bottom: 130px;
 }
 
 .video-chat #chylex-ttc-settings-btn {
-  margin-top: 6px;
+  bottom: 120px;
 }
 
 #chylex-ttc-settings-btn:hover .player-tip {
@@ -658,7 +671,7 @@ function createSettingsModal(){
 }
 
 function insertSettingsButton(){
-  let container = document.querySelector(".chat__container,.video-chat");
+  const container = document.querySelector(".chat-room__container,.video-chat");
   
   if (!container){
     return;
@@ -667,7 +680,7 @@ function insertSettingsButton(){
   tryRemoveElement(document.getElementById("chylex-ttc-settings-btn"));
   tryRemoveElement(document.getElementById("chylex-ttc-settings-modal"));
   
-  let button = document.createElement("div");
+  const button = document.createElement("div");
   button.id = "chylex-ttc-settings-btn";
   button.innerHTML = '<span class="player-tip js-tip" data-tip="Transparent Twitch Chat"></span><svg><use xlink:href="#icon_settings"></use></svg>';
   container.appendChild(button);
@@ -678,6 +691,23 @@ function insertSettingsButton(){
       e.stopPropagation();
     }
   });
+  
+  if (isFirefox && container.classList.contains("video-chat")){
+    const wrapper = document.querySelector(".video-chat__message-list-wrapper");
+    const unsynced = "video-chat__message-list-wrapper--unsynced";
+    
+    wrapper.addEventListener("wheel", function(e){
+      if (e.deltaY < 0){
+        wrapper.classList.add(unsynced);
+      }
+    });
+    
+    wrapper.addEventListener("keydown", function(e){
+      if (e.keyCode === 38 || e.keyCode === 33){ // up arrow || page up
+        wrapper.classList.add(unsynced);
+      }
+    });
+  }
 }
 
 window.setInterval(function(){
