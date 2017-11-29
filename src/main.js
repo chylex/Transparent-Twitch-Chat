@@ -106,7 +106,7 @@ ${rcol} .video-chat {
 }
 
 ${settings.hideHeader ? `
-  ${rcol} .chat__header {
+  ${rcol} .chat-room__header {
     display: none !important;
   }
 ` : ``}
@@ -163,11 +163,11 @@ ${settings.transparentChat ? `
 
   // chat container transparency
 
-  ${rcol} .chat__pane${wa}, ${rcol} .video-chat${wa} {
+  ${rcol} .chat-room__pane${wa}, ${rcol} .video-chat${wa} {
     border-left: none !important;
   }
 
-  ${rcolBlur} .chat__pane${wa} {
+  ${rcolBlur} .chat-room__pane${wa} {
     background: none !important;
   }
 
@@ -181,18 +181,18 @@ ${settings.transparentChat ? `
     box-shadow: none !important;
   }
 
-  ${rcolBlur} .chat__container, ${rcolBlur} .video-chat {
+  ${rcolBlur} .chat-room__container, ${rcolBlur} .video-chat {
     background: ${convHex("17141f"+(Math.round(settings.backgroundOpacity * 2.55).toString(16).padStart(2, '0')))} !important;
     color: #ece8f3 !important;
   }
 
-  ${rcolBlur} .chat__pane > div:last-child, ${rcolBlur} .video-chat__input {
+  ${rcolBlur} .chat-room__pane > div:last-child, ${rcolBlur} .video-chat__input {
     opacity: 0.6;
   }
 
   // chat message shadow
 
-  ${rcolBlur} .chat__container, ${rcolBlur} .video-chat {
+  ${rcolBlur} .chat-room__container, ${rcolBlur} .video-chat {
     ${settings.smoothTextShadow ? `
     text-shadow: 0 0 2px ${convHex("000D")}, -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
     ` : `
@@ -303,23 +303,23 @@ ${settings.chatLeftSide && settings.transparentChat ? `
 // gray theme
 
 ${settings.grayTheme ? `
-  ${rcol} .chat__pane${wa} {
+  ${rcol} .chat-room__pane${wa} {
     background: none !important;
   }
 
-  ${rcol} .chat__pane${wa}, ${rcol} .video-chat${wa} {
+  ${rcol} .chat-room__pane${wa}, ${rcol} .video-chat${wa} {
     border-left-color: #333;
   }
 
-  ${rcolBlur} .chat__container, ${rcolBlur} .video-chat {
+  ${rcolBlur} .chat-room__container, ${rcolBlur} .video-chat {
     background: ${convHex("141414"+(Math.round(settings.transparentChat ? (settings.backgroundOpacity * 2.55) : 255).toString(16).padStart(2, '0')))} !important;
   }
 
-  ${rcol} .chat__container, ${rcol} .video-chat {
+  ${rcol} .chat-room__container, ${rcol} .video-chat {
     background: #141414 !important;
   }
 
-  ${rcol} .chat__header {
+  ${rcol} .chat-room__header {
     background-color: #171717 !important;
     box-shadow: inset 0 -1px 0 0 #333 !important;
   }
@@ -405,7 +405,7 @@ function generateSettingsCSS(){
   margin-left: 292px;
 }
 
-.chat__container #chylex-ttc-settings-btn {
+.chat-room__container #chylex-ttc-settings-btn {
   bottom: 130px;
 }
 
@@ -658,7 +658,7 @@ function createSettingsModal(){
 }
 
 function insertSettingsButton(){
-  let container = document.querySelector(".chat__container,.video-chat");
+  let container = document.querySelector(".chat-room__container,.video-chat");
   
   if (!container){
     return;
