@@ -697,10 +697,17 @@ function insertSettingsButton(){
   
   if (isFirefox){
     let wrapper = document.querySelector(".video-chat__message-list-wrapper");
+    let unsynced = "video-chat__message-list-wrapper--unsynced";
     
     wrapper.addEventListener("wheel", function(e){
       if (e.deltaY < 0){
-        wrapper.classList.add("video-chat__message-list-wrapper--unsynced");
+        wrapper.classList.add(unsynced);
+      }
+    });
+    
+    wrapper.addEventListener("keydown", function(e){
+      if (e.keyCode === 38 || e.keyCode === 33){ // up arrow || page up
+        wrapper.classList.add(unsynced);
       }
     });
   }
