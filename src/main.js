@@ -109,6 +109,10 @@ ${rcol} .video-chat {
   flex-basis: auto !important;
 }
 
+${rcol} .video-chat__header {
+  display: none !important;
+}
+
 ${settings.hideHeader ? `
   ${rcol} .chat-room__header {
     display: none !important;
@@ -332,10 +336,6 @@ ${settings.grayTheme ? `
   ${rcol} .chat-room__header {
     background-color: #171717 !important;
     box-shadow: inset 0 -1px 0 0 #333 !important;
-  }
-
-  ${rcol} .video-chat__header {
-    display: none !important;
   }
 
   ${rcol} .video-chat__input {
