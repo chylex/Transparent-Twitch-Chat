@@ -158,20 +158,20 @@ ${settings.transparentChat ? `
   //   right: 0 !important;
   // }
 
-  .channel-page__video-player--theatre-mode {
+  .persistent-player--theatre {
     width: 100% !important;
   }
 
-  .channel-page__video-player--theatre-mode:not(.full-width) .player-hover {
+  .persistent-player--theatre:not(.full-width) .player-hover {
     padding-right: ${settings.chatWidth - 10}px;
   }
 
-  .channel-page__video-player--theatre-mode .player-streamstatus {
+  .persistent-player--theatre .player-streamstatus {
     margin-right: ${settings.chatWidth + 10}px !important;
     padding-right: 1.5em !important;
   }
 
-  .channel-page__video-player--theatre-mode.full-width .player-streamstatus {
+  .persistent-player--theatre.full-width .player-streamstatus {
     margin-right: 20px !important;
   }
 
@@ -241,7 +241,7 @@ ${settings.transparentChat ? `
 
   // adapt player size with disabled transparency
 
-  .channel-page__video-player--theatre-mode {
+  .persistent-player--theatre {
     width: calc(100% - ${settings.chatWidth - 10}px) !important;
   }
 `}
@@ -279,20 +279,20 @@ ${settings.chatLeftSide && settings.transparentChat ? `
     right: auto !important;
   }
 
-  .channel-page__video-player--theatre-mode:not(.full-width) .player-hover {
+  .persistent-player--theatre:not(.full-width) .player-hover {
     padding-left: ${settings.chatWidth - 10}px;
     padding-right: 0;
   }
 
-  .channel-page__video-player--theatre-mode:not(.full-width) .player-streaminfo {
+  .persistent-player--theatre:not(.full-width) .player-streaminfo {
     margin-left: 40px;
   }
 
-  .channel-page__video-player--theatre-mode.full-width .player-streaminfo {
+  .persistent-player--theatre.full-width .player-streaminfo {
     margin-left: 25px;
   }
 
-  .channel-page__video-player--theatre-mode .player-streamstatus${wa} {
+  .persistent-player--theatre .player-streamstatus${wa} {
     margin-right: 0px !important;
     padding-right: 1.5em !important;
   }
