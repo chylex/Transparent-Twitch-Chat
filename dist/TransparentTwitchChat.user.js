@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.1.1
+// @version      1.1.2
 // @namespace    https://chylex.com
 // @include      https://www.twitch.tv/*
 // @run-at       document-end
@@ -109,6 +109,10 @@ ${rcol} .video-chat {
   flex-basis: auto !important;
 }
 
+${rcol} .video-chat__header {
+  display: none !important;
+}
+
 ${settings.hideHeader ? `
   ${rcol} .chat-room__header {
     display: none !important;
@@ -154,20 +158,20 @@ ${settings.transparentChat ? `
   //   right: 0 !important;
   // }
 
-  .channel-page__video-player--theatre-mode {
+  .persistent-player--theatre {
     width: 100% !important;
   }
 
-  .channel-page__video-player--theatre-mode:not(.full-width) .player-hover {
+  .persistent-player--theatre:not(.full-width) .player-hover {
     padding-right: ${settings.chatWidth - 10}px;
   }
 
-  .channel-page__video-player--theatre-mode .player-streamstatus {
+  .persistent-player--theatre .player-streamstatus {
     margin-right: ${settings.chatWidth + 10}px !important;
     padding-right: 1.5em !important;
   }
 
-  .channel-page__video-player--theatre-mode.full-width .player-streamstatus {
+  .persistent-player--theatre.full-width .player-streamstatus {
     margin-right: 20px !important;
   }
 
@@ -237,7 +241,7 @@ ${settings.transparentChat ? `
 
   // adapt player size with disabled transparency
 
-  .channel-page__video-player--theatre-mode {
+  .persistent-player--theatre {
     width: calc(100% - ${settings.chatWidth - 10}px) !important;
   }
 `}
@@ -275,20 +279,20 @@ ${settings.chatLeftSide && settings.transparentChat ? `
     right: auto !important;
   }
 
-  .channel-page__video-player--theatre-mode:not(.full-width) .player-hover {
+  .persistent-player--theatre:not(.full-width) .player-hover {
     padding-left: ${settings.chatWidth - 10}px;
     padding-right: 0;
   }
 
-  .channel-page__video-player--theatre-mode:not(.full-width) .player-streaminfo {
+  .persistent-player--theatre:not(.full-width) .player-streaminfo {
     margin-left: 40px;
   }
 
-  .channel-page__video-player--theatre-mode.full-width .player-streaminfo {
+  .persistent-player--theatre.full-width .player-streaminfo {
     margin-left: 25px;
   }
 
-  .channel-page__video-player--theatre-mode .player-streamstatus${wa} {
+  .persistent-player--theatre .player-streamstatus${wa} {
     margin-right: 0px !important;
     padding-right: 1.5em !important;
   }
@@ -332,10 +336,6 @@ ${settings.grayTheme ? `
   ${rcol} .chat-room__header {
     background-color: #171717 !important;
     box-shadow: inset 0 -1px 0 0 #333 !important;
-  }
-
-  ${rcol} .video-chat__header {
-    display: none !important;
   }
 
   ${rcol} .video-chat__input {
