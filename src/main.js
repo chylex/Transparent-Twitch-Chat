@@ -222,6 +222,10 @@ ${settings.transparentChat ? `
     `}
   }
 
+  ${rcolBlur} .chat-line__message--mention-recipient {
+    text-shadow: none;
+  }
+
   // chat messages
 
   ${rcolBlur} .vod-message__timestamp {
