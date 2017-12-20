@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.1.2
+// @version      1.1.3
 // @namespace    https://chylex.com
 // @include      https://www.twitch.tv/*
 // @run-at       document-end
@@ -222,6 +222,10 @@ ${settings.transparentChat ? `
     `}
   }
 
+  ${rcolBlur} .chat-line__message--mention-recipient {
+    text-shadow: none;
+  }
+
   // chat messages
 
   ${rcolBlur} .vod-message__timestamp {
@@ -344,7 +348,7 @@ ${settings.grayTheme ? `
 
   ${rcol} [data-a-target="video-chat-input"], ${rcol} [data-a-target="chat-input"] {
     background-color: #1d1d1d !important;
-    box-shadow: inset 0 0 0 1px #414141, 0 0 0 transparent !important;
+    border-color: #414141 !important;
   }
 
   ${rcol} [data-a-target="video-chat-input"]:focus, ${rcol} [data-a-target="chat-input"]:focus {
