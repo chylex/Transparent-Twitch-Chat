@@ -348,7 +348,7 @@ ${settings.grayTheme ? `
 
   ${rcol} [data-a-target="video-chat-input"], ${rcol} [data-a-target="chat-input"] {
     background-color: #1d1d1d !important;
-    box-shadow: inset 0 0 0 1px #414141, 0 0 0 transparent !important;
+    border-color: #414141 !important;
   }
 
   ${rcol} [data-a-target="video-chat-input"]:focus, ${rcol} [data-a-target="chat-input"]:focus {
