@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.1.3
+// @version      1.1.4
 // @namespace    https://chylex.com
 // @include      https://www.twitch.tv/*
 // @run-at       document-end
@@ -76,6 +76,7 @@ function generateCustomCSS(){
   let wa = ":not(.ttcwa)"; // selector priority workaround
   let rcol = ".right-column--theatre";
   let rcolBlur = ".right-column--theatre:not(:hover)";
+  let fullWidth = "[style*='width: 100%']";
   
   let style = document.getElementById("chylex-ttc-style-custom");
   
@@ -162,7 +163,7 @@ ${settings.transparentChat ? `
     width: 100% !important;
   }
 
-  .persistent-player--theatre:not(.full-width) .player-hover {
+  .persistent-player--theatre:not(${fullWidth}) .player-hover {
     padding-right: ${settings.chatWidth - 10}px;
   }
 
@@ -171,17 +172,17 @@ ${settings.transparentChat ? `
     padding-right: 1.5em !important;
   }
 
-  .persistent-player--theatre.full-width .player-streamstatus {
+  .persistent-player--theatre${fullWidth} .player-streamstatus {
     margin-right: 20px !important;
   }
 
   // chat container transparency
 
-  ${rcol} .chat-room__pane${wa}, ${rcol} .video-chat${wa} {
+  ${rcol} .tw-border-l.tw-c-background-alt-2${wa} {
     border-left: none !important;
   }
 
-  ${rcolBlur} .chat-room__pane${wa} {
+  ${rcolBlur} .tw-c-background-alt-2:not(.video-chat)${wa} {
     background: none !important;
   }
 
@@ -200,7 +201,7 @@ ${settings.transparentChat ? `
     color: #ece8f3 !important;
   }
 
-  ${rcolBlur} .chat-room__pane > div:last-child, ${rcolBlur} .video-chat__input {
+  ${rcolBlur} .chat-input, ${rcolBlur} .video-chat__input {
     opacity: 0.6;
   }
 
@@ -245,8 +246,12 @@ ${settings.transparentChat ? `
 
   // adapt player size with disabled transparency
 
-  .persistent-player--theatre {
+  .persistent-player--theatre:not(${fullWidth}) {
     width: calc(100% - ${settings.chatWidth - 10}px) !important;
+  }
+
+  .persistent-player--theatre .player-streamstatus {
+    margin-right: 20px !important;
   }
 `}
 
@@ -283,16 +288,16 @@ ${settings.chatLeftSide && settings.transparentChat ? `
     right: auto !important;
   }
 
-  .persistent-player--theatre:not(.full-width) .player-hover {
+  .persistent-player--theatre:not(${fullWidth}) .player-hover {
     padding-left: ${settings.chatWidth - 10}px;
     padding-right: 0;
   }
 
-  .persistent-player--theatre:not(.full-width) .player-streaminfo {
+  .persistent-player--theatre:not(${fullWidth}) .player-streaminfo {
     margin-left: 40px;
   }
 
-  .persistent-player--theatre.full-width .player-streaminfo {
+  .persistent-player--theatre${fullWidth} .player-streaminfo {
     margin-left: 25px;
   }
 
@@ -321,20 +326,20 @@ ${settings.chatLeftSide && settings.transparentChat ? `
 // gray theme
 
 ${settings.grayTheme ? `
-  ${rcol} .chat-room__pane${wa} {
-    background: none !important;
-  }
-
-  ${rcol} .chat-room__pane${wa}, ${rcol} .video-chat${wa} {
+  ${rcol} .tw-border-l.tw-c-background-alt-2 {
     border-left-color: #333 !important;
   }
 
-  ${rcolBlur} .chat-room__container, ${rcolBlur} .video-chat {
-    background: ${convHex("141414"+(Math.round(settings.transparentChat ? (settings.backgroundOpacity * 2.55) : 255).toString(16).padStart(2, '0')))} !important;
+  ${rcol} .tw-c-background-alt-2:not(.video-chat)${wa} {
+    background: none !important;
   }
 
-  ${rcol} .chat-room__container, ${rcol} .video-chat {
+  ${rcol} .chat-room__container, ${rcol} .video-chat${wa} {
     background: #141414 !important;
+  }
+
+  ${rcolBlur} .chat-room__container, ${rcolBlur} .video-chat${wa} {
+    background: ${convHex("141414"+(Math.round(settings.transparentChat ? (settings.backgroundOpacity * 2.55) : 255).toString(16).padStart(2, '0')))} !important;
   }
 
   ${rcol} .chat-room__header {
