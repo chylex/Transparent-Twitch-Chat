@@ -248,6 +248,10 @@ ${settings.transparentChat ? `
   .persistent-player--theatre {
     width: calc(100% - ${settings.chatWidth - 10}px) !important;
   }
+
+  .persistent-player--theatre .player-streamstatus {
+    margin-right: 20px !important;
+  }
 `}
 
 // conversation menu and bottom margin
