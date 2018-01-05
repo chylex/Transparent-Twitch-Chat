@@ -150,7 +150,7 @@ ${settings.transparentChat ? `
     width: 100% !important;
   }
 
-  .persistent-player--theatre:not(${fullWidth}) .player-hover {
+  .persistent-player--theatre:not(${fullWidth}) .hover-display > div {
     padding-right: ${settings.chatWidth - 10}px;
   }
 
@@ -275,7 +275,7 @@ ${settings.chatLeftSide && settings.transparentChat ? `
     right: auto !important;
   }
 
-  .persistent-player--theatre:not(${fullWidth}) .player-hover {
+  .persistent-player--theatre:not(${fullWidth}) .hover-display > div {
     padding-left: ${settings.chatWidth - 10}px;
     padding-right: 0;
   }
