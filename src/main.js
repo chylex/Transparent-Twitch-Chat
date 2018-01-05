@@ -54,19 +54,6 @@ function onSettingsUpdated(){
   }
 }
 
-function convHex(hex){
-  if (hex.length === 8){
-    return `rgba(${parseInt(hex.substr(0, 2), 16)}, ${parseInt(hex.substr(2, 2), 16)}, ${parseInt(hex.substr(4, 2), 16)}, ${parseInt(hex.substr(6, 2), 16) / 256})`;
-  }
-  else if (hex.length === 4){
-    return `rgba(${parseInt(hex[0].repeat(2), 16)}, ${parseInt(hex[1].repeat(2), 16)}, ${parseInt(hex[2].repeat(2), 16)}, ${parseInt(hex[3].repeat(2), 16) / 256})`;
-  }
-}
-
-function stripComments(str){
-  return str.replace(/^\s*\/\/(.*?)$/gm, "");
-}
-
 function generateCustomCSS(){
   if (!settings.globalSwitch){
     tryRemoveElement(document.getElementById("chylex-ttc-style-custom"));
@@ -85,7 +72,7 @@ function generateCustomCSS(){
     style.id = "chylex-ttc-style-custom";
   }
   
-  style.innerHTML = stripComments(`
+  style.innerHTML = `@#css{{
 
 // fix scrollbars
 
@@ -187,7 +174,7 @@ ${settings.transparentChat ? `
   }
 
   ${rcolBlur} .video-chat__header {
-    background-color: ${convHex("17141f66")} !important;
+    background-color: @#hex(17141f66) !important;
     box-shadow: none !important;
   }
 
@@ -197,7 +184,7 @@ ${settings.transparentChat ? `
   }
 
   ${rcolBlur} .chat-room__container, ${rcolBlur} .video-chat {
-    background: ${convHex("17141f"+(Math.round(settings.backgroundOpacity * 2.55).toString(16).padStart(2, '0')))} !important;
+    background: rgba(23, 20, 31, ${settings.backgroundOpacity * 0.01}) !important;
     color: #ece8f3 !important;
   }
 
@@ -209,17 +196,17 @@ ${settings.transparentChat ? `
 
   ${rcolBlur} .chat-room__container, ${rcolBlur} .video-chat {
     ${settings.smoothTextShadow ? `
-    text-shadow: 0 0 2px ${convHex("000D")}, -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
+    text-shadow: 0 0 2px @#hex(000d), -1px 0 1px @#hex(0006), 0 -1px 1px @#hex(0006), 1px 0 1px @#hex(0006), 0 1px 1px @#hex(0006);
     ` : `
-    text-shadow: -1px 0 0 ${convHex("000A")}, 0 -1px 0 ${convHex("000A")}, 1px 0 0 ${convHex("000A")}, 0 1px 0 ${convHex("000A")};
+    text-shadow: -1px 0 0 @#hex(000a), 0 -1px 0 @#hex(000a), 1px 0 0 @#hex(000a), 0 1px 0 @#hex(000a);
     `}
   }
 
   ${rcolBlur} .chat-author__display-name, ${rcolBlur} .vod-message__timestamp {
     ${settings.smoothTextShadow ? `
-    text-shadow: -1px 0 1px ${convHex("0006")}, 0 -1px 1px ${convHex("0006")}, 1px 0 1px ${convHex("0006")}, 0 1px 1px ${convHex("0006")};
+    text-shadow: -1px 0 1px @#hex(0006), 0 -1px 1px @#hex(0006), 1px 0 1px @#hex(0006), 0 1px 1px @#hex(0006);
     ` : `
-    text-shadow: -1px 0 0 ${convHex("0008")}, 0 -1px 0 ${convHex("0008")}, 1px 0 0 ${convHex("0008")}, 0 1px 0 ${convHex("0008")};
+    text-shadow: -1px 0 0 @#hex(0008), 0 -1px 0 @#hex(0008), 1px 0 0 @#hex(0008), 0 1px 0 @#hex(0008);
     `}
   }
 
@@ -240,7 +227,7 @@ ${settings.transparentChat ? `
   // conversation menu
 
   .whispers-threads-box__container:not(.whispers-threads-box__container--open):not(:hover) {
-    opacity: ${settings.backgroundOpacity / 100};
+    opacity: ${settings.backgroundOpacity * 0.01};
   }
 ` : `
 
@@ -339,7 +326,7 @@ ${settings.grayTheme ? `
   }
 
   ${rcolBlur} .chat-room__container, ${rcolBlur} .video-chat${wa} {
-    background: ${convHex("141414"+(Math.round(settings.transparentChat ? (settings.backgroundOpacity * 2.55) : 255).toString(16).padStart(2, '0')))} !important;
+    background: rgba(20, 20, 20, ${settings.transparentChat ? (settings.backgroundOpacity * 0.01) : 1}) !important;
   }
 
   ${rcol} .chat-room__header {
@@ -400,7 +387,8 @@ ${settings.hideBadgeSubscriber ? `
 
 #chylex-ttc-settings-btn {
   margin-left: ${settings.chatWidth - 58}px;
-}`);
+}
+@#css}}`;
   
   document.head.appendChild(style);
 }
@@ -412,7 +400,7 @@ function generateSettingsCSS(){
   
   let style = document.createElement("style");
   style.id = "chylex-ttc-style-settings";
-  style.innerHTML = stripComments(`
+  style.innerHTML = `@#css{{
 
 // settings button
 
@@ -424,7 +412,7 @@ function generateSettingsCSS(){
   margin-left: 292px;
   z-index: 9;
   cursor: pointer;
-  fill: ${convHex("fffa")};
+  fill: @#hex(fffa);
 }
 
 .chat-room__container #chylex-ttc-settings-btn {
@@ -468,7 +456,7 @@ function generateSettingsCSS(){
   margin-left: -280px;
   margin-top: -175px;
   z-index: 10000;
-  background-color: ${convHex("111b")};
+  background-color: @#hex(111b);
 }
 
 #chylex-ttc-settings-modal #ttc-opt-global-wrapper {
@@ -478,12 +466,12 @@ function generateSettingsCSS(){
 }
 
 #chylex-ttc-settings-modal h2 {
-  color: ${convHex("fffe")};
+  color: @#hex(fffe);
   font-size: 24px;
   text-align: center;
   margin: 0;
   padding: 17px 0 16px;
-  background-color: ${convHex("0009")};
+  background-color: @#hex(0009);
 }
 
 #chylex-ttc-settings-modal .ttc-flex-container {
@@ -498,7 +486,7 @@ function generateSettingsCSS(){
 }
 
 #chylex-ttc-settings-modal p {
-  color: ${convHex("fffd")};
+  color: @#hex(fffd);
   font-size: 14px;
   margin-top: 8px;
   padding: 0 12px;
@@ -514,7 +502,7 @@ function generateSettingsCSS(){
 
 #chylex-ttc-settings-modal .player-menu__header {
   margin-bottom: 0;
-  color: ${convHex("fffa")};
+  color: @#hex(fffa);
 }
 
 #chylex-ttc-settings-modal .player-menu__item {
@@ -557,11 +545,12 @@ function generateSettingsCSS(){
 }
 
 #chylex-ttc-settings-modal output {
-  color: ${convHex("fffc")};
+  color: @#hex(fffc);
   width: 46px;
   padding-left: 4px;
   text-align: right;
-}`);
+}
+@#css}}`;
   
   document.head.appendChild(style);
 }

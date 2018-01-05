@@ -1,5 +1,7 @@
 # Build script for Transparent Twitch Chat
-# Python 3
+# Python 3.6+
+
+import re
 
 # Prepare
 
@@ -35,9 +37,25 @@ if not new_version:
 
 # Build
 
+with open(SRC_FILE, 'r') as src:
+    src_contents = src.read()
+
+src_contents = src_contents.replace("{VERSION}", new_version, 1)
+
+src_contents = re.sub(r'@#hex\(([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})\)',
+                      lambda m: f'rgba({int(m.group(1), 16)},{int(m.group(2), 16)},{int(m.group(3), 16)},{int(m.group(4), 16) / 256})',
+                      src_contents)
+
+src_contents = re.sub(r'@#hex\(([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])\)',
+                      lambda m: f'rgba({int(m.group(1)*2, 16)},{int(m.group(2)*2, 16)},{int(m.group(3)*2, 16)},{int(m.group(4)*2, 16) / 256})',
+                      src_contents)
+
+src_contents = re.sub(r'@#css{{(.*?)@#css}}',
+                      lambda m: "\n".join(filter(lambda line: line and not line.startswith("//"), map(lambda line: line.strip(), m.group(1).splitlines()))),
+                      src_contents,
+                      flags = re.DOTALL)
+
 with open(OUTPUT_FILE, 'w') as out:
-    with open(SRC_FILE, 'r') as src:
-        for line in src:
-            out.write(line.replace("{VERSION}", new_version))
+    out.write(src_contents)
 
 print("Done")
