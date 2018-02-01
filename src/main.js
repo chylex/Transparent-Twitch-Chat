@@ -22,6 +22,7 @@ const settings = {
   transparentChat: true,
   smoothTextShadow: false,
   chatLeftSide: false,
+  hideChatInput: false,
   backgroundOpacity: 30,
   
   hideBadgeTurbo: true,
@@ -388,6 +389,14 @@ ${settings.hideBadgeSubscriber ? `
 #chylex-ttc-settings-btn {
   margin-left: ${settings.chatWidth - 58}px;
 }
+
+// hide chat input box 
+
+${settings.hideChatInput ? `
+${rcolBlur} .chat-input, ${rcolBlur} .video-chat__input {
+display: none;
+}
+` : ``}
 @#css}}`;
   
   document.head.appendChild(style);
@@ -643,6 +652,7 @@ function createSettingsModal(){
     ${generateToggle("Transparent Chat", "transparentChat")}
     ${generateToggle("Smooth Text Shadow", "smoothTextShadow")}
     ${generateToggle("Chat on Left Side", "chatLeftSide")}
+    ${generateToggle("Hide Chat Input", "hideChatInput")}
     ${generateSlider("Background Opacity", "backgroundOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
   </div>
 
