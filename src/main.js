@@ -109,6 +109,12 @@ ${settings.hideHeader ? `
   }
 ` : ``}
 
+${settings.hideChatInput ? `
+  ${rcolBlur} .chat-input, ${rcolBlur} .video-chat__input {
+    display: none;
+  }
+` : ``}
+
 ${rcol} .video-chat__sync-button {
   width: ${settings.chatWidth - 50}px;
   z-index: 10;
@@ -390,14 +396,6 @@ ${settings.hideBadgeSubscriber ? `
 #chylex-ttc-settings-btn {
   margin-left: ${settings.chatWidth - 58}px;
 }
-
-// hide chat input box 
-
-${settings.hideChatInput ? `
-  ${rcolBlur} .chat-input, ${rcolBlur} .video-chat__input {
-    display: none;
-  }
-` : ``}
 @#css}}`;
   
   document.head.appendChild(style);
