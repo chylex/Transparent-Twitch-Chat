@@ -14,15 +14,16 @@ const settings = {
   globalSwitch: true,
   
   chatWidth: 350,
-  hideHeader: true,
-  hideTimestamps: false,
-  hideConversations: false,
   grayTheme: false,
+  hideTimestamps: false,
+  
+  hideHeader: true,
+  hideChatInput: false,
+  hideConversations: false,
   
   transparentChat: true,
   smoothTextShadow: false,
   chatLeftSide: false,
-  hideChatInput: false,
   backgroundOpacity: 30,
   
   hideBadgeTurbo: true,
@@ -393,9 +394,9 @@ ${settings.hideBadgeSubscriber ? `
 // hide chat input box 
 
 ${settings.hideChatInput ? `
-${rcolBlur} .chat-input, ${rcolBlur} .video-chat__input {
-display: none;
-}
+  ${rcolBlur} .chat-input, ${rcolBlur} .video-chat__input {
+    display: none;
+  }
 ` : ``}
 @#css}}`;
   
@@ -460,12 +461,12 @@ function generateSettingsCSS(){
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 560px;
-  height: 350px;
-  margin-left: -280px;
-  margin-top: -175px;
+  width: 630px;
+  height: 292px;
+  margin-left: -315px;
+  margin-top: -146px;
   z-index: 10000;
-  background-color: @#hex(111b);
+  background-color: @#hex(111c);
 }
 
 #chylex-ttc-settings-modal #ttc-opt-global-wrapper {
@@ -479,7 +480,7 @@ function generateSettingsCSS(){
   font-size: 24px;
   text-align: center;
   margin: 0;
-  padding: 17px 0 16px;
+  padding: 14px 0 13px;
   background-color: @#hex(0009);
 }
 
@@ -491,14 +492,14 @@ function generateSettingsCSS(){
 }
 
 #chylex-ttc-settings-modal .ttc-flex-column {
-  flex: 0 0 calc(100% / 3);
+  flex: 0 0 calc(100% / 4);
 }
 
 #chylex-ttc-settings-modal p {
   color: @#hex(fffd);
   font-size: 14px;
   margin-top: 8px;
-  padding: 0 12px;
+  padding: 0 9px;
 }
 
 #chylex-ttc-settings-modal p:first-of-type {
@@ -506,7 +507,7 @@ function generateSettingsCSS(){
 }
 
 #chylex-ttc-settings-modal .player-menu__section {
-  padding: 0 12px;
+  padding: 0 12px 2px;
 }
 
 #chylex-ttc-settings-modal .player-menu__header {
@@ -516,7 +517,7 @@ function generateSettingsCSS(){
 
 #chylex-ttc-settings-modal .player-menu__item {
   align-items: center;
-  margin: 1px 0 9px;
+  margin: 2px 0 9px;
   padding-left: 1px;
 }
 
@@ -641,10 +642,8 @@ function createSettingsModal(){
   <div class="ttc-flex-column">
     <p>General</p>
     ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 600, step: 25, wait: 500, text: "px" })}
-    ${generateToggle("Hide Chat Header", "hideHeader")}
-    ${generateToggle("Hide Timestamps", "hideTimestamps")}
-    ${generateToggle("Hide Conversations", "hideConversations")}
     ${generateToggle("Gray Theme", "grayTheme")}
+    ${generateToggle("Hide Timestamps", "hideTimestamps")}
   </div>
 
   <div class="ttc-flex-column">
@@ -652,8 +651,14 @@ function createSettingsModal(){
     ${generateToggle("Transparent Chat", "transparentChat")}
     ${generateToggle("Smooth Text Shadow", "smoothTextShadow")}
     ${generateToggle("Chat on Left Side", "chatLeftSide")}
-    ${generateToggle("Hide Chat Input", "hideChatInput")}
     ${generateSlider("Background Opacity", "backgroundOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
+  </div>
+
+  <div class="ttc-flex-column">
+    <p>Elements</p>
+    ${generateToggle("Hide Chat Header", "hideHeader")}
+    ${generateToggle("Hide Chat Input", "hideChatInput")}
+    ${generateToggle("Hide Conversations", "hideConversations")}
   </div>
 
   <div class="ttc-flex-column">
