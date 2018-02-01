@@ -6,12 +6,11 @@
 
 Transparent Twitch Chat is a user script that improves your PogChamp experience in the **Theater mode**.
 
-- Chat size, location, and opacity are customizable
-- Fixed chat scrollbar showing up with every new message
-- Individual badges can be turned off for less clutter
+- Chat width, location, and opacity are customizable
+- Individual or all badges can be hidden for less clutter
 - Toggle between default purple theme and gray theme
-- Chat header is hidden by default
-- Username colors are brighter (broken in newest update)
+- Options to hide the chat header, input box, pinned cheer, and the conversation panel
+- (Firefox only) Chat scrollbar is hidden by default and only appears when you scroll
 
 ### Tips
 
@@ -21,19 +20,22 @@ Transparent Twitch Chat is a user script that improves your PogChamp experience 
 
 # How to Install
 
-1. Make sure you have [Greasemonkey 3](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/versions/) (Firefox) or [Tampermonkey](https://tampermonkey.net/) (Chrome, Edge, Opera) installed in your browser
+1. Make sure you have [ViolentMonkey](https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/) (Firefox) or [Tampermonkey](https://tampermonkey.net/) (Chrome, Edge, Opera) installed in your browser
 2. Visit [TransparentTwitchChat.user.js](https://github.com/chylex/Transparent-Twitch-Chat/raw/master/dist/TransparentTwitchChat.user.js) to prompt the install
 
 The script is only active in **Theater mode**. If you want to watch in fullscreen, press **F11** in Firefox/Chrome/Opera, or **Shift+Win+Enter** in Edge.
 
 #### Greasemonkey Warning
-This script and many others **will not work with Greasemonkey 4**. Please, make sure you're using version 3, and disable addon updates until the issue is resolved.
+
+The script **will not work with Greasemonkey 4**, please use one of the addons listed above instead.
+
+If you are using older versions of Firefox (52-56), you can still use [Greasemonkey 3](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/versions/?page=1#version-3.17). Firefox lets you individually disable addon updates, so don't forget to use that to prevent Greasemonkey from updating and breaking your installed scripts.
 
 ### Changing the Settings
 
 In order to change settings, move your cursor over the chat and click the gear icon in the bottom right corner. You can then close the dialog by clicking on the icon again (or anywhere outside the dialog area).
 
-![](https://repo.chylex.com/transparent-twitch-chat-settings.png)
+![](https://repo.chylex.com/transparent-twitch-chat-settings.png?)
 
 ### Release Notes
 
