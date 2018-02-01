@@ -20,7 +20,7 @@ Transparent Twitch Chat is a user script that improves your PogChamp experience 
 
 # How to Install
 
-1. Make sure you have [ViolentMonkey](https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/) (Firefox) or [Tampermonkey](https://tampermonkey.net/) (Chrome, Edge, Opera) installed in your browser
+1. Make sure you have [Violentmonkey](https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/) (Firefox) or [Tampermonkey](https://tampermonkey.net/) (Chrome, Edge, Opera) installed in your browser
 2. Visit [TransparentTwitchChat.user.js](https://github.com/chylex/Transparent-Twitch-Chat/raw/master/dist/TransparentTwitchChat.user.js) to prompt the install
 
 The script is only active in **Theater mode**. If you want to watch in fullscreen, press **F11** in Firefox/Chrome/Opera, or **Shift+Win+Enter** in Edge.
