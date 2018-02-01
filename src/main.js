@@ -19,6 +19,7 @@ const settings = {
   
   hideHeader: true,
   hideChatInput: false,
+  hidePinnedCheer: false,
   hideConversations: false,
   
   transparentChat: true,
@@ -111,6 +112,12 @@ ${settings.hideHeader ? `
 
 ${settings.hideChatInput ? `
   ${rcolBlur} .chat-input, ${rcolBlur} .video-chat__input {
+    display: none;
+  }
+` : ``}
+
+${settings.hidePinnedCheer ? `
+  .pinned-cheer {
     display: none;
   }
 ` : ``}
@@ -656,6 +663,7 @@ function createSettingsModal(){
     <p>Elements</p>
     ${generateToggle("Hide Chat Header", "hideHeader")}
     ${generateToggle("Hide Chat Input", "hideChatInput")}
+    ${generateToggle("Hide Pinned Cheer", "hidePinnedCheer")}
     ${generateToggle("Hide Conversations", "hideConversations")}
   </div>
 
