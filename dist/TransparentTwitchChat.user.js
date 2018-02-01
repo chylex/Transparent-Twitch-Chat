@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.1.5
+// @version      1.1.6
 // @namespace    https://chylex.com
 // @include      https://www.twitch.tv/*
 // @run-at       document-end
@@ -14,10 +14,13 @@ const settings = {
   globalSwitch: true,
   
   chatWidth: 350,
-  hideHeader: true,
-  hideTimestamps: false,
-  hideConversations: false,
   grayTheme: false,
+  hideTimestamps: false,
+  
+  hideHeader: true,
+  hideChatInput: false,
+  hidePinnedCheer: false,
+  hideConversations: false,
   
   transparentChat: true,
   smoothTextShadow: false,
@@ -93,6 +96,16 @@ display: none !important;
 ${settings.hideHeader ? `
 ${rcol} .chat-room__header {
 display: none !important;
+}
+` : ``}
+${settings.hideChatInput ? `
+${rcolBlur} .chat-input, ${rcolBlur} .video-chat__input {
+display: none;
+}
+` : ``}
+${settings.hidePinnedCheer ? `
+.pinned-cheer {
+display: none;
 }
 ` : ``}
 ${rcol} .video-chat__sync-button {
@@ -331,12 +344,12 @@ display: block;
 position: absolute;
 left: 50%;
 top: 50%;
-width: 560px;
-height: 350px;
-margin-left: -280px;
-margin-top: -175px;
+width: 630px;
+height: 292px;
+margin-left: -315px;
+margin-top: -146px;
 z-index: 10000;
-background-color: rgba(17,17,17,0.73046875);
+background-color: rgba(17,17,17,0.796875);
 }
 #chylex-ttc-settings-modal #ttc-opt-global-wrapper {
 position: absolute;
@@ -348,7 +361,7 @@ color: rgba(255,255,255,0.9296875);
 font-size: 24px;
 text-align: center;
 margin: 0;
-padding: 17px 0 16px;
+padding: 14px 0 13px;
 background-color: rgba(0,0,0,0.59765625);
 }
 #chylex-ttc-settings-modal .ttc-flex-container {
@@ -358,19 +371,19 @@ justify-content: space-between;
 padding: 8px 4px;
 }
 #chylex-ttc-settings-modal .ttc-flex-column {
-flex: 0 0 calc(100% / 3);
+flex: 0 0 calc(100% / 4);
 }
 #chylex-ttc-settings-modal p {
 color: rgba(255,255,255,0.86328125);
 font-size: 14px;
 margin-top: 8px;
-padding: 0 12px;
+padding: 0 9px;
 }
 #chylex-ttc-settings-modal p:first-of-type {
 margin: 0 0 4px;
 }
 #chylex-ttc-settings-modal .player-menu__section {
-padding: 0 12px;
+padding: 0 12px 2px;
 }
 #chylex-ttc-settings-modal .player-menu__header {
 margin-bottom: 0;
@@ -378,7 +391,7 @@ color: rgba(255,255,255,0.6640625);
 }
 #chylex-ttc-settings-modal .player-menu__item {
 align-items: center;
-margin: 1px 0 9px;
+margin: 2px 0 9px;
 padding-left: 1px;
 }
 #chylex-ttc-settings-modal .switch {
@@ -494,10 +507,8 @@ function createSettingsModal(){
   <div class="ttc-flex-column">
     <p>General</p>
     ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 600, step: 25, wait: 500, text: "px" })}
-    ${generateToggle("Hide Chat Header", "hideHeader")}
-    ${generateToggle("Hide Timestamps", "hideTimestamps")}
-    ${generateToggle("Hide Conversations", "hideConversations")}
     ${generateToggle("Gray Theme", "grayTheme")}
+    ${generateToggle("Hide Timestamps", "hideTimestamps")}
   </div>
 
   <div class="ttc-flex-column">
@@ -506,6 +517,14 @@ function createSettingsModal(){
     ${generateToggle("Smooth Text Shadow", "smoothTextShadow")}
     ${generateToggle("Chat on Left Side", "chatLeftSide")}
     ${generateSlider("Background Opacity", "backgroundOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
+  </div>
+
+  <div class="ttc-flex-column">
+    <p>Elements</p>
+    ${generateToggle("Hide Chat Header", "hideHeader")}
+    ${generateToggle("Hide Chat Input", "hideChatInput")}
+    ${generateToggle("Hide Pinned Cheer", "hidePinnedCheer")}
+    ${generateToggle("Hide Conversations", "hideConversations")}
   </div>
 
   <div class="ttc-flex-column">
