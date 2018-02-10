@@ -3,6 +3,9 @@
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
 // @version      {VERSION}
 // @namespace    https://chylex.com
+// @homepageURL  https://github.com/chylex/Transparent-Twitch-Chat
+// @supportURL   https://github.com/chylex/Transparent-Twitch-Chat/issues
+// @updateURL    https://github.com/chylex/Transparent-Twitch-Chat/raw/master/dist/TransparentTwitchChat.user.js
 // @include      https://www.twitch.tv/*
 // @run-at       document-end
 // @grant        GM_getValue
