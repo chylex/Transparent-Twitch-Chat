@@ -184,10 +184,6 @@ ${settings.transparentChat ? `
     border-left: none !important;
   }
 
-  ${rcolBlur} .tw-c-background-alt-2:not(.video-chat)${wa} {
-    background: none !important;
-  }
-
   ${rcolBlur} .video-chat__header {
     background-color: @#hex(17141f66) !important;
     box-shadow: none !important;
@@ -198,7 +194,7 @@ ${settings.transparentChat ? `
     box-shadow: none !important;
   }
 
-  ${rcolBlur} .chat-room__container, ${rcolBlur} .video-chat {
+  ${rcolBlur} .chylex-ttc-chat-container {
     background: rgba(23, 20, 31, ${settings.backgroundOpacity * 0.01}) !important;
     color: #ece8f3 !important;
   }
@@ -209,7 +205,7 @@ ${settings.transparentChat ? `
 
   // chat message shadow
 
-  ${rcolBlur} .chat-room__container, ${rcolBlur} .video-chat {
+  ${rcolBlur} .chylex-ttc-chat-container {
     ${settings.smoothTextShadow ? `
     text-shadow: 0 0 2px @#hex(000d), -1px 0 1px @#hex(0006), 0 -1px 1px @#hex(0006), 1px 0 1px @#hex(0006), 0 1px 1px @#hex(0006);
     ` : `
@@ -332,15 +328,11 @@ ${settings.grayTheme ? `
     border-left-color: #333 !important;
   }
 
-  ${rcol} .tw-c-background-alt-2:not(.video-chat)${wa} {
-    background: none !important;
-  }
-
-  ${rcol} .chat-room__container, ${rcol} .video-chat${wa} {
+  ${rcol} .chylex-ttc-chat-container${wa} {
     background: #141414 !important;
   }
 
-  ${rcolBlur} .chat-room__container, ${rcolBlur} .video-chat${wa} {
+  ${rcolBlur} .chylex-ttc-chat-container${wa} {
     background: rgba(20, 20, 20, ${settings.transparentChat ? (settings.backgroundOpacity * 0.01) : 1}) !important;
   }
 
@@ -424,14 +416,11 @@ function generateSettingsCSS(){
   width: 3em;
   height: 3em;
   position: absolute;
+  bottom: 130px;
   margin-left: 292px;
   z-index: 9;
   cursor: pointer;
   fill: @#hex(fffa);
-}
-
-.chat-room__container #chylex-ttc-settings-btn {
-  bottom: 130px;
 }
 
 .video-chat #chylex-ttc-settings-btn {
@@ -690,11 +679,13 @@ function createSettingsModal(){
 }
 
 function insertSettingsButton(){
-  const container = document.querySelector(".chat-room__container,.video-chat");
+  const container = document.querySelector("[data-test-selector='chat-room-component-layout'] > div,.video-chat");
   
   if (!container){
     return;
   }
+  
+  container.classList.add("chylex-ttc-chat-container");
   
   tryRemoveElement(document.getElementById("chylex-ttc-settings-btn"));
   tryRemoveElement(document.getElementById("chylex-ttc-settings-modal"));
