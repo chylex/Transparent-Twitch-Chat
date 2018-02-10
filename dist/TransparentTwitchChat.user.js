@@ -1,8 +1,11 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.1.6
+// @version      1.1.7
 // @namespace    https://chylex.com
+// @homepageURL  https://github.com/chylex/Transparent-Twitch-Chat
+// @supportURL   https://github.com/chylex/Transparent-Twitch-Chat/issues
+// @updateURL    https://github.com/chylex/Transparent-Twitch-Chat/raw/master/dist/TransparentTwitchChat.user.js
 // @include      https://www.twitch.tv/*
 // @run-at       document-end
 // @grant        GM_getValue
@@ -135,9 +138,6 @@ margin-right: 20px !important;
 ${rcol} .tw-border-l.tw-c-background-alt-2${wa} {
 border-left: none !important;
 }
-${rcolBlur} .tw-c-background-alt-2:not(.video-chat)${wa} {
-background: none !important;
-}
 ${rcolBlur} .video-chat__header {
 background-color: rgba(23,20,31,0.3984375) !important;
 box-shadow: none !important;
@@ -146,14 +146,14 @@ ${rcolBlur} .video-chat__input {
 background: transparent !important;
 box-shadow: none !important;
 }
-${rcolBlur} .chat-room__container, ${rcolBlur} .video-chat {
+${rcolBlur} .chylex-ttc-chat-container {
 background: rgba(23, 20, 31, ${settings.backgroundOpacity * 0.01}) !important;
 color: #ece8f3 !important;
 }
 ${rcolBlur} .chat-input, ${rcolBlur} .video-chat__input {
 opacity: 0.6;
 }
-${rcolBlur} .chat-room__container, ${rcolBlur} .video-chat {
+${rcolBlur} .chylex-ttc-chat-container {
 ${settings.smoothTextShadow ? `
 text-shadow: 0 0 2px rgba(0,0,0,0.86328125), -1px 0 1px rgba(0,0,0,0.3984375), 0 -1px 1px rgba(0,0,0,0.3984375), 1px 0 1px rgba(0,0,0,0.3984375), 0 1px 1px rgba(0,0,0,0.3984375);
 ` : `
@@ -241,13 +241,10 @@ ${settings.grayTheme ? `
 ${rcol} .tw-border-l.tw-c-background-alt-2 {
 border-left-color: #333 !important;
 }
-${rcol} .tw-c-background-alt-2:not(.video-chat)${wa} {
-background: none !important;
-}
-${rcol} .chat-room__container, ${rcol} .video-chat${wa} {
+${rcol} .chylex-ttc-chat-container${wa} {
 background: #141414 !important;
 }
-${rcolBlur} .chat-room__container, ${rcolBlur} .video-chat${wa} {
+${rcolBlur} .chylex-ttc-chat-container${wa} {
 background: rgba(20, 20, 20, ${settings.transparentChat ? (settings.backgroundOpacity * 0.01) : 1}) !important;
 }
 ${rcol} .chat-room__header {
@@ -311,13 +308,11 @@ display: none;
 width: 3em;
 height: 3em;
 position: absolute;
+bottom: 130px;
 margin-left: 292px;
 z-index: 9;
 cursor: pointer;
 fill: rgba(255,255,255,0.6640625);
-}
-.chat-room__container #chylex-ttc-settings-btn {
-bottom: 130px;
 }
 .video-chat #chylex-ttc-settings-btn {
 bottom: 120px;
@@ -550,11 +545,13 @@ function createSettingsModal(){
 }
 
 function insertSettingsButton(){
-  const container = document.querySelector(".chat-room__container,.video-chat");
+  const container = document.querySelector("[data-test-selector='chat-room-component-layout'] > div,.video-chat");
   
   if (!container){
     return;
   }
+  
+  container.classList.add("chylex-ttc-chat-container");
   
   tryRemoveElement(document.getElementById("chylex-ttc-settings-btn"));
   tryRemoveElement(document.getElementById("chylex-ttc-settings-modal"));
