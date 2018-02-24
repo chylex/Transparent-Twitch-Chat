@@ -108,7 +108,7 @@ ${rcol} .video-chat__header {
 }
 
 ${settings.hideHeader ? `
-  ${rcol} .chat-room__header {
+  ${rcol} .room-selector__header {
     display: none !important;
   }
 ` : ``}
@@ -200,6 +200,11 @@ ${settings.transparentChat ? `
   ${rcolBlur} .chylex-ttc-chat-container {
     background: rgba(23, 20, 31, ${settings.backgroundOpacity * 0.01}) !important;
     color: #ece8f3 !important;
+  }
+
+  ${rcolBlur} .room-selector__header {
+    background: rgba(23, 20, 31, ${settings.backgroundOpacity * 0.01}) !important;
+    border-bottom-color: rgba(44, 37, 65, ${settings.backgroundOpacity * 0.01})  !important;
   }
 
   ${rcolBlur} .chat-input, ${rcolBlur} .video-chat__input {
@@ -339,9 +344,14 @@ ${settings.grayTheme ? `
     background: rgba(20, 20, 20, ${settings.transparentChat ? (settings.backgroundOpacity * 0.01) : 1}) !important;
   }
 
-  ${rcol} .chat-room__header {
+  ${rcolBlur} .room-selector__header {
+    background: rgba(20, 20, 20, ${settings.transparentChat ? (settings.backgroundOpacity * 0.01) : 1}) !important;
+  }
+
+  ${rcol} .room-selector__header {
     background-color: #171717 !important;
     box-shadow: inset 0 -1px 0 0 #333 !important;
+    border-bottom: none !important;
   }
 
   ${rcol} .video-chat__input {
