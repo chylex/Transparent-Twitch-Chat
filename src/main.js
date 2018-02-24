@@ -108,7 +108,6 @@ ${rcol} .video-chat__header {
 }
 
 ${rcol} .room-selector__header${wa} {
-  border-left: none !important;
   border-right: none !important;
 }
 
@@ -207,12 +206,16 @@ ${settings.transparentChat ? `
   }
 
   ${rcolBlur} .chylex-ttc-chat-container {
-    background: rgba(23, 20, 31, ${settings.backgroundOpacity * 0.01}) !important;
+    background: rgba(14, 12, 19, ${settings.backgroundOpacity * 0.01}) !important;
     color: #ece8f3 !important;
   }
 
+  ${rcol} .room-selector__header {
+    border-left: none !important;
+  }
+
   ${rcolBlur} .room-selector__header {
-    background: rgba(23, 20, 31, ${settings.backgroundOpacity * 0.01}) !important;
+    background: rgba(14, 12, 19, ${settings.backgroundOpacity * 0.01}) !important;
     border-bottom-color: rgba(44, 37, 65, ${settings.backgroundOpacity * 0.01}) !important;
   }
 
