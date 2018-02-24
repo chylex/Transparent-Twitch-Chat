@@ -350,48 +350,61 @@ ${settings.chatLeftSide && settings.transparentChat ? `
 
 ${settings.grayTheme ? `
   ${rcol} .tw-border-l.tw-c-background-alt-2 {
-    border-left-color: #333 !important;
+    border-left-color: #2b2b2b !important;
   }
 
   ${rcol} .chylex-ttc-chat-container${wa} {
-    background: #141414 !important;
+    background: #0e0e0e !important;
   }
 
   ${rcolBlur} .chylex-ttc-chat-container${wa} {
-    background: rgba(20, 20, 20, ${settings.transparentChat ? (settings.backgroundOpacity * 0.01) : 1}) !important;
+    background: rgba(14, 14, 14, ${settings.transparentChat ? (settings.backgroundOpacity * 0.01) : 1}) !important;
   }
 
   ${rcolBlur} .room-selector__header${wa} {
-    background: rgba(20, 20, 20, ${settings.transparentChat ? (settings.backgroundOpacity * 0.01) : 1}) !important;
-    border-bottom-color: rgba(45, 45, 45, ${settings.transparentChat ? (settings.backgroundOpacity * 0.01) : 1}) !important;
+    background: rgba(14, 14, 14, ${settings.transparentChat ? (settings.backgroundOpacity * 0.01) : 1}) !important;
+    border-bottom-color: rgba(42, 42, 42, ${settings.transparentChat ? (settings.backgroundOpacity * 0.01) : 1}) !important;
   }
 
   ${rcol} .room-selector__header${wa} {
-    background: #171717 !important;
-    border-bottom-color: #2D2D2D !important;
+    background: #0e0e0e !important;
+    border-bottom-color: #2b2b2b !important;
+    ${settings.transparentChat ? "" : "border-left-color: #2b2b2b !important;"}
   }
 
   ${rcol} .video-chat__input {
-    box-shadow: inset 0 1px 0 0 #333 !important;
+    box-shadow: inset 0 1px 0 0 #2b2b2b !important;
   }
 
   ${rcol} [data-a-target="video-chat-input"], ${rcol} [data-a-target="chat-input"] {
-    background-color: #1d1d1d !important;
-    border-color: #414141 !important;
+    background-color: #0e0e0e !important;
+    border-color: #2b2b2b !important;
   }
 
   ${rcol} [data-a-target="video-chat-input"]:focus, ${rcol} [data-a-target="chat-input"]:focus {
-    box-shadow: inset 0 0 0 1px #696969, 0 0 6px -2px #696969 !important;
+    border-color: #787878 !important;
+    box-shadow: 0 0 6px -2px #787878 !important;
   }
 
   ${rcol} [data-a-target="chat-send-button"], ${rcol} [data-a-target="video-chat-submit-button"] {
-    background-color: #2a2a2a !important;
+    background-color: #2b2b2b !important;
     border: 1px solid #000000 !important;
   }
 
   ${rcol} [data-a-target="chat-send-button"]:active, ${rcol} [data-a-target="chat-send-button"]:focus,
   ${rcol} [data-a-target="video-chat-submit-button"]:active, ${rcol} [data-a-target="video-chat-submit-button"]:focus {
-    box-shadow: 0 0 6px 0 #696969 !important;
+    box-shadow: 0 0 6px 0 #787878 !important;
+  }
+
+  .whispers--theatre-mode .whispers-threads-box__container:not(.whispers-threads-box__container--open) {
+    border-top-color: #2b2b2b !important;
+    border-right-color: #2b2b2b !important;
+    border-bottom-color: #2b2b2b !important;
+    border-left-color: #2b2b2b !important;
+  }
+
+  .whispers--theatre-mode .whispers-threads-box__open-close${wa} {
+    background-color: #0e0e0e !important;
   }
 ` : ``}
 
