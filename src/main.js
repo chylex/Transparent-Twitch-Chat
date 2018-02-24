@@ -107,8 +107,17 @@ ${rcol} .video-chat__header {
   display: none !important;
 }
 
+${rcol} .room-selector__header${wa} {
+  border-left: none !important;
+  border-right: none !important;
+}
+
+${rcol} .room-picker {
+  width: ${settings.chatWidth - 10}px;
+}
+
 ${settings.hideHeader ? `
-  ${rcol} .room-selector__header {
+  ${rcolBlur} .room-selector__header {
     display: none !important;
   }
 ` : ``}
@@ -204,7 +213,12 @@ ${settings.transparentChat ? `
 
   ${rcolBlur} .room-selector__header {
     background: rgba(23, 20, 31, ${settings.backgroundOpacity * 0.01}) !important;
-    border-bottom-color: rgba(44, 37, 65, ${settings.backgroundOpacity * 0.01})  !important;
+    border-bottom-color: rgba(44, 37, 65, ${settings.backgroundOpacity * 0.01}) !important;
+  }
+
+  ${rcolBlur} .room-selector__header > p, ${rcolBlur} .room-selector__header .tw-button__text > div {
+    color: #dad8de !important;
+    text-shadow: -1px 0 0 @#hex(000a), 0 -1px 0 @#hex(000a), 1px 0 0 @#hex(000a), 0 1px 0 @#hex(000a);
   }
 
   ${rcolBlur} .chat-input, ${rcolBlur} .video-chat__input {
@@ -344,14 +358,14 @@ ${settings.grayTheme ? `
     background: rgba(20, 20, 20, ${settings.transparentChat ? (settings.backgroundOpacity * 0.01) : 1}) !important;
   }
 
-  ${rcolBlur} .room-selector__header {
+  ${rcolBlur} .room-selector__header${wa} {
     background: rgba(20, 20, 20, ${settings.transparentChat ? (settings.backgroundOpacity * 0.01) : 1}) !important;
+    border-bottom-color: rgba(45, 45, 45, ${settings.transparentChat ? (settings.backgroundOpacity * 0.01) : 1}) !important;
   }
 
-  ${rcol} .room-selector__header {
-    background-color: #171717 !important;
-    box-shadow: inset 0 -1px 0 0 #333 !important;
-    border-bottom: none !important;
+  ${rcol} .room-selector__header${wa} {
+    background: #171717 !important;
+    border-bottom-color: #2D2D2D !important;
   }
 
   ${rcol} .video-chat__input {
