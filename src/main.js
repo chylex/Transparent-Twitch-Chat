@@ -696,7 +696,7 @@ function createSettingsModal(){
     ${generateToggle("Hide Chat Header", "hideHeader")}
     ${generateToggle("Hide Chat Input", "hideChatInput")}
     ${generateToggle("Hide Pinned Cheer", "hidePinnedCheer")}
-    ${generateToggle("Hide Conversations", "hideConversations")}
+    ${generateToggle("Hide Whispers", "hideConversations")}
   </div>
 
   <div class="ttc-flex-column">
