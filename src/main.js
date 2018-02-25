@@ -262,8 +262,8 @@ ${settings.transparentChat ? `
 
   // conversation menu
 
-  .whispers-threads-box__container:not(.whispers-threads-box__container--open):not(:hover) {
-    opacity: ${settings.backgroundOpacity * 0.01};
+  .whispers--theatre-mode .whispers-threads-box__container:not(.whispers-threads-box__container--open):not(:hover) {
+    opacity: ${Math.max(0.1, settings.backgroundOpacity * 0.01)};
   }
 ` : `
 
