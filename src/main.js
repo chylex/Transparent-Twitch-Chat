@@ -128,7 +128,7 @@ ${settings.hideChatInput ? `
 ` : ``}
 
 ${settings.hidePinnedCheer ? `
-  .pinned-cheer {
+  .pinned-cheer, .pinned-cheer-v2 {
     display: none;
   }
 ` : ``}
