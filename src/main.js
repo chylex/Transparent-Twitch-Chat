@@ -62,6 +62,8 @@ function onSettingsUpdated(){
   }
 }
 
+// Styles
+
 function generateCustomCSS(){
   if (!settings.globalSwitch){
     tryRemoveElement(document.getElementById("chylex-ttc-style-custom"));
@@ -675,6 +677,8 @@ function refreshChatFilters(){
   }
 }
 
+// Settings
+
 function debounce(func, wait){
   let timeout = -1;
   
@@ -704,7 +708,7 @@ function createSettingsModal(){
   </div>
   <div class="player-menu__item pl-flex pl-flex--nowrap flex-shrink-0">
     <div class="tw-toggle">
-      <input class="tw-toggle__input" id="ttc-opt-${option}" data-a-target="tw-toggle" value="${settings[option] ? "on" : "off"}" type="checkbox"${settings[option] ? " checked" : ""}>
+      <input class="tw-toggle__input" id="ttc-opt-${option}" value="${settings[option] ? "on" : "off"}" type="checkbox"${settings[option] ? " checked" : ""}>
       <label for="ttc-opt-${option}" class="tw-toggle__button"></label>
     </div>
   </div>
@@ -753,8 +757,7 @@ function createSettingsModal(){
     <input id="ttc-opt-${option}" type="range" min="${cfg.min}" max="${cfg.max}" step="${cfg.step}" value="${settings[option]}">
     <output id="ttc-optval-${option}" for="ttc-opt-${option}">${settings[option]}${cfg.text}</option>
   </div>
-</div>
-`;
+</div>`;
   };
   
   let modal = document.createElement("div");
@@ -762,7 +765,7 @@ function createSettingsModal(){
   modal.innerHTML = `
 <h2>
   <div id="ttc-opt-global-wrapper" class="tw-toggle">
-    <input class="tw-toggle__input" id="ttc-opt-global" data-a-target="tw-toggle" value="${settings.globalSwitch ? "on" : "off"}" type="checkbox"${settings.globalSwitch ? " checked" : ""}>
+    <input class="tw-toggle__input" id="ttc-opt-global" value="${settings.globalSwitch ? "on" : "off"}" type="checkbox"${settings.globalSwitch ? " checked" : ""}>
     <label for="ttc-opt-global" class="tw-toggle__button"></label>
   </div>
 
@@ -859,6 +862,8 @@ function insertSettingsButton(){
     });
   }
 }
+
+// Setup
 
 window.setInterval(function(){
   if (!document.getElementById("chylex-ttc-settings-btn")){
