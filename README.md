@@ -7,7 +7,7 @@
 Transparent Twitch Chat is a user script that improves your PogChamp experience in the **Theater mode**.
 
 - Chat width, location, and opacity are customizable
-- Chat filters (comma-separated list of words to hide, see [the guide](https://github.com/chylex/Transparent-Twitch-Chat/wiki/Chat-filters))
+- Chat filters (comma-separated list of words, see [the guide](https://github.com/chylex/Transparent-Twitch-Chat/wiki/Chat-Filters))
 - Toggle between default purple theme and gray theme
 - Individual or all badges can be hidden for less clutter
 - Options to hide the chat header, input box, pinned cheer, and the conversation panel
