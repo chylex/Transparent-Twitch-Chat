@@ -119,6 +119,10 @@ ${rcol} .room-picker {
   width: ${settings.chatWidth - 10}px;
 }
 
+${rcol} .hidden {
+  display: none;
+}
+
 ${settings.hideHeader ? `
   ${rcolBlur} .room-selector__header {
     display: none !important;
@@ -637,8 +641,9 @@ var filtersObserver = new MutationObserver(function(mutations){
   for(let mutation of mutations){
     for(let added of mutation.addedNodes){
       let text;
+      let classes = added.classList;
       
-      if (added.classList.contains("chat-line__message")){
+      if (classes.contains("chat-line__message")){
         let nodes = Array.from(added.childNodes);
         let colon = nodes.findIndex(node => node.tagName === "SPAN" && node.innerText === ": ");
         text = nodes.slice(colon+1).map(getNodeText).join("");
@@ -648,7 +653,7 @@ var filtersObserver = new MutationObserver(function(mutations){
       }
       
       if (filtersRegex.test(text)){
-        added.style.display = "none";
+        classes.add("hidden");
       }
     }
   }
