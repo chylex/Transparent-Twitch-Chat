@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.1.8
+// @version      1.2
 // @namespace    https://chylex.com
 // @homepageURL  https://github.com/chylex/Transparent-Twitch-Chat
 // @supportURL   https://github.com/chylex/Transparent-Twitch-Chat/issues
@@ -17,6 +17,7 @@ const settings = {
   globalSwitch: true,
   
   chatWidth: 350,
+  chatFilters: "",
   grayTheme: false,
   hideTimestamps: false,
   
@@ -52,6 +53,7 @@ function tryRemoveElement(ele){
 
 function onSettingsUpdated(){
   generateCustomCSS();
+  refreshChatFilters();
   
   if (typeof GM_setValue !== "undefined"){
     for(let key in settings){
@@ -59,6 +61,8 @@ function onSettingsUpdated(){
     }
   }
 }
+
+// Styles
 
 function generateCustomCSS(){
   if (!settings.globalSwitch){
@@ -102,6 +106,9 @@ border-right: none !important;
 ${rcol} .room-picker {
 width: ${settings.chatWidth - 10}px;
 }
+${rcol} .hidden {
+display: none;
+}
 ${settings.hideHeader ? `
 ${rcolBlur} .room-selector__header {
 display: none !important;
@@ -113,7 +120,7 @@ display: none;
 }
 ` : ``}
 ${settings.hidePinnedCheer ? `
-.pinned-cheer {
+.pinned-cheer, .pinned-cheer-v2 {
 display: none;
 }
 ` : ``}
@@ -457,6 +464,80 @@ text-align: right;
   document.head.appendChild(style);
 }
 
+// Filters
+
+function getNodeText(node){
+  if (node.nodeType === Node.TEXT_NODE){
+    return node.nodeValue;
+  }
+  
+  if (node.nodeType === Node.ELEMENT_NODE){
+    if (node.tagName === "IMG"){
+      return node.getAttribute("alt") || "";
+    }
+    else{
+      let text = "";
+      
+      for(let child of node.childNodes){
+        text += getNodeText(child);
+      }
+      
+      return text;
+    }
+  }
+  
+  return "";
+}
+
+var filtersRegex = null;
+
+var filtersObserver = new MutationObserver(function(mutations){
+  for(let mutation of mutations){
+    for(let added of mutation.addedNodes){
+      let text;
+      let classes = added.classList;
+      
+      if (classes.contains("chat-line__message")){
+        let nodes = Array.from(added.childNodes);
+        let colon = nodes.findIndex(node => node.tagName === "SPAN" && node.innerText === ": ");
+        text = nodes.slice(colon+1).map(getNodeText).join("");
+      }
+      else{
+        text = getNodeText(added.querySelector(".qa-mod-message") || added);
+      }
+      
+      if (filtersRegex.test(text)){
+        classes.add("hidden");
+      }
+    }
+  }
+});
+
+function refreshChatFilters(){
+  let filters = (settings.chatFilters || "").split(",").map(entry => entry.trim()).filter(entry => !!entry);
+  
+  if (filters.length === 0){
+    filtersRegex = null;
+  }
+  else{
+    let options = filters.map(entry => entry.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, "(?:\\S*)").replace(/\s+/g, "\\s+")).join("|");
+    filtersRegex = new RegExp("(?:^|\\s)(?:"+options+")(?:$|\\s)", "i");
+  }
+  
+  const chat = document.querySelector(".chat-list__lines .simplebar-content > div, .video-chat__message-list-wrapper ul");
+  
+  if (chat){
+    if (filtersRegex && settings.globalSwitch){
+      filtersObserver.observe(chat, { childList: true });
+    }
+    else{
+      filtersObserver.disconnect();
+    }
+  }
+}
+
+// Settings
+
 function debounce(func, wait){
   let timeout = -1;
   
@@ -486,9 +567,30 @@ function createSettingsModal(){
   </div>
   <div class="player-menu__item pl-flex pl-flex--nowrap flex-shrink-0">
     <div class="tw-toggle">
-      <input class="tw-toggle__input" id="ttc-opt-${option}" data-a-target="tw-toggle" value="${settings[option] ? "on" : "off"}" type="checkbox"${settings[option] ? " checked" : ""}>
+      <input class="tw-toggle__input" id="ttc-opt-${option}" value="${settings[option] ? "on" : "off"}" type="checkbox"${settings[option] ? " checked" : ""}>
       <label for="ttc-opt-${option}" class="tw-toggle__button"></label>
     </div>
+  </div>
+</div>`;
+  };
+  
+  let generateTxtbox = function(title, option, cfg){
+    window.setTimeout(function(){
+      let input = document.getElementById("ttc-opt-"+option);
+      
+      input.addEventListener("input", debounce(function(){
+        settings[option] = input.value;
+        onSettingsUpdated();
+      }, cfg.wait));
+    }, 1);
+    
+    return `
+<div class="player-menu__section" data-enabled="true">
+  <div class="player-menu__header">
+    <span class="js-menu-header">${title}</span>
+  </div>
+  <div class="player-menu__item pl-flex pl-flex--nowrap">
+    <input id="ttc-opt-${option}" type="text" value="${settings[option]}" placeholder="${cfg.placeholder}">
   </div>
 </div>`;
   };
@@ -514,8 +616,7 @@ function createSettingsModal(){
     <input id="ttc-opt-${option}" type="range" min="${cfg.min}" max="${cfg.max}" step="${cfg.step}" value="${settings[option]}">
     <output id="ttc-optval-${option}" for="ttc-opt-${option}">${settings[option]}${cfg.text}</option>
   </div>
-</div>
-`;
+</div>`;
   };
   
   let modal = document.createElement("div");
@@ -523,7 +624,7 @@ function createSettingsModal(){
   modal.innerHTML = `
 <h2>
   <div id="ttc-opt-global-wrapper" class="tw-toggle">
-    <input class="tw-toggle__input" id="ttc-opt-global" data-a-target="tw-toggle" value="${settings.globalSwitch ? "on" : "off"}" type="checkbox"${settings.globalSwitch ? " checked" : ""}>
+    <input class="tw-toggle__input" id="ttc-opt-global" value="${settings.globalSwitch ? "on" : "off"}" type="checkbox"${settings.globalSwitch ? " checked" : ""}>
     <label for="ttc-opt-global" class="tw-toggle__button"></label>
   </div>
 
@@ -534,6 +635,7 @@ function createSettingsModal(){
   <div class="ttc-flex-column">
     <p>General</p>
     ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 600, step: 25, wait: 500, text: "px" })}
+    ${generateTxtbox("Chat Filters", "chatFilters", { wait: 500, placeholder: "Example: kappa, *abc*" })}
     ${generateToggle("Gray Theme", "grayTheme")}
     ${generateToggle("Hide Timestamps", "hideTimestamps")}
   </div>
@@ -600,6 +702,8 @@ function insertSettingsButton(){
     }
   });
   
+  refreshChatFilters();
+  
   if (isFirefox && container.classList.contains("video-chat")){
     const wrapper = document.querySelector(".video-chat__message-list-wrapper");
     const unsynced = "video-chat__message-list-wrapper--unsynced";
@@ -617,6 +721,8 @@ function insertSettingsButton(){
     });
   }
 }
+
+// Setup
 
 window.setInterval(function(){
   if (!document.getElementById("chylex-ttc-settings-btn")){
