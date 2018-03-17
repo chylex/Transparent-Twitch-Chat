@@ -667,7 +667,7 @@ function refreshChatFilters(){
   }
   else{
     let options = filters.map(entry => entry.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, "(?:\\S*)").replace(/\s+/g, "\\s+")).join("|");
-    filtersRegex = new RegExp("(?:^|\\s)(?:"+options+")(?:$|\\s)", "i");
+    filtersRegex = new RegExp("(?:^|[^a-z0-9])(?:"+options+")(?:$|[^a-z0-9])", "i");
   }
   
   const chat = document.querySelector(".chat-list__lines .simplebar-content > div, .video-chat__message-list-wrapper ul");
