@@ -6,31 +6,29 @@
 
 Transparent Twitch Chat is a user script that improves your PogChamp experience in the **Theater mode**.
 
-- Chat width, location, and opacity are customizable
-- Chat filters (comma-separated list of words, see [the guide](https://github.com/chylex/Transparent-Twitch-Chat/wiki/Chat-Filters))
-- Toggle between default purple theme and gray theme
-- Individual or all badges can be hidden for less clutter
-- Options to hide the chat header, input box, pinned cheer, and the conversation panel
-- (Firefox only) Chat scrollbar is hidden by default and only appears when you scroll
+* Chat width, location, and opacity are customizable
+* Chat filters (comma-separated list of words, see [the guide](https://github.com/chylex/Transparent-Twitch-Chat/wiki/Chat-Filters))
+* Toggle between default purple theme and gray theme
+* Individual or all badges can be hidden for less clutter
+* Options to hide the chat header, input box, pinned cheer, and the conversation panel
+* (Firefox only) Chat scrollbar is hidden by default and only appears when you scroll
 
 ### Tips
 
-- The *Smooth Text Shadow* option makes chat look nicer but is quite CPU intensive, you can disable it for better performance
+* The *Smooth Text Shadow* option makes chat look nicer, but is also very CPU intensive
+* If you want fullscreen with chat, enter **Theater mode** and press **F11** (Firefox/Chrome/Opera) or **Shift+Win+Enter** (Edge)
 
 ---
 
 # How to Install
 
-1. Install a userscript manager, such as [Violentmonkey](https://violentmonkey.github.io/get-it/) ([Firefox](https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/), [Chrome](https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag)) or [Tampermonkey](https://tampermonkey.net/) ([Edge](https://tampermonkey.net/index.php?ext=dhdg&browser=edge), [Opera](https://tampermonkey.net/index.php?ext=dhdg&browser=opera), [Safari](https://tampermonkey.net/index.php?ext=dhdg&browser=safari))
-2. Visit [TransparentTwitchChat.user.js](https://github.com/chylex/Transparent-Twitch-Chat/raw/master/dist/TransparentTwitchChat.user.js) to prompt the install
+First, you need to install a *userscript manager* into your browser. If you don't already have one installed, I would recommend one of these:
 
-The script is only active in **Theater mode**. If you want to watch in fullscreen, press **F11** in Firefox/Chrome/Opera, or **Shift+Win+Enter** in Edge.
+* [Violentmonkey](https://violentmonkey.github.io/get-it/) (**Firefox 57+**, **Chrome**)
+* [Tampermonkey](https://tampermonkey.net/) (**Edge**, **Opera**, **Safari**)
+* [Greasemonkey 3](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/versions/?page=1#version-3.17) (**Firefox 56 or older**, make sure to prevent it from updating)
 
-#### Greasemonkey Warning
-
-The script **will not work with Greasemonkey 4**, please use one of the addons listed above instead.
-
-If you are using older versions of Firefox (52-56), you can still use [Greasemonkey 3](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/versions/?page=1#version-3.17). Firefox lets you individually disable addon updates, so don't forget to use that to prevent Greasemonkey from updating and breaking your installed scripts.
+Then visit [TransparentTwitchChat.user.js](https://github.com/chylex/Transparent-Twitch-Chat/raw/master/dist/TransparentTwitchChat.user.js) to prompt the installation.
 
 ### Changing the Settings
 
