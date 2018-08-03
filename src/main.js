@@ -871,10 +871,10 @@ function createSettingsModal(){
 }
 
 function insertSettingsButton(){
-  const container = document.querySelector("[data-test-selector='chat-room-component-layout'] > div,.video-chat");
+  const container = document.querySelector("[data-test-selector='chat-room-component-layout'] > div, .video-chat");
   
   if (!container){
-    return;
+    return false;
   }
   
   container.classList.add("chylex-ttc-chat-container");
@@ -894,9 +894,6 @@ function insertSettingsButton(){
     }
   });
   
-  refreshChatFilters();
-  setupClassHelpers();
-  
   if (isFirefox && container.classList.contains("video-chat")){
     const wrapper = document.querySelector(".video-chat__message-list-wrapper");
     const unsynced = "video-chat__message-list-wrapper--unsynced";
@@ -913,22 +910,45 @@ function insertSettingsButton(){
       }
     });
   }
+  
+  return true;
 }
 
 // Setup
 
+var prevAddress = null;
+var rehookInterval = null;
+
 window.setInterval(function(){
-  if (!document.getElementById("chylex-ttc-settings-btn")){
-    insertSettingsButton();
+  if (location.href != prevAddress){
+    prevAddress = location.href;
+    
+    var hooks = [
+      refreshChatFilters,
+      setupClassHelpers,
+      insertSettingsButton
+    ];
+    
+    window.clearInterval(rehookInterval);
+    
+    rehookInterval = window.setInterval(function(){
+      for(let index = hooks.length - 1; index >= 0; index--){
+        if (hooks[index]()){
+          hooks.splice(index, 1);
+        }
+      }
+      
+      if (hooks.length === 0){
+        window.clearInterval(rehookInterval);
+        rehookInterval = null;
+      }
+    }, 250);
   }
-}, 2000);
+}, 1000);
 
 document.body.addEventListener("click", function(){
   tryRemoveElement(document.getElementById("chylex-ttc-settings-modal"));
 });
 
 generateSettingsCSS();
-
-if (settings.globalSwitch){
-  generateCustomCSS();
-}
+generateCustomCSS();
