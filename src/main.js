@@ -19,7 +19,6 @@ const settings = {
   chatWidth: 350,
   chatFilters: "",
   grayTheme: false,
-  hideTimestamps: false,
   
   hideHeader: true,
   hideChatInput: false,
@@ -307,15 +306,6 @@ ${settings.hideConversations ? `@#css{{
 
   .video-player--theatre .video-player__container {
     bottom: 0 !important;
-  }
-@#css}}` : ``}
-
-// hide timestamps
-
-${settings.hideTimestamps ? `@#css{{
-  ${rcol} .vod-message__timestamp {
-    visibility: hidden;
-    width: 0 !important;
   }
 @#css}}` : ``}
 
@@ -799,7 +789,6 @@ function createSettingsModal(){
     ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 600, step: 25, wait: 500, text: "px" })}
     ${generateTxtbox("Chat Filters", "chatFilters", { wait: 500, placeholder: "Example: kappa, *abc*" })}
     ${generateToggle("Gray Theme", "grayTheme")}
-    ${generateToggle("Hide Timestamps", "hideTimestamps")}
   </div>
 
   <div class="ttc-flex-column">
