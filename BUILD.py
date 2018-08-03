@@ -36,8 +36,6 @@ else:
 if not new_version:
     new_version = current_version
 
-# Utilities
-
 # Build
 
 with open(SRC_FILE, 'r') as src:
