@@ -69,11 +69,11 @@ function generateCustomCSS(){
     return;
   }
   
-  let wa = ":not(.ttcwa)"; // selector priority workaround
-  let rcol = ".right-column--theatre";
-  let rcolBlur = ".right-column--theatre:not(:hover)";
-  let fullWidth = ".ttc-rcol-collapsed";
-  let fullScreen = ".ttc-player-fullscreen";
+  const wa = ":not(.ttcwa)"; // selector priority workaround
+  const rcol = ".right-column--theatre";
+  const rcolBlur = ".right-column--theatre:not(:hover)";
+  const fullWidth = ".ttc-rcol-collapsed";
+  const fullScreen = ".ttc-player-fullscreen";
   
   let style = document.getElementById("chylex-ttc-style-custom");
   
@@ -463,7 +463,7 @@ function generateSettingsCSS(){
     return;
   }
   
-  let style = document.createElement("style");
+  const style = document.createElement("style");
   style.id = "chylex-ttc-style-settings";
   style.innerHTML = `@#rem{{@#css{{
 
@@ -648,11 +648,11 @@ var filtersObserver = new MutationObserver(function(mutations){
   for(let mutation of mutations){
     for(let added of mutation.addedNodes){
       let text;
-      let classes = added.classList;
+      const classes = added.classList;
       
       if (classes.contains("chat-line__message")){
-        let nodes = Array.from(added.childNodes);
-        let colon = nodes.findIndex(node => node.tagName === "SPAN" && node.innerText === ": ");
+        const nodes = Array.from(added.childNodes);
+        const colon = nodes.findIndex(node => node.tagName === "SPAN" && node.innerText === ": ");
         text = nodes.slice(colon+1).map(getNodeText).join("");
       }
       else{
@@ -667,33 +667,37 @@ var filtersObserver = new MutationObserver(function(mutations){
 });
 
 function refreshChatFilters(){
-  let filters = (settings.chatFilters || "").split(",").map(entry => entry.trim()).filter(entry => !!entry);
+  const chat = document.querySelector(".chat-list__lines .simplebar-content > div, .video-chat__message-list-wrapper ul");
+  
+  if (!chat){
+    return false;
+  }
+  
+  const filters = (settings.chatFilters || "").split(",").map(entry => entry.trim()).filter(entry => !!entry);
   
   if (filters.length === 0){
     filtersRegex = null;
   }
   else{
-    let options = filters.map(entry => entry.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, "(?:\\S*)").replace(/\s+/g, "\\s+")).join("|");
+    const options = filters.map(entry => entry.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, "(?:\\S*)").replace(/\s+/g, "\\s+")).join("|");
     filtersRegex = new RegExp("(?:^|[^a-z0-9])(?:"+options+")(?:$|[^a-z0-9])", "i");
   }
   
-  const chat = document.querySelector(".chat-list__lines .simplebar-content > div, .video-chat__message-list-wrapper ul");
-  
-  if (chat){
-    if (filtersRegex && settings.globalSwitch){
-      filtersObserver.observe(chat, { childList: true });
-    }
-    else{
-      filtersObserver.disconnect();
-    }
+  if (filtersRegex && settings.globalSwitch){
+    filtersObserver.observe(chat, { childList: true });
   }
+  else{
+    filtersObserver.disconnect();
+  }
+  
+  return true;
 }
 
 // Helpers
 
 var classObserverCallback = function(mutations){
   for(let mutation of mutations){
-    let classes = mutation.target.classList;
+    const classes = mutation.target.classList;
     
     if (classes.contains("right-column")){
       document.body.classList.toggle("ttc-rcol-collapsed", classes.contains("right-column--collapsed"));
@@ -707,8 +711,8 @@ var classObserverCallback = function(mutations){
 var classObserver = new MutationObserver(classObserverCallback);
 
 function setupClassHelpers(){
-  let col = document.querySelector(".right-column");
-  let player = document.querySelector(".video-player");
+  const col = document.querySelector(".right-column");
+  const player = document.querySelector(".video-player");
   
   if (!col || !player){
     return false;
@@ -739,9 +743,9 @@ function debounce(func, wait){
 function createSettingsModal(){
   tryRemoveElement(document.getElementById("chylex-ttc-settings-modal"));
   
-  let generateToggle = function(title, option){
+  const generateToggle = function(title, option){
     window.setTimeout(function(){
-      let toggle = document.getElementById("ttc-opt-"+option);
+      const toggle = document.getElementById("ttc-opt-"+option);
       
       toggle.addEventListener("click", function(){
         settings[option] = toggle.checked;
@@ -763,9 +767,9 @@ function createSettingsModal(){
 </div>`;
   };
   
-  let generateTxtbox = function(title, option, cfg){
+  const generateTxtbox = function(title, option, cfg){
     window.setTimeout(function(){
-      let input = document.getElementById("ttc-opt-"+option);
+      const input = document.getElementById("ttc-opt-"+option);
       
       input.addEventListener("input", debounce(function(){
         settings[option] = input.value;
@@ -784,10 +788,10 @@ function createSettingsModal(){
 </div>`;
   };
   
-  let generateSlider = function(title, option, cfg){
+  const generateSlider = function(title, option, cfg){
     window.setTimeout(function(){
-      let slider = document.getElementById("ttc-opt-"+option);
-      let regenerate = debounce(onSettingsUpdated, cfg.wait);
+      const slider = document.getElementById("ttc-opt-"+option);
+      const regenerate = debounce(onSettingsUpdated, cfg.wait);
       
       slider.addEventListener("input", function(){
         settings[option] = parseInt(slider.value, 10);
@@ -808,7 +812,7 @@ function createSettingsModal(){
 </div>`;
   };
   
-  let modal = document.createElement("div");
+  const modal = document.createElement("div");
   modal.id = "chylex-ttc-settings-modal";
   modal.innerHTML = `
 <h2>
