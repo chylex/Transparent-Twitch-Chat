@@ -72,7 +72,8 @@ function generateCustomCSS(){
   let wa = ":not(.ttcwa)"; // selector priority workaround
   let rcol = ".right-column--theatre";
   let rcolBlur = ".right-column--theatre:not(:hover)";
-  let fullWidth = "[style*='width: 100%']";
+  let fullWidth = ".ttc-rcol-collapsed";
+  let fullScreen = ".ttc-player-fullscreen";
   
   let style = document.getElementById("chylex-ttc-style-custom");
   
@@ -187,20 +188,20 @@ ${settings.transparentChat ? `@#css{{
   //   right: 0 !important;
   // }
 
-  .persistent-player--theatre {
+  body:not(${fullScreen}) .persistent-player--theatre {
     width: 100% !important;
   }
 
-  .persistent-player--theatre:not(${fullWidth}) .hover-display > div {
+  body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .hover-display > div {
     padding-right: ${settings.chatWidth - 10}px;
   }
 
-  .persistent-player--theatre .player-streamstatus {
+  body:not(${fullScreen}) .persistent-player--theatre .player-streamstatus {
     margin-right: ${settings.chatWidth + 10}px !important;
     padding-right: 1.5em !important;
   }
 
-  .persistent-player--theatre${fullWidth} .player-streamstatus {
+  body${fullWidth}:not(${fullScreen}) .persistent-player--theatre .player-streamstatus {
     margin-right: 20px !important;
   }
 
@@ -284,11 +285,11 @@ ${settings.transparentChat ? `@#css{{
 
   // adapt player size with disabled transparency
 
-  .persistent-player--theatre:not(${fullWidth}) {
+  body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre {
     width: calc(100% - ${settings.chatWidth - 10}px) !important;
   }
 
-  .persistent-player--theatre .player-streamstatus {
+  body:not(${fullScreen}) .persistent-player--theatre .player-streamstatus {
     margin-right: 20px !important;
   }
 @#css}}`}
@@ -317,20 +318,20 @@ ${settings.chatLeftSide && settings.transparentChat ? `@#css{{
     right: auto !important;
   }
 
-  .persistent-player--theatre:not(${fullWidth}) .hover-display > div {
+  body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .hover-display > div {
     padding-left: ${settings.chatWidth - 10}px;
     padding-right: 0;
   }
 
-  .persistent-player--theatre:not(${fullWidth}) .player-streaminfo {
+  body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .player-streaminfo {
     margin-left: 40px;
   }
 
-  .persistent-player--theatre${fullWidth} .player-streaminfo {
+  body${fullWidth}:not(${fullScreen}) .persistent-player--theatre .player-streaminfo {
     margin-left: 25px;
   }
 
-  .persistent-player--theatre .player-streamstatus${wa} {
+  body:not(${fullScreen}) .persistent-player--theatre .player-streamstatus${wa} {
     margin-right: 0px !important;
     padding-right: 1.5em !important;
   }
@@ -688,6 +689,42 @@ function refreshChatFilters(){
   }
 }
 
+// Helpers
+
+var classObserverCallback = function(mutations){
+  for(let mutation of mutations){
+    let classes = mutation.target.classList;
+    
+    if (classes.contains("right-column")){
+      document.body.classList.toggle("ttc-rcol-collapsed", classes.contains("right-column--collapsed"));
+    }
+    else if (classes.contains("video-player")){
+      document.body.classList.toggle("ttc-player-fullscreen", classes.contains("video-player--fullscreen"));
+    }
+  }
+};
+
+var classObserver = new MutationObserver(classObserverCallback);
+
+function setupClassHelpers(){
+  let col = document.querySelector(".right-column");
+  let player = document.querySelector(".video-player");
+  
+  if (!col || !player){
+    return false;
+  }
+  
+  classObserver.observe(col, { attributes: true, attributeFilter: [ "class" ] });
+  classObserver.observe(player, { attributes: true, attributeFilter: [ "class" ] });
+  
+  classObserverCallback([
+    { target: col },
+    { target: player }
+  ]);
+  
+  return true;
+}
+
 // Settings
 
 function debounce(func, wait){
@@ -698,7 +735,7 @@ function debounce(func, wait){
     timeout = window.setTimeout(func, wait);
   };
 }
-                          
+
 function createSettingsModal(){
   tryRemoveElement(document.getElementById("chylex-ttc-settings-modal"));
   
@@ -854,6 +891,7 @@ function insertSettingsButton(){
   });
   
   refreshChatFilters();
+  setupClassHelpers();
   
   if (isFirefox && container.classList.contains("video-chat")){
     const wrapper = document.querySelector(".video-chat__message-list-wrapper");
