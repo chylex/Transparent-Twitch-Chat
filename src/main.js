@@ -82,7 +82,9 @@ function generateCustomCSS(){
     style.id = "chylex-ttc-style-custom";
   }
   
-  style.innerHTML = `@#css{{
+  style.innerHTML = `@#rem{{
+
+@#css{{
 
 // fix scrollbars
 
@@ -90,11 +92,15 @@ ${rcolBlur} .chat-list__lines .simplebar-track.vertical {
   visibility: hidden !important;
 }
 
-${isFirefox ? `
+@#css}}
+
+${isFirefox ? `@#css{{
   ${rcol} .video-chat__message-list-wrapper:not(.video-chat__message-list-wrapper--unsynced) {
     overflow-y: hidden !important;
   }
-` : ``}
+@#css}}` : ``}
+
+@#css{{
 
 // general chat styles
 
@@ -123,35 +129,37 @@ ${rcol} .hidden {
   display: none;
 }
 
-${settings.hideHeader ? `
-  ${rcolBlur} .room-selector__header {
-    display: none !important;
-  }
-` : ``}
-
-${settings.hideChatInput ? `
-  ${rcolBlur} .chat-input, ${rcolBlur} .video-chat__input {
-    display: none;
-  }
-` : ``}
-
-${settings.hidePinnedCheer ? `
-  .pinned-cheer, .pinned-cheer-v2 {
-    display: none;
-  }
-` : ``}
-
 ${rcol} .video-chat__sync-button {
   width: ${settings.chatWidth - 50}px;
   z-index: 10;
   background-color: #b8b5c0 !important;
 }
 
-${settings.chatWidth < 350 ? `
+@#css}}
+
+${settings.chatWidth < 350 ? `@#css{{
   ${rcol} .video-chat__settings, ${rcol} .chat-settings {
     width: ${settings.chatWidth - 50}px;
   }
-` : ``}
+@#css}}` : ``}
+
+${settings.hideHeader ? `@#css{{
+  ${rcolBlur} .room-selector__header {
+    display: none !important;
+  }
+@#css}}` : ``}
+
+${settings.hideChatInput ? `@#css{{
+  ${rcolBlur} .chat-input, ${rcolBlur} .video-chat__input {
+    display: none;
+  }
+@#css}}` : ``}
+
+${settings.hidePinnedCheer ? `@#css{{
+  .pinned-cheer, .pinned-cheer-v2 {
+    display: none;
+  }
+@#css}}` : ``}
 
 // BTTV workarounds
 
@@ -164,7 +172,7 @@ ${settings.chatWidth < 350 ? `
 //   z-index: 3 !important;
 // }
 
-${settings.transparentChat ? `
+${settings.transparentChat ? `@#css{{
 
   // expand player width, FrankerFaceZ workaround
 
@@ -273,7 +281,7 @@ ${settings.transparentChat ? `
   .whispers--theatre-mode .whispers-threads-box__container:not(.whispers-threads-box__container--open):not(:hover) {
     opacity: ${Math.max(0.1, settings.backgroundOpacity * 0.01)};
   }
-` : `
+@#css}}` : `@#css{{
 
   // adapt player size with disabled transparency
 
@@ -284,7 +292,7 @@ ${settings.transparentChat ? `
   .persistent-player--theatre .player-streamstatus {
     margin-right: 20px !important;
   }
-`}
+@#css}}`}
 
 // conversation menu and bottom margin
 
@@ -292,7 +300,7 @@ ${settings.transparentChat ? `
   right: ${settings.chatWidth - 10}px !important;
 }
 
-${settings.hideConversations ? `
+${settings.hideConversations ? `@#css{{
   .whispers--theatre-mode {
     display: none;
   }
@@ -300,20 +308,20 @@ ${settings.hideConversations ? `
   .video-player--theatre .video-player__container {
     bottom: 0 !important;
   }
-` : ``}
+@#css}}` : ``}
 
 // hide timestamps
 
-${settings.hideTimestamps ? `
+${settings.hideTimestamps ? `@#css{{
   ${rcol} .vod-message__timestamp {
     visibility: hidden;
     width: 0 !important;
   }
-` : ``}
+@#css}}` : ``}
 
 // chat on left side
 
-${settings.chatLeftSide && settings.transparentChat ? `
+${settings.chatLeftSide && settings.transparentChat ? `@#css{{
   ${rcol}${wa}, ${rcol} .chat-list__lines .simplebar-track.vertical {
     left: 0 !important;
     right: auto !important;
@@ -352,11 +360,11 @@ ${settings.chatLeftSide && settings.transparentChat ? `
     margin-left: 0;
     transform: rotate(-90deg) !important;
   }
-` : ``}
+@#css}}` : ``}
 
 // gray theme
 
-${settings.grayTheme ? `
+${settings.grayTheme ? `@#css{{
   ${rcol} .tw-border-l.tw-c-background-alt-2 {
     border-left-color: #2b2b2b !important;
   }
@@ -414,7 +422,9 @@ ${settings.grayTheme ? `
   .whispers--theatre-mode .whispers-threads-box__open-close${wa} {
     background-color: #0e0e0e !important;
   }
-` : ``}
+@#css}}` : ``}
+
+@#css{{
 
 // badge tweaks
 
@@ -423,30 +433,36 @@ ${rcolBlur} div[data-a-target="chat-badge"] {
   ${settings.badgeOpacity === 0 ? `display: none !important;` : ``}
 }
 
-${settings.hideBadgeTurbo ? `
+@#css}}
+
+${settings.hideBadgeTurbo ? `@#css{{
   ${rcol} .chat-badge[alt="Turbo"] {
    display: none;
   }
-` : ``}
+@#css}}` : ``}
 
-${settings.hideBadgePrime ? `
+${settings.hideBadgePrime ? `@#css{{
   ${rcol} .chat-badge[alt$="Prime"] {
    display: none;
   }
-` : ``}
+@#css}}` : ``}
 
-${settings.hideBadgeSubscriber ? `
+${settings.hideBadgeSubscriber ? `@#css{{
   ${rcol} .chat-badge[alt~="Subscriber"] {
    display: none;
   }
-` : ``}
+@#css}}` : ``}
+
+@#css{{
 
 // dynamic styles for settings, replaces default style
 
 #chylex-ttc-settings-btn {
   margin-left: ${settings.chatWidth - 58}px;
 }
-@#css}}`;
+
+@#css}}
+@#rem}}`;
   
   document.head.appendChild(style);
 }
@@ -458,7 +474,7 @@ function generateSettingsCSS(){
   
   let style = document.createElement("style");
   style.id = "chylex-ttc-style-settings";
-  style.innerHTML = `@#css{{
+  style.innerHTML = `@#rem{{@#css{{
 
 // settings button
 
@@ -605,7 +621,7 @@ function generateSettingsCSS(){
   padding-left: 4px;
   text-align: right;
 }
-@#css}}`;
+@#css}}@#rem}}`;
   
   document.head.appendChild(style);
 }

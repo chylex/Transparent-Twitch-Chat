@@ -45,18 +45,31 @@ with open(SRC_FILE, 'r') as src:
 
 src_contents = src_contents.replace("{VERSION}", new_version, 1)
 
-src_contents = re.sub(r'@#hex\(([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})\)',
-                      lambda m: f'rgba({int(m.group(1), 16)},{int(m.group(2), 16)},{int(m.group(3), 16)},{int(m.group(4), 16) / 256})',
-                      src_contents)
+src_contents = re.sub(
+    pattern = r'@#hex\(([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})\)',
+    repl    = lambda m: f'rgba({int(m.group(1), 16)},{int(m.group(2), 16)},{int(m.group(3), 16)},{int(m.group(4), 16) / 256})',
+    string  = src_contents
+)
 
-src_contents = re.sub(r'@#hex\(([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])\)',
-                      lambda m: f'rgba({int(m.group(1)*2, 16)},{int(m.group(2)*2, 16)},{int(m.group(3)*2, 16)},{int(m.group(4)*2, 16) / 256})',
-                      src_contents)
+src_contents = re.sub(
+    pattern = r'@#hex\(([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])\)',
+    repl    = lambda m: f'rgba({int(m.group(1) * 2, 16)},{int(m.group(2) * 2, 16)},{int(m.group(3) * 2, 16)},{int(m.group(4) * 2, 16) / 256})',
+    string  = src_contents
+)
 
-src_contents = re.sub(r'@#css{{(.*?)@#css}}',
-                      lambda m: "\n".join(filter(lambda line: line and not line.startswith("//"), map(lambda line: line.strip(), m.group(1).splitlines()))),
-                      src_contents,
-                      flags = re.DOTALL)
+src_contents = re.sub(
+    pattern = r'@#rem{{(.*?)@#rem}}',
+    repl    = lambda m: "\n".join(line for line in map(str.strip, m.group(1).splitlines()) if line and not line.startswith("//")),
+    string  = src_contents,
+    flags   = re.DOTALL
+)
+
+src_contents = re.sub(
+    pattern = r'@#css{{(.*?)@#css}}',
+    repl    = lambda m: "\n" + re.sub(r"([a-z]): ", "\\1:", m.group(1).replace("\n", "").replace(";}", "}\n").replace(" !important", "!important")),
+    string  = src_contents,
+    flags   = re.DOTALL
+)
 
 with open(OUTPUT_FILE, 'w') as out:
     out.write(src_contents)
