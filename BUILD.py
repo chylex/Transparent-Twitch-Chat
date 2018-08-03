@@ -2,6 +2,7 @@
 # Python 3.6+
 
 import re
+import os
 
 # Prepare
 
@@ -30,10 +31,12 @@ new_version = None
 if current_version is None:
     new_version = input("New version: ")
 else:
-    new_version = input("Current version is {}. New version: ".format(current_version))
+    new_version = input(f"Current version is {current_version}. New version: ")
 
 if not new_version:
     new_version = current_version
+
+# Utilities
 
 # Build
 
@@ -57,5 +60,9 @@ src_contents = re.sub(r'@#css{{(.*?)@#css}}',
 
 with open(OUTPUT_FILE, 'w') as out:
     out.write(src_contents)
+
+if os.name == "nt":
+    print("Copying to clipboard")
+    os.system(f"clip < {OUTPUT_FILE}")
 
 print("Done")
