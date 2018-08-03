@@ -150,7 +150,7 @@ ${settings.hideHeader ? `@#css{{
 
 ${settings.hideChatInput ? `@#css{{
   ${rcolBlur} .chat-input, ${rcolBlur} .video-chat__input {
-    display: none;
+    display: none !important;
   }
 @#css}}` : ``}
 
