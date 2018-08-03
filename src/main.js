@@ -344,12 +344,11 @@ ${settings.chatLeftSide && settings.transparentChat ? `@#css{{
     left: 5px;
     right: auto;
     margin-left: ${settings.chatWidth - 10}px;
-    transform: rotate(90deg) !important;
+    transform: rotate(180deg) !important;
   }
 
   ${rcol}.right-column--collapsed .right-column__toggle-visibility {
     margin-left: 0;
-    transform: rotate(-90deg) !important;
   }
 @#css}}` : ``}
 
