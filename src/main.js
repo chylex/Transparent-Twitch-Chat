@@ -192,7 +192,7 @@ ${settings.transparentChat ? `@#css{{
     width: 100% !important;
   }
 
-  body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .hover-display > div {
+  body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .hover-display div[class|="pl-controls"] {
     padding-right: ${settings.chatWidth - 10}px;
   }
 
@@ -318,7 +318,7 @@ ${settings.chatLeftSide && settings.transparentChat ? `@#css{{
     right: auto !important;
   }
 
-  body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .hover-display > div {
+  body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .hover-display div[class|="pl-controls"] {
     padding-left: ${settings.chatWidth - 10}px;
     padding-right: 0;
   }
