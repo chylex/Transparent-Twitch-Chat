@@ -196,6 +196,14 @@ ${settings.transparentChat ? `@#css{{
     padding-right: ${settings.chatWidth - 10}px;
   }
 
+  body:not(${fullScreen}) .persistent-player--theatre .pl-close-button {
+    margin-right: 20px;
+  }
+
+  body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .pl-close-button {
+    margin-right: ${settings.chatWidth + 10}px;
+  }
+
   body:not(${fullScreen}) .persistent-player--theatre .player-streamstatus {
     margin-right: ${settings.chatWidth + 10}px !important;
     padding-right: 1.5em !important;
@@ -321,6 +329,10 @@ ${settings.chatLeftSide && settings.transparentChat ? `@#css{{
   body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .hover-display div[class|="pl-controls"] {
     padding-left: ${settings.chatWidth - 10}px;
     padding-right: 0;
+  }
+
+  .persistent-player--theatre .pl-close-button {
+    margin-right: 0 !important;
   }
 
   body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .player-streaminfo {
