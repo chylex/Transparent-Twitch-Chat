@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.3
+// @version      1.3.1
 // @namespace    https://chylex.com
 // @homepageURL  https://github.com/chylex/Transparent-Twitch-Chat
 // @supportURL   https://github.com/chylex/Transparent-Twitch-Chat/issues
@@ -111,7 +111,9 @@ ${settings.hidePinnedCheer ? `
 ` : ``}
 ${settings.transparentChat ? `
 body:not(${fullScreen}) .persistent-player--theatre {width:100%!important}
-body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .hover-display > div {padding-right:${settings.chatWidth - 10}px}
+body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .hover-display div[class|="pl-controls"] {padding-right:${settings.chatWidth - 10}px}
+body:not(${fullScreen}) .persistent-player--theatre .pl-close-button {margin-right:20px}
+body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .pl-close-button {margin-right:${settings.chatWidth + 10}px}
 body:not(${fullScreen}) .persistent-player--theatre .player-streamstatus {margin-right:${settings.chatWidth + 10}px!important;padding-right:1.5em!important}
 body${fullWidth}:not(${fullScreen}) .persistent-player--theatre .player-streamstatus {margin-right:20px!important}
 ${rcol} .tw-border-l.tw-c-background-alt-2${wa} {border-left:none!important}
@@ -139,7 +141,8 @@ ${settings.hideConversations ? `
 ` : ``}
 ${settings.chatLeftSide && settings.transparentChat ? `
 ${rcol}${wa}, ${rcol} .chat-list__lines .simplebar-track.vertical {left:0!important;right:auto!important}
-body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .hover-display > div {padding-left:${settings.chatWidth - 10}px;padding-right:0}
+body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .hover-display div[class|="pl-controls"] {padding-left:${settings.chatWidth - 10}px;padding-right:0}
+.persistent-player--theatre .pl-close-button {margin-right:0!important}
 body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .player-streaminfo {margin-left:40px}
 body${fullWidth}:not(${fullScreen}) .persistent-player--theatre .player-streaminfo {margin-left:25px}
 body:not(${fullScreen}) .persistent-player--theatre .player-streamstatus${wa} {margin-right:0px!important;padding-right:1.5em!important}
