@@ -104,8 +104,11 @@ ${isFirefox ? `@#css{{
 
 // general chat styles
 
-${rcol} .video-watch-page__right-column${wa}, ${rcol} .channel-page__right-column${wa} {
-  background: none !important;
+${rcolBlur} .channel-root__right-column${wa} {
+  background: rgba(14, 12, 19, ${settings.backgroundOpacity * 0.01}) !important;
+}
+
+${rcol} .channel-root__right-column${wa} {
   width: ${settings.chatWidth - 10}px;
 }
 
@@ -230,7 +233,6 @@ ${settings.transparentChat ? `@#css{{
   }
 
   ${rcolBlur} .chylex-ttc-chat-container {
-    background: rgba(14, 12, 19, ${settings.backgroundOpacity * 0.01}) !important;
     color: #ece8f3 !important;
   }
 
@@ -371,11 +373,11 @@ ${settings.grayTheme ? `@#css{{
     border-left-color: #2b2b2b !important;
   }
 
-  ${rcol} .chylex-ttc-chat-container${wa} {
+  ${rcol} .channel-root__right-column${wa} {
     background: #0e0e0e !important;
   }
 
-  ${rcolBlur} .chylex-ttc-chat-container${wa} {
+  ${rcolBlur} .channel-root__right-column${wa} {
     background: rgba(14, 14, 14, ${settings.transparentChat ? (settings.backgroundOpacity * 0.01) : 1}) !important;
   }
 
@@ -430,7 +432,7 @@ ${settings.grayTheme ? `@#css{{
 
 // badge tweaks
 
-${rcolBlur} div[data-a-target="chat-badge"] {
+${rcolBlur} a[data-a-target="chat-badge"] {
   opacity: ${settings.badgeOpacity / 100};
   ${settings.badgeOpacity === 0 ? `display: none !important;` : ``}
 }
@@ -460,7 +462,7 @@ ${settings.hideBadgeSubscriber ? `@#css{{
 // dynamic styles for settings, replaces default style
 
 #chylex-ttc-settings-btn {
-  margin-left: ${settings.chatWidth - 58}px;
+  margin-left: ${settings.chatWidth - 60}px;
 }
 
 @#css}}
@@ -485,15 +487,15 @@ function generateSettingsCSS(){
   width: 3em;
   height: 3em;
   position: absolute;
-  bottom: 130px;
-  margin-left: 292px;
+  bottom: 128px;
+  margin-left: 290px;
   z-index: 9;
   cursor: pointer;
   fill: @#hex(fffa);
 }
 
 .video-chat #chylex-ttc-settings-btn {
-  bottom: 120px;
+  bottom: 135px;
 }
 
 #chylex-ttc-settings-btn:hover .player-tip {
@@ -615,6 +617,10 @@ function generateSettingsCSS(){
 
 #chylex-ttc-settings-modal input[type="range"] {
   width: auto;
+}
+
+#chylex-ttc-settings-modal .tw-toggle__button::after {
+  border-radius: 0;
 }
 
 #chylex-ttc-settings-modal output {
