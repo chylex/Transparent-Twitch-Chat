@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.3.1
+// @version      1.3.2
 // @namespace    https://chylex.com
 // @homepageURL  https://github.com/chylex/Transparent-Twitch-Chat
 // @supportURL   https://github.com/chylex/Transparent-Twitch-Chat/issues
@@ -89,7 +89,8 @@ ${isFirefox ? `
 ${rcol} .video-chat__message-list-wrapper:not(.video-chat__message-list-wrapper--unsynced) {overflow-y:hidden!important}
 ` : ``}
 
-${rcol} .video-watch-page__right-column${wa}, ${rcol} .channel-page__right-column${wa} {background:none!important;width:${settings.chatWidth - 10}px}
+${rcolBlur} .channel-root__right-column${wa} {background:rgba(14, 12, 19, ${settings.backgroundOpacity * 0.01})!important}
+${rcol} .channel-root__right-column${wa} {width:${settings.chatWidth - 10}px}
 ${rcol} .video-chat {flex-basis:auto!important}
 ${rcol} .video-chat__header {display:none!important}
 ${rcol} .room-selector__header${wa} {border-right:none!important}
@@ -119,7 +120,7 @@ body${fullWidth}:not(${fullScreen}) .persistent-player--theatre .player-streamst
 ${rcol} .tw-border-l.tw-c-background-alt-2${wa} {border-left:none!important}
 ${rcolBlur} .video-chat__header {background-color:rgba(23,20,31,0.3984375)!important;box-shadow:none!important}
 ${rcolBlur} .video-chat__input {background:transparent!important;box-shadow:none!important}
-${rcolBlur} .chylex-ttc-chat-container {background:rgba(14, 12, 19, ${settings.backgroundOpacity * 0.01})!important;color:#ece8f3!important}
+${rcolBlur} .chylex-ttc-chat-container {color:#ece8f3!important}
 ${rcol} .room-selector__header {border-left:none!important}
 ${rcolBlur} .room-selector__header {background:rgba(14, 12, 19, ${settings.backgroundOpacity * 0.01})!important;border-bottom-color:rgba(44, 37, 65, ${settings.backgroundOpacity * 0.01})!important}
 ${rcolBlur} .room-selector__header > p, ${rcolBlur} .room-selector__header .tw-button__text > div {color:#dad8de!important;text-shadow:-1px 0 0 rgba(0,0,0,0.6640625), 0 -1px 0 rgba(0,0,0,0.6640625), 1px 0 0 rgba(0,0,0,0.6640625), 0 1px 0 rgba(0,0,0,0.6640625)}
@@ -152,8 +153,8 @@ ${rcol}.right-column--collapsed .right-column__toggle-visibility {margin-left:0}
 ` : ``}
 ${settings.grayTheme ? `
 ${rcol} .tw-border-l.tw-c-background-alt-2 {border-left-color:#2b2b2b!important}
-${rcol} .chylex-ttc-chat-container${wa} {background:#0e0e0e!important}
-${rcolBlur} .chylex-ttc-chat-container${wa} {background:rgba(14, 14, 14, ${settings.transparentChat ? (settings.backgroundOpacity * 0.01) : 1})!important}
+${rcol} .channel-root__right-column${wa} {background:#0e0e0e!important}
+${rcolBlur} .channel-root__right-column${wa} {background:rgba(14, 14, 14, ${settings.transparentChat ? (settings.backgroundOpacity * 0.01) : 1})!important}
 ${rcolBlur} .room-selector__header${wa} {background:rgba(14, 14, 14, ${settings.transparentChat ? (settings.backgroundOpacity * 0.01) : 1})!important;border-bottom-color:rgba(42, 42, 42, ${settings.transparentChat ? (settings.backgroundOpacity * 0.01) : 1})!important}
 ${rcol} .room-selector__header${wa} {background:#0e0e0e!important;border-bottom-color:#2b2b2b!important;${settings.transparentChat ? "" : "border-left-color:#2b2b2b!important;"}}${rcol} .video-chat__input {box-shadow:inset 0 1px 0 0 #2b2b2b!important}
 ${rcol} [data-a-target="video-chat-input"], ${rcol} [data-a-target="chat-input"] {background-color:#0e0e0e!important;border-color:#2b2b2b!important}
@@ -164,7 +165,7 @@ ${rcol} [data-a-target="chat-send-button"]:active, ${rcol} [data-a-target="chat-
 .whispers--theatre-mode .whispers-threads-box__open-close${wa} {background-color:#0e0e0e!important}
 ` : ``}
 
-${rcolBlur} div[data-a-target="chat-badge"] {opacity:${settings.badgeOpacity / 100};${settings.badgeOpacity === 0 ? `display:none!important;` : ``}}
+${rcolBlur} a[data-a-target="chat-badge"] {opacity:${settings.badgeOpacity / 100};${settings.badgeOpacity === 0 ? `display:none!important;` : ``}}
 ${settings.hideBadgeTurbo ? `
 ${rcol} .chat-badge[alt="Turbo"] {display:none}
 ` : ``}
@@ -175,7 +176,7 @@ ${settings.hideBadgeSubscriber ? `
 ${rcol} .chat-badge[alt~="Subscriber"] {display:none}
 ` : ``}
 
-#chylex-ttc-settings-btn {margin-left:${settings.chatWidth - 58}px}
+#chylex-ttc-settings-btn {margin-left:${settings.chatWidth - 60}px}
 `;
   
   document.head.appendChild(style);
@@ -189,8 +190,8 @@ function generateSettingsCSS(){
   const style = document.createElement("style");
   style.id = "chylex-ttc-style-settings";
   style.innerHTML = `
-#chylex-ttc-settings-btn {display:none;width:3em;height:3em;position:absolute;bottom:130px;margin-left:292px;z-index:9;cursor:pointer;fill:rgba(255,255,255,0.6640625)}
-.video-chat #chylex-ttc-settings-btn {bottom:120px}
+#chylex-ttc-settings-btn {display:none;width:3em;height:3em;position:absolute;bottom:128px;margin-left:290px;z-index:9;cursor:pointer;fill:rgba(255,255,255,0.6640625)}
+.video-chat #chylex-ttc-settings-btn {bottom:135px}
 #chylex-ttc-settings-btn:hover .player-tip {display:inline-block;width:auto;left:50%;top:0.5em;margin-left:-13.75em;z-index:8}
 #chylex-ttc-settings-btn svg {width:100%;height:100%}
 #chylex-ttc-settings-btn:hover {fill:#fff}
@@ -212,6 +213,7 @@ function generateSettingsCSS(){
 #chylex-ttc-settings-modal .switch::before {text-align:left;padding-left:5px}
 #chylex-ttc-settings-modal .switch::after {text-align:right;padding-right:3px}
 #chylex-ttc-settings-modal input[type="range"] {width:auto}
+#chylex-ttc-settings-modal .tw-toggle__button::after {border-radius:0}
 #chylex-ttc-settings-modal output {color:rgba(255,255,255,0.796875);width:46px;padding-left:4px;text-align:right}
 `;
   
