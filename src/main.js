@@ -104,11 +104,13 @@ ${isFirefox ? `@#css{{
 
 // general chat styles
 
-${rcolBlur} .channel-root__right-column${wa} {
+// TODO remove old channel-root style
+${rcolBlur} .channel-root__right-column${wa}, ${rcolBlur} .channel-page__right-column${wa}, ${rcolBlur} .video-watch-page__right-column${wa} {
   background: rgba(14, 12, 19, ${settings.backgroundOpacity * 0.01}) !important;
 }
 
-${rcol} .channel-root__right-column${wa} {
+// TODO remove old channel-root style
+${rcol} .channel-root__right-column${wa}, ${rcol} .channel-page__right-column${wa}, ${rcol} .video-watch-page__right-column${wa} {
   width: ${settings.chatWidth - 10}px;
 }
 
@@ -372,12 +374,14 @@ ${settings.grayTheme ? `@#css{{
   ${rcol} .tw-border-l.tw-c-background-alt-2 {
     border-left-color: #2b2b2b !important;
   }
-
-  ${rcol} .channel-root__right-column${wa} {
+  
+  // TODO remove old channel-root style
+  ${rcol} .channel-root__right-column${wa}, ${rcol} .channel-page__right-column${wa}, ${rcol} .video-watch-page__right-column${wa} {
     background: #0e0e0e !important;
   }
-
-  ${rcolBlur} .channel-root__right-column${wa} {
+  
+  // TODO remove old channel-root style
+  ${rcolBlur} .channel-root__right-column${wa}, ${rcolBlur} .channel-page__right-column${wa}, ${rcolBlur} .video-watch-page__right-column${wa} {
     background: rgba(14, 14, 14, ${settings.transparentChat ? (settings.backgroundOpacity * 0.01) : 1}) !important;
   }
 
