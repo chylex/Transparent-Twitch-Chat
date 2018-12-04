@@ -220,6 +220,10 @@ ${settings.transparentChat ? `@#css{{
 
   // chat container transparency
 
+  ${rcol} .chat-room {
+    background: transparent !important;
+  }
+
   ${rcol} .tw-border-l.tw-c-background-alt-2${wa} {
     border-left: none !important;
   }
