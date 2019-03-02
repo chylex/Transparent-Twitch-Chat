@@ -149,7 +149,7 @@ ${settings.chatWidth < 350 ? `@#css{{
 @#css}}` : ``}
 
 ${settings.hideHeader ? `@#css{{
-  ${rcolBlur} .room-selector__header {
+  ${rcolBlur} .rooms-header, ${rcolBlur} .room-selector__header {
     display: none !important;
   }
 @#css}}` : ``}
