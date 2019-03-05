@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.3.4
+// @version      1.3.5
 // @namespace    https://chylex.com
 // @homepageURL  https://github.com/chylex/Transparent-Twitch-Chat
 // @supportURL   https://github.com/chylex/Transparent-Twitch-Chat/issues
@@ -102,7 +102,7 @@ ${settings.chatWidth < 350 ? `
 ${rcol} .video-chat__settings, ${rcol} .chat-settings {width:${settings.chatWidth - 50}px}
 ` : ``}
 ${settings.hideHeader ? `
-${rcolBlur} .room-selector__header {display:none!important}
+${rcolBlur} .rooms-header, ${rcolBlur} .room-selector__header {display:none!important}
 ` : ``}
 ${settings.hideChatInput ? `
 ${rcolBlur} .chat-input, ${rcolBlur} .video-chat__input {display:none!important}
