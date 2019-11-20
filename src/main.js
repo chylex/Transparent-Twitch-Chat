@@ -104,14 +104,12 @@ ${isFirefox ? `@#css{{
 
 // general chat styles
 
-// TODO remove old channel-root style
-${rcolBlur} .channel-root__right-column${wa}, ${rcolBlur} .channel-page__right-column${wa}, ${rcolBlur} .video-watch-page__right-column${wa} {
+${rcolBlur} .channel-root__right-column${wa} {
   background: rgba(14, 12, 19, ${settings.backgroundOpacity * 0.01}) !important;
 }
 
-// TODO remove old channel-root style
-${rcol} .channel-root__right-column${wa}, ${rcol} .channel-page__right-column${wa}, ${rcol} .video-watch-page__right-column${wa} {
-  width: ${settings.chatWidth - 10}px;
+${rcol}${wa}, ${rcol} .channel-root__right-column${wa} {
+  width: ${settings.chatWidth - 10}px !important;
 }
 
 ${rcol} .video-chat {
@@ -142,14 +140,16 @@ ${rcol} .video-chat__sync-button {
 
 @#css}}
 
-${settings.chatWidth < 350 ? `@#css{{
-  ${rcol} .video-chat__settings, ${rcol} .chat-settings {
-    width: ${settings.chatWidth - 50}px;
-  }
-@#css}}` : ``}
+#root[data-a-page-loaded-name="VideoWatchPage"] ${rcolBlur}:not(.right-column--collapsed) .right-column__toggle-visibility {
+  display: none !important;
+}
 
 ${settings.hideHeader ? `@#css{{
   ${rcolBlur} .rooms-header, ${rcolBlur} .room-selector__header {
+    display: none !important;
+  }
+  
+  ${rcolBlur}:not(.right-column--collapsed) .right-column__toggle-visibility {
     display: none !important;
   }
 @#css}}` : ``}
@@ -161,7 +161,7 @@ ${settings.hideChatInput ? `@#css{{
 @#css}}` : ``}
 
 ${settings.hidePinnedCheer ? `@#css{{
-  .pinned-cheer, .pinned-cheer-v2 {
+  .pinned-cheer, .pinned-cheer-v2, .channel-leaderboard {
     display: none;
   }
 @#css}}` : ``}
@@ -197,35 +197,19 @@ ${settings.transparentChat ? `@#css{{
     width: 100% !important;
   }
 
-  body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .hover-display div[class|="pl-controls"] {
+  body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .top-bar,
+  body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .player-controls {
     padding-right: ${settings.chatWidth - 10}px;
   }
 
-  body:not(${fullScreen}) .persistent-player--theatre .pl-close-button {
-    margin-right: 20px;
-  }
-
-  body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .pl-close-button {
-    margin-right: ${settings.chatWidth + 10}px;
-  }
-
-  body:not(${fullScreen}) .persistent-player--theatre .player-streamstatus {
-    margin-right: ${settings.chatWidth + 10}px !important;
-    padding-right: 1.5em !important;
-  }
-
-  body${fullWidth}:not(${fullScreen}) .persistent-player--theatre .player-streamstatus {
-    margin-right: 20px !important;
+  body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .player-overlay-background > div {
+    right: ${settings.chatWidth - 10}px !important;
   }
 
   // chat container transparency
 
   ${rcol} .chat-room {
     background: transparent !important;
-  }
-
-  ${rcol} .tw-border-l.tw-c-background-alt-2${wa} {
-    border-left: none !important;
   }
 
   ${rcolBlur} .video-chat__header {
@@ -240,6 +224,10 @@ ${settings.transparentChat ? `@#css{{
 
   ${rcolBlur} .chylex-ttc-chat-container {
     color: #ece8f3 !important;
+  }
+
+  ${rcolBlur} .rooms-header, ${rcolBlur} .leaderboard-header-tabbed-layout {
+    background: transparent !important;
   }
 
   ${rcol} .room-selector__header {
@@ -312,17 +300,17 @@ ${settings.transparentChat ? `@#css{{
 
 // conversation menu and bottom margin
 
-.whispers--theatre-mode.whispers--right-column-expanded {
+.whispers--theatre-mode.whispers--right-column-expanded-beside {
   right: ${settings.chatWidth - 10}px !important;
 }
 
 ${settings.hideConversations ? `@#css{{
-  .whispers--theatre-mode {
-    display: none;
+  .whispers--theatre-mode${wa} {
+    display: none !important;
   }
 
-  .video-player--theatre .video-player__container {
-    bottom: 0 !important;
+  .highwind-video-player__container--theatre-whispers {
+    bottom: 1px !important; // allows hiding player controls in fullscreen by moving cursor all the way down
   }
 @#css}}` : ``}
 
@@ -334,41 +322,36 @@ ${settings.chatLeftSide && settings.transparentChat ? `@#css{{
     right: auto !important;
   }
 
-  body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .hover-display div[class|="pl-controls"] {
+  ${rcol} .channel-root__right-column${wa} {
+    border-left: none !important;
+    border-right: var(--border-width-default) solid var(--color-border-base) !important;
+  }
+
+  body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .top-bar {
+    padding-left: ${settings.chatWidth}px;
+    padding-right: 0;
+  }
+
+  body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .player-controls {
     padding-left: ${settings.chatWidth - 10}px;
     padding-right: 0;
   }
 
-  .persistent-player--theatre .pl-close-button {
-    margin-right: 0 !important;
+  body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .player-overlay-background > div {
+    left: ${settings.chatWidth - 10}px !important;
+    right: 0 !important;
   }
 
-  body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .player-streaminfo {
-    margin-left: 40px;
-  }
-
-  body${fullWidth}:not(${fullScreen}) .persistent-player--theatre .player-streaminfo {
-    margin-left: 25px;
-  }
-
-  body:not(${fullScreen}) .persistent-player--theatre .player-streamstatus${wa} {
-    margin-right: 0px !important;
-    padding-right: 1.5em !important;
-  }
-
-  .whispers--theatre-mode${wa} {
+  .whispers--theatre-mode.whispers--right-column-expanded-beside {
     right: 0px !important;
   }
 
   ${rcol} .right-column__toggle-visibility {
-    left: 5px;
-    right: auto;
-    margin-left: ${settings.chatWidth - 10}px;
     transform: rotate(180deg) !important;
   }
 
   ${rcol}.right-column--collapsed .right-column__toggle-visibility {
-    margin-left: 0;
+    left: 0.5rem;
   }
 @#css}}` : ``}
 
@@ -728,9 +711,6 @@ var classObserverCallback = function(mutations){
     if (classes.contains("right-column")){
       document.body.classList.toggle("ttc-rcol-collapsed", classes.contains("right-column--collapsed"));
     }
-    else if (classes.contains("video-player")){
-      document.body.classList.toggle("ttc-player-fullscreen", classes.contains("video-player--fullscreen"));
-    }
   }
 };
 
@@ -738,21 +718,30 @@ var classObserver = new MutationObserver(classObserverCallback);
 
 function setupClassHelpers(){
   const col = document.querySelector(".right-column");
-  const player = document.querySelector(".video-player");
   
-  if (!col || !player){
+  if (!col){
     return false;
   }
   
   classObserver.observe(col, { attributes: true, attributeFilter: [ "class" ] });
-  classObserver.observe(player, { attributes: true, attributeFilter: [ "class" ] });
   
   classObserverCallback([
-    { target: col },
-    { target: player }
+    { target: col }
   ]);
   
   return true;
+}
+
+function setupFullscreenHelper(){
+  for(let event of [ "fullscreenchange", "webkitfullscreenchange", "mozfullscreenchange", "msfullscreenchange" ]){
+    if ("on" + event in document){
+      document.addEventListener(event, function(){
+        document.body.classList.toggle("ttc-player-fullscreen", document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement);
+      });
+      
+      break;
+    }
+  }
 }
 
 // Settings
@@ -975,6 +964,8 @@ window.setInterval(function(){
 document.body.addEventListener("click", function(){
   tryRemoveElement(document.getElementById("chylex-ttc-settings-modal"));
 });
+
+setupFullscreenHelper();
 
 generateSettingsCSS();
 generateCustomCSS();
