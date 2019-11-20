@@ -492,10 +492,10 @@ function generateSettingsCSS(){
 
 #chylex-ttc-settings-btn {
   display: none;
-  width: 3em;
-  height: 3em;
+  width: 2.5em;
+  height: 2.5em;
   position: absolute;
-  bottom: 128px;
+  bottom: 105px;
   margin-left: 290px;
   z-index: 9;
   cursor: pointer;
@@ -503,16 +503,7 @@ function generateSettingsCSS(){
 }
 
 .video-chat #chylex-ttc-settings-btn {
-  bottom: 135px;
-}
-
-#chylex-ttc-settings-btn:hover .player-tip {
-  display: inline-block;
-  width: auto;
-  left: 50%;
-  top: 0.5em;
-  margin-left: -13.75em;
-  z-index: 8;
+  bottom: 18px;
 }
 
 #chylex-ttc-settings-btn svg {
@@ -534,9 +525,9 @@ function generateSettingsCSS(){
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 630px;
+  width: 860px;
   height: 292px;
-  margin-left: -315px;
+  margin-left: -430px;
   margin-top: -146px;
   z-index: 10000;
   background-color: @#hex(111c);
@@ -623,11 +614,20 @@ function generateSettingsCSS(){
   padding-right: 3px;
 }
 
-#chylex-ttc-settings-modal input[type="range"] {
-  width: auto;
+#chylex-ttc-settings-modal input[type="text"] {
+  width: 100%;
+  padding: 2px;
 }
 
-#chylex-ttc-settings-modal .tw-toggle__button::after {
+#chylex-ttc-settings-modal input[type="range"] {
+  width: 142px;
+}
+
+#chylex-ttc-settings-modal .tw-toggle__button {
+  width: 4rem;
+}
+
+#chylex-ttc-settings-modal .tw-toggle__button, #chylex-ttc-settings-modal .tw-toggle__button::after {
   border-radius: 0;
 }
 
@@ -636,6 +636,7 @@ function generateSettingsCSS(){
   width: 46px;
   padding-left: 4px;
   text-align: right;
+  vertical-align: 40%;
 }
 @#css}}@#rem}}`;
   
@@ -909,7 +910,7 @@ function insertSettingsButton(){
   
   const button = document.createElement("div");
   button.id = "chylex-ttc-settings-btn";
-  button.innerHTML = '<span class="player-tip js-tip" data-tip="Transparent Twitch Chat"></span><svg><use xlink:href="#icon_settings"></use></svg>';
+  button.innerHTML = '<svg viewBox="0 0 15 15"><path d="M8.463,0.062c-0.639,-0.083 -1.287,-0.083 -1.926,0l-0.251,1.333c-0.802,0.159 -1.565,0.475 -2.244,0.929l-1.12,-0.765c-0.511,0.394 -0.969,0.852 -1.363,1.363l0.765,1.12c-0.454,0.679 -0.77,1.442 -0.929,2.244l-1.333,0.251c-0.083,0.639 -0.083,1.287 0,1.926l1.333,0.251c0.159,0.802 0.475,1.565 0.929,2.244l-0.765,1.12c0.394,0.511 0.852,0.969 1.363,1.363l1.12,-0.765c0.679,0.454 1.442,0.77 2.244,0.929l0.251,1.333c0.639,0.083 1.287,0.083 1.926,0l0.251,-1.333c0.802,-0.159 1.565,-0.475 2.244,-0.929l1.12,0.765c0.511,-0.394 0.969,-0.852 1.363,-1.363l-0.765,-1.12c0.454,-0.679 0.77,-1.442 0.929,-2.244l1.333,-0.251c0.083,-0.639 0.083,-1.287 0,-1.926l-1.333,-0.251c-0.159,-0.802 -0.475,-1.565 -0.929,-2.244l0.765,-1.12c-0.394,-0.511 -0.852,-0.969 -1.363,-1.363l-1.12,0.765c-0.679,-0.454 -1.442,-0.77 -2.244,-0.929l-0.251,-1.333Zm-0.963,2.731c2.598,0 4.707,2.109 4.707,4.707c0,2.598 -2.109,4.707 -4.707,4.707c-2.598,0 -4.707,-2.109 -4.707,-4.707c0,-2.598 2.109,-4.707 4.707,-4.707Z"/><rect x="6.75" y="6" width="1.5" height="5.25"/><rect x="4.89" y="4.5" width="5.221" height="1.5"/></svg>';
   container.appendChild(button);
   
   button.addEventListener("click", function(e){
