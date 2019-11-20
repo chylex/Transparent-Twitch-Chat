@@ -120,10 +120,6 @@ ${rcol} .video-chat__header {
   display: none !important;
 }
 
-${rcol} .room-selector__header${wa} {
-  border-right: none !important;
-}
-
 ${rcol} .room-picker {
   width: ${settings.chatWidth - 10}px;
 }
@@ -155,43 +151,20 @@ ${settings.hideHeader ? `@#css{{
 @#css}}` : ``}
 
 ${settings.hideChatInput ? `@#css{{
-  ${rcolBlur} .chat-input, ${rcolBlur} .video-chat__input {
+  ${rcolBlur} .chat-input {
     display: none !important;
   }
 @#css}}` : ``}
 
 ${settings.hidePinnedCheer ? `@#css{{
-  .pinned-cheer, .pinned-cheer-v2, .channel-leaderboard {
+  .channel-leaderboard {
     display: none;
   }
 @#css}}` : ``}
 
-// BTTV workarounds
-
-// .theatre .ember-chat.roomMode${wa}, .theatre .chat-messages${wa}, .theatre .ember-chat${wa} { // TODO
-//   background: none !important;
-// }
-
-// .theatre .rightcol-content${wa} { // TODO
-//   background: none !important;
-//   z-index: 3 !important;
-// }
-
 ${settings.transparentChat ? `@#css{{
 
-  // expand player width, FrankerFaceZ workaround
-
-  // .theatre .ct-bar--active.ct-bar--ember, .theatre #main_col { // TODO
-  //   right: 0;
-  // }
-
-  // body${wa} .app-main.theatre${wa} #main_col, .theatre #flash { // TODO
-  //   margin-right: 0 !important;
-  // }
-
-  // body${wa} .app-main.theatre${wa} #main_col${wa} #player${wa} { // TODO
-  //   right: 0 !important;
-  // }
+  // expand player width
 
   body:not(${fullScreen}) .persistent-player--theatre {
     width: 100% !important;
@@ -212,16 +185,6 @@ ${settings.transparentChat ? `@#css{{
     background: transparent !important;
   }
 
-  ${rcolBlur} .video-chat__header {
-    background-color: @#hex(17141f66) !important;
-    box-shadow: none !important;
-  }
-
-  ${rcolBlur} .video-chat__input {
-    background: transparent !important;
-    box-shadow: none !important;
-  }
-
   ${rcolBlur} .chylex-ttc-chat-container {
     color: #ece8f3 !important;
   }
@@ -230,25 +193,11 @@ ${settings.transparentChat ? `@#css{{
     background: transparent !important;
   }
 
-  ${rcol} .room-selector__header {
-    border-left: none !important;
-  }
-
-  ${rcolBlur} .room-selector__header {
-    background: rgba(14, 12, 19, ${settings.backgroundOpacity * 0.01}) !important;
-    border-bottom-color: rgba(44, 37, 65, ${settings.backgroundOpacity * 0.01}) !important;
-  }
-
-  ${rcolBlur} .room-selector__header > p, ${rcolBlur} .room-selector__header .tw-button__text > div {
-    color: #dad8de !important;
-    text-shadow: -1px 0 0 @#hex(000a), 0 -1px 0 @#hex(000a), 1px 0 0 @#hex(000a), 0 1px 0 @#hex(000a);
-  }
-
-  ${rcolBlur} .chat-input, ${rcolBlur} .video-chat__input {
+  ${rcolBlur} .chat-input {
     opacity: 0.6;
   }
 
-  // chat message shadow
+  // chat messages
 
   ${rcolBlur} .chylex-ttc-chat-container {
     ${settings.smoothTextShadow ? `
@@ -268,12 +217,6 @@ ${settings.transparentChat ? `@#css{{
 
   ${rcolBlur} .chat-line__message--mention-recipient {
     text-shadow: none;
-  }
-
-  // chat messages
-
-  ${rcolBlur} .vod-message__timestamp {
-    color: #b7b5ba !important;
   }
 
   ${rcolBlur} .chat-line__message a {
@@ -358,64 +301,23 @@ ${settings.chatLeftSide && settings.transparentChat ? `@#css{{
 // gray theme
 
 ${settings.grayTheme ? `@#css{{
-  ${rcol} .tw-border-l.tw-c-background-alt-2 {
-    border-left-color: #2b2b2b !important;
-  }
-  
-  // TODO remove old channel-root style
-  ${rcol} .channel-root__right-column${wa}, ${rcol} .channel-page__right-column${wa}, ${rcol} .video-watch-page__right-column${wa} {
-    background: #0e0e0e !important;
-  }
-  
-  // TODO remove old channel-root style
-  ${rcolBlur} .channel-root__right-column${wa}, ${rcolBlur} .channel-page__right-column${wa}, ${rcolBlur} .video-watch-page__right-column${wa} {
-    background: rgba(14, 14, 14, ${settings.transparentChat ? (settings.backgroundOpacity * 0.01) : 1}) !important;
-  }
-
-  ${rcolBlur} .room-selector__header${wa} {
-    background: rgba(14, 14, 14, ${settings.transparentChat ? (settings.backgroundOpacity * 0.01) : 1}) !important;
-    border-bottom-color: rgba(42, 42, 42, ${settings.transparentChat ? (settings.backgroundOpacity * 0.01) : 1}) !important;
-  }
-
-  ${rcol} .room-selector__header${wa} {
-    background: #0e0e0e !important;
-    border-bottom-color: #2b2b2b !important;
-    ${settings.transparentChat ? "" : "border-left-color: #2b2b2b !important;"}
-  }
-
-  ${rcol} .video-chat__input {
-    box-shadow: inset 0 1px 0 0 #2b2b2b !important;
-  }
-
-  ${rcol} [data-a-target="video-chat-input"], ${rcol} [data-a-target="chat-input"] {
+  ${rcol} [data-a-target="chat-input"] {
     background-color: #0e0e0e !important;
     border-color: #2b2b2b !important;
   }
 
-  ${rcol} [data-a-target="video-chat-input"]:focus, ${rcol} [data-a-target="chat-input"]:focus {
+  ${rcol} [data-a-target="chat-input"]:focus {
     border-color: #787878 !important;
     box-shadow: 0 0 6px -2px #787878 !important;
   }
 
-  ${rcol} [data-a-target="chat-send-button"], ${rcol} [data-a-target="video-chat-submit-button"] {
+  ${rcol} [data-a-target="chat-send-button"] {
     background-color: #2b2b2b !important;
     border: 1px solid #000000 !important;
   }
 
-  ${rcol} [data-a-target="chat-send-button"]:active, ${rcol} [data-a-target="chat-send-button"]:focus,
-  ${rcol} [data-a-target="video-chat-submit-button"]:active, ${rcol} [data-a-target="video-chat-submit-button"]:focus {
+  ${rcol} [data-a-target="chat-send-button"]:active, ${rcol} [data-a-target="chat-send-button"]:focus {
     box-shadow: 0 0 6px 0 #787878 !important;
-  }
-
-  .whispers--theatre-mode .whispers-threads-box__container:not(.whispers-threads-box__container--open) {
-    border-top-color: #2b2b2b !important;
-    border-right-color: #2b2b2b !important;
-    border-bottom-color: #2b2b2b !important;
-    border-left-color: #2b2b2b !important;
-  }
-
-  .whispers--theatre-mode .whispers-threads-box__open-close${wa} {
-    background-color: #0e0e0e !important;
   }
 @#css}}` : ``}
 
