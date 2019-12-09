@@ -252,7 +252,7 @@ ${settings.hideConversations ? `@#css{{
     display: none !important;
   }
 
-  .highwind-video-player__container--theatre-whispers {
+  .video-player__container--theatre-whispers, .highwind-video-player__container--theatre-whispers {
     bottom: 1px !important; // allows hiding player controls in fullscreen by moving cursor all the way down
   }
 @#css}}` : ``}
