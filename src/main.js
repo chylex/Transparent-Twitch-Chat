@@ -141,7 +141,7 @@ ${rcol} .video-chat__sync-button {
 }
 
 ${settings.hideHeader ? `@#css{{
-  ${rcolBlur} .rooms-header, ${rcolBlur} .room-selector__header {
+  ${rcolBlur} .stream-chat-header {
     display: none !important;
   }
   
