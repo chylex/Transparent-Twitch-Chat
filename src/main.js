@@ -33,6 +33,10 @@ const settings = {
   hideBadgeTurbo: true,
   hideBadgePrime: true,
   hideBadgeSubscriber: true,
+  hideBadgeVIP: false,
+  hideBadgeSubGift: false,
+  hideBadgeBitCheer: false,
+  hideBadgeLeader: false,
   badgeOpacity: 85
 };
 
@@ -350,6 +354,30 @@ ${settings.hideBadgeSubscriber ? `@#css{{
   }
 @#css}}` : ``}
 
+${settings.hideBadgeVIP ? `@#css{{
+  ${rcol} .chat-badge[alt="VIP"] {
+   display: none;
+  }
+@#css}}` : ``}
+
+${settings.hideBadgeSubGift ? `@#css{{
+  ${rcol} .chat-badge[alt*="Gift Subs"] {
+   display: none;
+  }
+@#css}}` : ``}
+
+${settings.hideBadgeBitCheer ? `@#css{{
+  ${rcol} .chat-badge[alt~="cheer"] {
+   display: none;
+  }
+@#css}}` : ``}
+
+${settings.hideBadgeLeader ? `@#css{{
+  ${rcol} .chat-badge[alt*="Bits Leader"], ${rcol} .chat-badge[alt*="Gifter Leader"] {
+    display: none;
+  }
+@#css}}` : ``}
+
 @#css{{
 
 // dynamic styles for settings, replaces default style
@@ -410,9 +438,9 @@ function generateSettingsCSS(){
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 860px;
+  width: 900px;
   height: 292px;
-  margin-left: -430px;
+  margin-left: -450px;
   margin-top: -146px;
   z-index: 10000;
   background-color: @#hex(111c);
@@ -441,7 +469,7 @@ function generateSettingsCSS(){
 }
 
 #chylex-ttc-settings-modal .ttc-flex-column {
-  flex: 0 0 calc(100% / 4);
+  flex: 0 0 calc(100% / 5);
 }
 
 #chylex-ttc-settings-modal p {
@@ -505,7 +533,7 @@ function generateSettingsCSS(){
 }
 
 #chylex-ttc-settings-modal input[type="range"] {
-  width: 142px;
+  width: 110px;
 }
 
 #chylex-ttc-settings-modal .tw-toggle__button {
@@ -771,6 +799,14 @@ function createSettingsModal(){
     ${generateToggle("Hide Prime Badge", "hideBadgePrime")}
     ${generateToggle("Hide Subscriber Badge", "hideBadgeSubscriber")}
     ${generateSlider("Badge Opacity", "badgeOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
+  </div>
+
+  <div class="ttc-flex-column">
+    <p style="visibility: hidden">Badges</p>
+    ${generateToggle("Hide VIP Badge", "hideBadgeVIP")}
+    ${generateToggle("Hide Sub Gift Badge", "hideBadgeSubGift")}
+    ${generateToggle("Hide Bit Cheer Badge", "hideBadgeBitCheer")}
+    ${generateToggle("Hide Gift/Bit Leader Badge", "hideBadgeLeader")}
   </div>
 </div>
 `;
