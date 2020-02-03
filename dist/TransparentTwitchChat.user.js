@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.4.1
+// @version      1.4.2
 // @namespace    https://chylex.com
 // @homepageURL  https://github.com/chylex/Transparent-Twitch-Chat
 // @supportURL   https://github.com/chylex/Transparent-Twitch-Chat/issues
@@ -33,6 +33,10 @@ const settings = {
   hideBadgeTurbo: true,
   hideBadgePrime: true,
   hideBadgeSubscriber: true,
+  hideBadgeVIP: false,
+  hideBadgeSubGift: false,
+  hideBadgeBitCheer: false,
+  hideBadgeLeader: false,
   badgeOpacity: 85
 };
 
@@ -101,7 +105,7 @@ ${rcol} .video-chat__sync-button {width:${settings.chatWidth - 50}px;z-index:10;
 display: none !important;
 }
 ${settings.hideHeader ? `
-${rcolBlur} .rooms-header, ${rcolBlur} .room-selector__header {display:none!important}
+${rcolBlur} .stream-chat-header {display:none!important}
 ${rcolBlur}:not(.right-column--collapsed) .right-column__toggle-visibility {display:none!important}
 ` : ``}
 ${settings.hideChatInput ? `
@@ -158,6 +162,18 @@ ${rcol} .chat-badge[alt$="Prime"] {display:none}
 ${settings.hideBadgeSubscriber ? `
 ${rcol} .chat-badge[alt~="Subscriber"] {display:none}
 ` : ``}
+${settings.hideBadgeVIP ? `
+${rcol} .chat-badge[alt="VIP"] {display:none}
+` : ``}
+${settings.hideBadgeSubGift ? `
+${rcol} .chat-badge[alt*="Gift Subs"] {display:none}
+` : ``}
+${settings.hideBadgeBitCheer ? `
+${rcol} .chat-badge[alt~="cheer"] {display:none}
+` : ``}
+${settings.hideBadgeLeader ? `
+${rcol} .chat-badge[alt*="Bits Leader"], ${rcol} .chat-badge[alt*="Gifter Leader"] {display:none}
+` : ``}
 
 #chylex-ttc-settings-btn {margin-left:${settings.chatWidth - 60}px}
 `;
@@ -178,11 +194,11 @@ function generateSettingsCSS(){
 #chylex-ttc-settings-btn svg {width:100%;height:100%}
 #chylex-ttc-settings-btn:hover {fill:#fff}
 .right-column--theatre:hover #chylex-ttc-settings-btn {display:block}
-#chylex-ttc-settings-modal {position:absolute;left:50%;top:50%;width:860px;height:292px;margin-left:-430px;margin-top:-146px;z-index:10000;background-color:rgba(17,17,17,0.796875)}
+#chylex-ttc-settings-modal {position:absolute;left:50%;top:50%;width:900px;height:292px;margin-left:-450px;margin-top:-146px;z-index:10000;background-color:rgba(17,17,17,0.796875)}
 #chylex-ttc-settings-modal #ttc-opt-global-wrapper {position:absolute;margin:5px 0 0 -69px;display:inline-block}
 #chylex-ttc-settings-modal h2 {color:rgba(255,255,255,0.9296875);font-size:24px;text-align:center;margin:0;padding:14px 0 13px;background-color:rgba(0,0,0,0.59765625)}
 #chylex-ttc-settings-modal .ttc-flex-container {display:flex;flex-direction:row;justify-content:space-between;padding:8px 4px}
-#chylex-ttc-settings-modal .ttc-flex-column {flex:0 0 calc(100% / 4)}
+#chylex-ttc-settings-modal .ttc-flex-column {flex:0 0 calc(100% / 5)}
 #chylex-ttc-settings-modal p {color:rgba(255,255,255,0.86328125);font-size:14px;margin-top:8px;padding:0 9px}
 #chylex-ttc-settings-modal p:first-of-type {margin:0 0 4px}
 #chylex-ttc-settings-modal .player-menu__section {padding:0 12px 2px}
@@ -195,7 +211,7 @@ function generateSettingsCSS(){
 #chylex-ttc-settings-modal .switch::before {text-align:left;padding-left:5px}
 #chylex-ttc-settings-modal .switch::after {text-align:right;padding-right:3px}
 #chylex-ttc-settings-modal input[type="text"] {width:100%;padding:2px}
-#chylex-ttc-settings-modal input[type="range"] {width:142px}
+#chylex-ttc-settings-modal input[type="range"] {width:110px}
 #chylex-ttc-settings-modal .tw-toggle__button {width:4rem}
 #chylex-ttc-settings-modal .tw-toggle__button, #chylex-ttc-settings-modal .tw-toggle__button::after {border-radius:0}
 #chylex-ttc-settings-modal output {color:rgba(255,255,255,0.796875);width:46px;padding-left:4px;text-align:right;vertical-align:40%}
@@ -447,6 +463,14 @@ function createSettingsModal(){
     ${generateToggle("Hide Prime Badge", "hideBadgePrime")}
     ${generateToggle("Hide Subscriber Badge", "hideBadgeSubscriber")}
     ${generateSlider("Badge Opacity", "badgeOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
+  </div>
+
+  <div class="ttc-flex-column">
+    <p style="visibility: hidden">Badges</p>
+    ${generateToggle("Hide VIP Badge", "hideBadgeVIP")}
+    ${generateToggle("Hide Sub Gift Badge", "hideBadgeSubGift")}
+    ${generateToggle("Hide Bit Cheer Badge", "hideBadgeBitCheer")}
+    ${generateToggle("Hide Gift/Bit Leader Badge", "hideBadgeLeader")}
   </div>
 </div>
 `;
