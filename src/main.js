@@ -503,6 +503,10 @@ function generateSettingsCSS(){
   padding-left: 1px;
 }
 
+#chylex-ttc-settings-modal .player-menu__item.ttc-setting-small-margin {
+  margin-bottom: 3px;
+}
+
 #chylex-ttc-settings-modal .switch {
   font-size: 10px;
   height: 17px;
@@ -532,9 +536,9 @@ function generateSettingsCSS(){
   padding-right: 3px;
 }
 
-#chylex-ttc-settings-modal input[type="text"] {
+#chylex-ttc-settings-modal input[type="text"], #chylex-ttc-settings-modal select {
   width: 100%;
-  padding: 2px;
+  padding: 1px 2px;
 }
 
 #chylex-ttc-settings-modal input[type="range"] {
@@ -694,74 +698,83 @@ function debounce(func, wait){
 function createSettingsModal(){
   tryRemoveElement(document.getElementById("chylex-ttc-settings-modal"));
   
-  const generateToggle = function(title, option){
-    window.setTimeout(function(){
-      const toggle = document.getElementById("ttc-opt-"+option);
-      
-      toggle.addEventListener("click", function(){
-        settings[option] = toggle.checked;
-        onSettingsUpdated();
-      });
-    }, 1);
-    
+  const generateOptionBase = function(title, item, itemClasses){
     return `
 <div class="player-menu__section" data-enabled="true">
   <div class="player-menu__header">
     <span class="js-menu-header">${title}</span>
   </div>
-  <div class="player-menu__item pl-flex pl-flex--nowrap flex-shrink-0">
-    <div class="tw-toggle">
-      <input class="tw-toggle__input" id="ttc-opt-${option}" value="${settings[option] ? "on" : "off"}" type="checkbox"${settings[option] ? " checked" : ""}>
-      <label for="ttc-opt-${option}" class="tw-toggle__button"></label>
-    </div>
+  <div class="player-menu__item pl-flex pl-flex--nowrap flex-shrink-0${itemClasses ? " " + itemClasses : ""}">
+    ${item}
   </div>
 </div>`;
+  };
+  
+  const prepareOptionEvent = function(option, setupCallback){
+    window.setTimeout(function(){
+      const ele = document.getElementById("ttc-opt-" + option);
+      setupCallback(ele);
+    }, 1);
+  };
+  
+  const updateOption = function(option, value){
+    settings[option] = value;
+    onSettingsUpdated();
+  };
+  
+  // Concrete option types
+  
+  const generateToggle = function(title, option){
+    prepareOptionEvent(option, function(ele){
+      ele.addEventListener("click", function(){ updateOption(option, ele.checked); });
+    });
+    
+    return generateOptionBase(title, `
+<div class="tw-toggle">
+  <input class="tw-toggle__input" id="ttc-opt-${option}" value="${settings[option] ? "on" : "off"}" type="checkbox"${settings[option] ? " checked" : ""}>
+  <label for="ttc-opt-${option}" class="tw-toggle__button"></label>
+</div>`);
   };
   
   const generateTxtbox = function(title, option, cfg){
-    window.setTimeout(function(){
-      const input = document.getElementById("ttc-opt-"+option);
-      
-      input.addEventListener("input", debounce(function(){
-        settings[option] = input.value;
-        onSettingsUpdated();
-      }, cfg.wait));
-    }, 1);
+    prepareOptionEvent(option, function(ele){
+      ele.addEventListener("input", debounce(function(){ updateOption(option, ele.value); }, cfg.wait));
+    });
     
-    return `
-<div class="player-menu__section" data-enabled="true">
-  <div class="player-menu__header">
-    <span class="js-menu-header">${title}</span>
-  </div>
-  <div class="player-menu__item pl-flex pl-flex--nowrap">
-    <input id="ttc-opt-${option}" type="text" value="${settings[option]}" placeholder="${cfg.placeholder}">
-  </div>
-</div>`;
+    return generateOptionBase(title, `<input id="ttc-opt-${option}" type="text" value="${settings[option]}" placeholder="${cfg.placeholder}">`);
+  };
+  
+  const generateSelect = function(title, option, cfg){
+    prepareOptionEvent(option, function(ele){
+      ele.addEventListener("input", function(){ updateOption(option, ele.value); });
+    });
+    
+    const initialOption = settings[option];
+    const optionElements = Object.keys(cfg).map(function(key){
+      return `<option value="${key}"${key == initialOption ? " selected" : ""}>${cfg[key]}</option>`;
+    });
+    
+    return generateOptionBase(title, `<select id="ttc-opt-${option}">${optionElements}</select>`);
   };
   
   const generateSlider = function(title, option, cfg){
-    window.setTimeout(function(){
-      const slider = document.getElementById("ttc-opt-"+option);
+    prepareOptionEvent(option, function(ele){
       const regenerate = debounce(onSettingsUpdated, cfg.wait);
       
-      slider.addEventListener("input", function(){
-        settings[option] = parseInt(slider.value, 10);
-        document.getElementById("ttc-optval-"+option).value = slider.value+cfg.text;
+      ele.addEventListener("input", function(){
+        settings[option] = parseInt(ele.value, 10);
+        document.getElementById("ttc-optval-" + option).value = ele.value + cfg.text;
         regenerate();
       });
-    }, 1);
+    });
     
-    return `
-<div class="player-menu__section" data-enabled="true">
-  <div class="player-menu__header">
-    <span class="js-menu-header">${title}</span>
-  </div>
-  <div class="player-menu__item pl-flex pl-flex--nowrap">
-    <input id="ttc-opt-${option}" type="range" min="${cfg.min}" max="${cfg.max}" step="${cfg.step}" value="${settings[option]}">
-    <output id="ttc-optval-${option}" for="ttc-opt-${option}">${settings[option]}${cfg.text}</option>
-  </div>
-</div>`;
+    return generateOptionBase(title, `
+  <input id="ttc-opt-${option}" type="range" min="${cfg.min}" max="${cfg.max}" step="${cfg.step}" value="${settings[option]}">
+  <output id="ttc-optval-${option}" for="ttc-opt-${option}">${settings[option]}${cfg.text}</option>
+`, "ttc-setting-small-margin");
   };
+  
+  // Generate modal
   
   const modal = document.createElement("div");
   modal.id = "chylex-ttc-settings-modal";
