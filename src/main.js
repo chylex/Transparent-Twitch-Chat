@@ -18,6 +18,7 @@ const settings = {
   
   chatWidth: 350,
   chatFilters: "",
+  playerPosition: "center center",
   grayTheme: false,
   
   hideHeader: true,
@@ -106,6 +107,12 @@ ${isFirefox ? `@#css{{
 @#css}}` : ``}
 
 @#css{{
+
+// general player styles
+
+${isTheatre} .video-player video {
+  object-position: ${settings.playerPosition} !important;
+}
 
 // general chat styles
 
@@ -793,6 +800,17 @@ function createSettingsModal(){
     <p>General</p>
     ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 600, step: 25, wait: 500, text: "px" })}
     ${generateTxtbox("Chat Filters", "chatFilters", { wait: 500, placeholder: "Example: kappa, *abc*" })}
+    ${generateSelect("Player Position", "playerPosition", {
+      "top left":      "Top Left",
+      "top center":    "Top Center",
+      "top right":     "Top Right",
+      "center left":   "Center Left",
+      "center center": "Center",
+      "center right":  "Center Right",
+      "bottom left":   "Bottom Left",
+      "bottom center": "Bottom Center",
+      "bottom right":  "Bottom Right"
+    })}
     ${generateToggle("Gray Theme", "grayTheme")}
   </div>
 
