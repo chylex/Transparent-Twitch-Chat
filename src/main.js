@@ -76,6 +76,7 @@ function generateCustomCSS(){
   const wa = ":not(.ttcwa)"; // selector priority workaround
   const rcol = ".right-column--theatre";
   const rcolBlur = ".right-column--theatre:not(:hover)";
+  const isTheatre = ".ttc-theatre";
   const fullWidth = ".ttc-rcol-collapsed";
   const fullScreen = ".ttc-player-fullscreen";
   
@@ -264,6 +265,10 @@ ${settings.hideConversations ? `@#css{{
 // chat on left side
 
 ${settings.chatLeftSide && settings.transparentChat ? `@#css{{
+  ${isTheatre} .side-nav {
+    display: none !important;
+  }
+  
   ${rcol}${wa}, ${rcol} .chat-list__lines .simplebar-track.vertical {
     left: 0 !important;
     right: auto !important;
@@ -639,6 +644,7 @@ var classObserverCallback = function(mutations){
     const classes = mutation.target.classList;
     
     if (classes.contains("right-column")){
+      document.body.classList.toggle("ttc-theatre", classes.contains("right-column--theatre"));
       document.body.classList.toggle("ttc-rcol-collapsed", classes.contains("right-column--collapsed"));
     }
   }
