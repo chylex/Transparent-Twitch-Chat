@@ -450,10 +450,10 @@ function generateSettingsCSS(){
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 900px;
-  height: 292px;
-  margin-left: -450px;
-  margin-top: -146px;
+  width: 870px;
+  height: 294px;
+  margin-left: -435px;
+  margin-top: -147px;
   z-index: 10000;
   background-color: @#hex(111c);
 }
@@ -480,10 +480,6 @@ function generateSettingsCSS(){
   padding: 8px 4px;
 }
 
-#chylex-ttc-settings-modal .ttc-flex-column {
-  flex: 0 0 calc(100% / 5);
-}
-
 #chylex-ttc-settings-modal p {
   color: @#hex(fffd);
   font-size: 14px;
@@ -505,13 +501,14 @@ function generateSettingsCSS(){
 }
 
 #chylex-ttc-settings-modal .player-menu__item {
+  display: flex;
   align-items: center;
   margin: 2px 0 9px;
   padding-left: 1px;
 }
 
 #chylex-ttc-settings-modal .player-menu__item.ttc-setting-small-margin {
-  margin-bottom: 3px;
+  margin-bottom: 7px;
 }
 
 #chylex-ttc-settings-modal .switch {
@@ -543,13 +540,26 @@ function generateSettingsCSS(){
   padding-right: 3px;
 }
 
-#chylex-ttc-settings-modal input[type="text"], #chylex-ttc-settings-modal select {
+#chylex-ttc-settings-modal input[type="text"] {
   width: 100%;
-  padding: 1px 2px;
+  padding: 1px 4px;
 }
 
 #chylex-ttc-settings-modal input[type="range"] {
-  width: 110px;
+  width: 100%;
+}
+
+#chylex-ttc-settings-modal select {
+  width: 100%;
+  padding: 1px 0;
+}
+
+#chylex-ttc-settings-modal output {
+  color: @#hex(fffc);
+  display: inline-block;
+  flex: 1 1 42px;
+  padding-left: 6px;
+  text-align: left;
 }
 
 #chylex-ttc-settings-modal .tw-toggle__button {
@@ -558,14 +568,6 @@ function generateSettingsCSS(){
 
 #chylex-ttc-settings-modal .tw-toggle__button, #chylex-ttc-settings-modal .tw-toggle__button::after {
   border-radius: 0;
-}
-
-#chylex-ttc-settings-modal output {
-  color: @#hex(fffc);
-  width: 46px;
-  padding-left: 4px;
-  text-align: right;
-  vertical-align: 40%;
 }
 @#css}}@#rem}}`;
   
@@ -705,13 +707,15 @@ function debounce(func, wait){
 function createSettingsModal(){
   tryRemoveElement(document.getElementById("chylex-ttc-settings-modal"));
   
-  const generateOptionBase = function(title, item, itemClasses){
+  const generateOptionBase = function(title, item, extra){
+    extra = extra || {};
+    
     return `
-<div class="player-menu__section" data-enabled="true">
+<div class="player-menu__section" data-enabled="true"${extra.floatLeft ? ` style="float:left"` : ""}>
   <div class="player-menu__header">
     <span class="js-menu-header">${title}</span>
   </div>
-  <div class="player-menu__item pl-flex pl-flex--nowrap flex-shrink-0${itemClasses ? " " + itemClasses : ""}">
+  <div class="player-menu__item ${extra.itemClasses ? " " + extra.itemClasses : ""}">
     ${item}
   </div>
 </div>`;
@@ -731,7 +735,7 @@ function createSettingsModal(){
   
   // Concrete option types
   
-  const generateToggle = function(title, option){
+  const generateToggle = function(title, option, floatLeft){
     prepareOptionEvent(option, function(ele){
       ele.addEventListener("click", function(){ updateOption(option, ele.checked); });
     });
@@ -740,7 +744,7 @@ function createSettingsModal(){
 <div class="tw-toggle">
   <input class="tw-toggle__input" id="ttc-opt-${option}" value="${settings[option] ? "on" : "off"}" type="checkbox"${settings[option] ? " checked" : ""}>
   <label for="ttc-opt-${option}" class="tw-toggle__button"></label>
-</div>`);
+</div>`, floatLeft ? { floatLeft: true } : {});
   };
   
   const generateTxtbox = function(title, option, cfg){
@@ -778,7 +782,7 @@ function createSettingsModal(){
     return generateOptionBase(title, `
   <input id="ttc-opt-${option}" type="range" min="${cfg.min}" max="${cfg.max}" step="${cfg.step}" value="${settings[option]}">
   <output id="ttc-optval-${option}" for="ttc-opt-${option}">${settings[option]}${cfg.text}</option>
-`, "ttc-setting-small-margin");
+`, { itemClasses: "ttc-setting-small-margin" });
   };
   
   // Generate modal
@@ -796,7 +800,7 @@ function createSettingsModal(){
 </h2>
 
 <div class="ttc-flex-container">
-  <div class="ttc-flex-column">
+  <div style="flex: 0 0 23%">
     <p>General</p>
     ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 600, step: 25, wait: 500, text: "px" })}
     ${generateTxtbox("Chat Filters", "chatFilters", { wait: 500, placeholder: "Example: kappa, *abc*" })}
@@ -814,7 +818,7 @@ function createSettingsModal(){
     ${generateToggle("Gray Theme", "grayTheme")}
   </div>
 
-  <div class="ttc-flex-column">
+  <div style="flex: 0 0 21%">
     <p>Transparency</p>
     ${generateToggle("Transparent Chat", "transparentChat")}
     ${generateToggle("Smooth Text Shadow", "smoothTextShadow")}
@@ -822,7 +826,7 @@ function createSettingsModal(){
     ${generateSlider("Background Opacity", "backgroundOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
   </div>
 
-  <div class="ttc-flex-column">
+  <div style="flex: 0 0 16%">
     <p>Elements</p>
     ${generateToggle("Hide Chat Header", "hideHeader")}
     ${generateToggle("Hide Chat Input", "hideChatInput")}
@@ -830,7 +834,7 @@ function createSettingsModal(){
     ${generateToggle("Hide Whispers", "hideConversations")}
   </div>
 
-  <div class="ttc-flex-column">
+  <div style="flex: 0 0 19%">
     <p>Badges</p>
     ${generateToggle("Hide Subscriber Badge", "hideBadgeSubscriber")}
     ${generateToggle("Hide Prime Badge", "hideBadgePrime")}
@@ -838,7 +842,7 @@ function createSettingsModal(){
     ${generateToggle("Hide VIP Badge", "hideBadgeVIP")}
   </div>
 
-  <div class="ttc-flex-column">
+  <div style="flex: 0 0 21%">
     <p style="visibility: hidden">Badges</p>
     ${generateToggle("Hide Sub Gift Badge", "hideBadgeSubGift")}
     ${generateToggle("Hide Bit Cheer Badge", "hideBadgeBitCheer")}
