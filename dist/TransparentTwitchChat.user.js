@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.4.2
+// @version      1.4.3
 // @namespace    https://chylex.com
 // @homepageURL  https://github.com/chylex/Transparent-Twitch-Chat
 // @supportURL   https://github.com/chylex/Transparent-Twitch-Chat/issues
@@ -18,6 +18,8 @@ const settings = {
   
   chatWidth: 350,
   chatFilters: "",
+  playerPosition: "center center",
+  hideTimestamps: true,
   grayTheme: false,
   
   hideHeader: true,
@@ -76,6 +78,7 @@ function generateCustomCSS(){
   const wa = ":not(.ttcwa)"; // selector priority workaround
   const rcol = ".right-column--theatre";
   const rcolBlur = ".right-column--theatre:not(:hover)";
+  const isTheatre = ".ttc-theatre";
   const fullWidth = ".ttc-rcol-collapsed";
   const fullScreen = ".ttc-player-fullscreen";
   
@@ -93,6 +96,7 @@ ${isFirefox ? `
 ${rcol} .video-chat__message-list-wrapper:not(.video-chat__message-list-wrapper--unsynced) {overflow-y:hidden!important}
 ` : ``}
 
+${isTheatre} .video-player video {object-position:${settings.playerPosition}!important}
 ${rcolBlur} .channel-root__right-column${wa} {background:rgba(14, 12, 19, ${settings.backgroundOpacity * 0.01})!important}
 ${rcol}${wa}, ${rcol} .channel-root__right-column${wa} {width:${settings.chatWidth - 10}px!important}
 ${rcol} .video-chat {flex-basis:auto!important}
@@ -104,6 +108,10 @@ ${rcol} .video-chat__sync-button {width:${settings.chatWidth - 50}px;z-index:10;
 #root[data-a-page-loaded-name="VideoWatchPage"] ${rcolBlur}:not(.right-column--collapsed) .right-column__toggle-visibility {
 display: none !important;
 }
+${settings.hideTimestamps ? `
+${rcol} .vod-message--timestamp .tw-tooltip-wrapper {display:none!important}
+${rcol} .vod-message--timestamp {padding-left:0.5rem}
+` : ``}
 ${settings.hideHeader ? `
 ${rcolBlur} .stream-chat-header {display:none!important}
 ${rcolBlur}:not(.right-column--collapsed) .right-column__toggle-visibility {display:none!important}
@@ -136,6 +144,7 @@ ${settings.hideConversations ? `
 .whispers--theatre-mode${wa} {display:none!important}
 .video-player__container--theatre-whispers, .highwind-video-player__container--theatre-whispers {bottom:1px!important; // allows hiding player controls in fullscreen by moving cursor all the way down}` : ``}
 ${settings.chatLeftSide && settings.transparentChat ? `
+${isTheatre} .side-nav {display:none!important}
 ${rcol}${wa}, ${rcol} .chat-list__lines .simplebar-track.vertical {left:0!important;right:auto!important}
 ${rcol} .channel-root__right-column${wa} {border-left:none!important;border-right:var(--border-width-default) solid var(--color-border-base)!important}
 body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .top-bar {padding-left:${settings.chatWidth}px;padding-right:0}
@@ -194,27 +203,28 @@ function generateSettingsCSS(){
 #chylex-ttc-settings-btn svg {width:100%;height:100%}
 #chylex-ttc-settings-btn:hover {fill:#fff}
 .right-column--theatre:hover #chylex-ttc-settings-btn {display:block}
-#chylex-ttc-settings-modal {position:absolute;left:50%;top:50%;width:900px;height:292px;margin-left:-450px;margin-top:-146px;z-index:10000;background-color:rgba(17,17,17,0.796875)}
+#chylex-ttc-settings-modal {position:absolute;left:50%;top:50%;width:870px;height:294px;margin-left:-435px;margin-top:-147px;z-index:10000;background-color:rgba(17,17,17,0.796875)}
 #chylex-ttc-settings-modal #ttc-opt-global-wrapper {position:absolute;margin:5px 0 0 -69px;display:inline-block}
 #chylex-ttc-settings-modal h2 {color:rgba(255,255,255,0.9296875);font-size:24px;text-align:center;margin:0;padding:14px 0 13px;background-color:rgba(0,0,0,0.59765625)}
 #chylex-ttc-settings-modal .ttc-flex-container {display:flex;flex-direction:row;justify-content:space-between;padding:8px 4px}
-#chylex-ttc-settings-modal .ttc-flex-column {flex:0 0 calc(100% / 5)}
 #chylex-ttc-settings-modal p {color:rgba(255,255,255,0.86328125);font-size:14px;margin-top:8px;padding:0 9px}
 #chylex-ttc-settings-modal p:first-of-type {margin:0 0 4px}
 #chylex-ttc-settings-modal .player-menu__section {padding:0 12px 2px}
 #chylex-ttc-settings-modal .player-menu__header {margin-bottom:0;color:rgba(255,255,255,0.6640625)}
-#chylex-ttc-settings-modal .player-menu__item {align-items:center;margin:2px 0 9px;padding-left:1px}
+#chylex-ttc-settings-modal .player-menu__item {display:flex;align-items:center;margin:2px 0 9px;padding-left:1px}
+#chylex-ttc-settings-modal .player-menu__item.ttc-setting-small-margin {margin-bottom:7px}
 #chylex-ttc-settings-modal .switch {font-size:10px;height:17px;line-height:17px}
 #chylex-ttc-settings-modal .switch span {width:27px}
 #chylex-ttc-settings-modal .switch.active span {left:25px}
 #chylex-ttc-settings-modal .switch::before, #chylex-ttc-settings-modal .switch::after {width:26px;box-sizing:border-box}
 #chylex-ttc-settings-modal .switch::before {text-align:left;padding-left:5px}
 #chylex-ttc-settings-modal .switch::after {text-align:right;padding-right:3px}
-#chylex-ttc-settings-modal input[type="text"] {width:100%;padding:2px}
-#chylex-ttc-settings-modal input[type="range"] {width:110px}
+#chylex-ttc-settings-modal input[type="text"] {width:100%;padding:1px 4px}
+#chylex-ttc-settings-modal input[type="range"] {width:100%}
+#chylex-ttc-settings-modal select {width:100%;padding:1px 0}
+#chylex-ttc-settings-modal output {color:rgba(255,255,255,0.796875);display:inline-block;flex:1 1 42px;padding-left:6px;text-align:left}
 #chylex-ttc-settings-modal .tw-toggle__button {width:4rem}
 #chylex-ttc-settings-modal .tw-toggle__button, #chylex-ttc-settings-modal .tw-toggle__button::after {border-radius:0}
-#chylex-ttc-settings-modal output {color:rgba(255,255,255,0.796875);width:46px;padding-left:4px;text-align:right;vertical-align:40%}
 `;
   
   document.head.appendChild(style);
@@ -303,6 +313,7 @@ var classObserverCallback = function(mutations){
     const classes = mutation.target.classList;
     
     if (classes.contains("right-column")){
+      document.body.classList.toggle("ttc-theatre", classes.contains("right-column--theatre"));
       document.body.classList.toggle("ttc-rcol-collapsed", classes.contains("right-column--collapsed"));
     }
   }
@@ -352,74 +363,85 @@ function debounce(func, wait){
 function createSettingsModal(){
   tryRemoveElement(document.getElementById("chylex-ttc-settings-modal"));
   
-  const generateToggle = function(title, option){
-    window.setTimeout(function(){
-      const toggle = document.getElementById("ttc-opt-"+option);
-      
-      toggle.addEventListener("click", function(){
-        settings[option] = toggle.checked;
-        onSettingsUpdated();
-      });
-    }, 1);
+  const generateOptionBase = function(title, item, extra){
+    extra = extra || {};
     
     return `
-<div class="player-menu__section" data-enabled="true">
+<div class="player-menu__section" data-enabled="true"${extra.floatLeft ? ` style="float:left"` : ""}>
   <div class="player-menu__header">
     <span class="js-menu-header">${title}</span>
   </div>
-  <div class="player-menu__item pl-flex pl-flex--nowrap flex-shrink-0">
-    <div class="tw-toggle">
-      <input class="tw-toggle__input" id="ttc-opt-${option}" value="${settings[option] ? "on" : "off"}" type="checkbox"${settings[option] ? " checked" : ""}>
-      <label for="ttc-opt-${option}" class="tw-toggle__button"></label>
-    </div>
+  <div class="player-menu__item ${extra.itemClasses ? " " + extra.itemClasses : ""}">
+    ${item}
   </div>
 </div>`;
+  };
+  
+  const prepareOptionEvent = function(option, setupCallback){
+    window.setTimeout(function(){
+      const ele = document.getElementById("ttc-opt-" + option);
+      setupCallback(ele);
+    }, 1);
+  };
+  
+  const updateOption = function(option, value){
+    settings[option] = value;
+    onSettingsUpdated();
+  };
+  
+  // Concrete option types
+  
+  const generateToggle = function(title, option, floatLeft){
+    prepareOptionEvent(option, function(ele){
+      ele.addEventListener("click", function(){ updateOption(option, ele.checked); });
+    });
+    
+    return generateOptionBase(title, `
+<div class="tw-toggle">
+  <input class="tw-toggle__input" id="ttc-opt-${option}" value="${settings[option] ? "on" : "off"}" type="checkbox"${settings[option] ? " checked" : ""}>
+  <label for="ttc-opt-${option}" class="tw-toggle__button"></label>
+</div>`, floatLeft ? { floatLeft: true } : {});
   };
   
   const generateTxtbox = function(title, option, cfg){
-    window.setTimeout(function(){
-      const input = document.getElementById("ttc-opt-"+option);
-      
-      input.addEventListener("input", debounce(function(){
-        settings[option] = input.value;
-        onSettingsUpdated();
-      }, cfg.wait));
-    }, 1);
+    prepareOptionEvent(option, function(ele){
+      ele.addEventListener("input", debounce(function(){ updateOption(option, ele.value); }, cfg.wait));
+    });
     
-    return `
-<div class="player-menu__section" data-enabled="true">
-  <div class="player-menu__header">
-    <span class="js-menu-header">${title}</span>
-  </div>
-  <div class="player-menu__item pl-flex pl-flex--nowrap">
-    <input id="ttc-opt-${option}" type="text" value="${settings[option]}" placeholder="${cfg.placeholder}">
-  </div>
-</div>`;
+    return generateOptionBase(title, `<input id="ttc-opt-${option}" type="text" value="${settings[option]}" placeholder="${cfg.placeholder}">`);
+  };
+  
+  const generateSelect = function(title, option, cfg){
+    prepareOptionEvent(option, function(ele){
+      ele.addEventListener("input", function(){ updateOption(option, ele.value); });
+    });
+    
+    const initialOption = settings[option];
+    const optionElements = Object.keys(cfg).map(function(key){
+      return `<option value="${key}"${key == initialOption ? " selected" : ""}>${cfg[key]}</option>`;
+    });
+    
+    return generateOptionBase(title, `<select id="ttc-opt-${option}">${optionElements}</select>`);
   };
   
   const generateSlider = function(title, option, cfg){
-    window.setTimeout(function(){
-      const slider = document.getElementById("ttc-opt-"+option);
+    prepareOptionEvent(option, function(ele){
       const regenerate = debounce(onSettingsUpdated, cfg.wait);
       
-      slider.addEventListener("input", function(){
-        settings[option] = parseInt(slider.value, 10);
-        document.getElementById("ttc-optval-"+option).value = slider.value+cfg.text;
+      ele.addEventListener("input", function(){
+        settings[option] = parseInt(ele.value, 10);
+        document.getElementById("ttc-optval-" + option).value = ele.value + cfg.text;
         regenerate();
       });
-    }, 1);
+    });
     
-    return `
-<div class="player-menu__section" data-enabled="true">
-  <div class="player-menu__header">
-    <span class="js-menu-header">${title}</span>
-  </div>
-  <div class="player-menu__item pl-flex pl-flex--nowrap">
-    <input id="ttc-opt-${option}" type="range" min="${cfg.min}" max="${cfg.max}" step="${cfg.step}" value="${settings[option]}">
-    <output id="ttc-optval-${option}" for="ttc-opt-${option}">${settings[option]}${cfg.text}</option>
-  </div>
-</div>`;
+    return generateOptionBase(title, `
+  <input id="ttc-opt-${option}" type="range" min="${cfg.min}" max="${cfg.max}" step="${cfg.step}" value="${settings[option]}">
+  <output id="ttc-optval-${option}" for="ttc-opt-${option}">${settings[option]}${cfg.text}</option>
+`, { itemClasses: "ttc-setting-small-margin" });
   };
+  
+  // Generate modal
   
   const modal = document.createElement("div");
   modal.id = "chylex-ttc-settings-modal";
@@ -434,14 +456,26 @@ function createSettingsModal(){
 </h2>
 
 <div class="ttc-flex-container">
-  <div class="ttc-flex-column">
+  <div style="flex: 0 0 23%">
     <p>General</p>
     ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 600, step: 25, wait: 500, text: "px" })}
     ${generateTxtbox("Chat Filters", "chatFilters", { wait: 500, placeholder: "Example: kappa, *abc*" })}
+    ${generateSelect("Player Position", "playerPosition", {
+      "top left":      "Top Left",
+      "top center":    "Top Center",
+      "top right":     "Top Right",
+      "center left":   "Center Left",
+      "center center": "Center",
+      "center right":  "Center Right",
+      "bottom left":   "Bottom Left",
+      "bottom center": "Bottom Center",
+      "bottom right":  "Bottom Right"
+    })}
+    ${generateToggle("Hide Timestamps", "hideTimestamps", true)}
     ${generateToggle("Gray Theme", "grayTheme")}
   </div>
 
-  <div class="ttc-flex-column">
+  <div style="flex: 0 0 21%">
     <p>Transparency</p>
     ${generateToggle("Transparent Chat", "transparentChat")}
     ${generateToggle("Smooth Text Shadow", "smoothTextShadow")}
@@ -449,7 +483,7 @@ function createSettingsModal(){
     ${generateSlider("Background Opacity", "backgroundOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
   </div>
 
-  <div class="ttc-flex-column">
+  <div style="flex: 0 0 16%">
     <p>Elements</p>
     ${generateToggle("Hide Chat Header", "hideHeader")}
     ${generateToggle("Hide Chat Input", "hideChatInput")}
@@ -457,20 +491,20 @@ function createSettingsModal(){
     ${generateToggle("Hide Whispers", "hideConversations")}
   </div>
 
-  <div class="ttc-flex-column">
+  <div style="flex: 0 0 19%">
     <p>Badges</p>
-    ${generateToggle("Hide Turbo Badge", "hideBadgeTurbo")}
-    ${generateToggle("Hide Prime Badge", "hideBadgePrime")}
     ${generateToggle("Hide Subscriber Badge", "hideBadgeSubscriber")}
-    ${generateSlider("Badge Opacity", "badgeOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
+    ${generateToggle("Hide Prime Badge", "hideBadgePrime")}
+    ${generateToggle("Hide Turbo Badge", "hideBadgeTurbo")}
+    ${generateToggle("Hide VIP Badge", "hideBadgeVIP")}
   </div>
 
-  <div class="ttc-flex-column">
+  <div style="flex: 0 0 21%">
     <p style="visibility: hidden">Badges</p>
-    ${generateToggle("Hide VIP Badge", "hideBadgeVIP")}
     ${generateToggle("Hide Sub Gift Badge", "hideBadgeSubGift")}
     ${generateToggle("Hide Bit Cheer Badge", "hideBadgeBitCheer")}
     ${generateToggle("Hide Gift/Bit Leader Badge", "hideBadgeLeader")}
+    ${generateSlider("Badge Opacity", "badgeOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
   </div>
 </div>
 `;
