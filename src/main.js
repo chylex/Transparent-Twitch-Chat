@@ -832,18 +832,18 @@ function createSettingsModal(){
 
   <div class="ttc-flex-column">
     <p>Badges</p>
-    ${generateToggle("Hide Turbo Badge", "hideBadgeTurbo")}
-    ${generateToggle("Hide Prime Badge", "hideBadgePrime")}
     ${generateToggle("Hide Subscriber Badge", "hideBadgeSubscriber")}
-    ${generateSlider("Badge Opacity", "badgeOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
+    ${generateToggle("Hide Prime Badge", "hideBadgePrime")}
+    ${generateToggle("Hide Turbo Badge", "hideBadgeTurbo")}
+    ${generateToggle("Hide VIP Badge", "hideBadgeVIP")}
   </div>
 
   <div class="ttc-flex-column">
     <p style="visibility: hidden">Badges</p>
-    ${generateToggle("Hide VIP Badge", "hideBadgeVIP")}
     ${generateToggle("Hide Sub Gift Badge", "hideBadgeSubGift")}
     ${generateToggle("Hide Bit Cheer Badge", "hideBadgeBitCheer")}
     ${generateToggle("Hide Gift/Bit Leader Badge", "hideBadgeLeader")}
+    ${generateSlider("Badge Opacity", "badgeOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
   </div>
 </div>
 `;
