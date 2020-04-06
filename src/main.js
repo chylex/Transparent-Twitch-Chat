@@ -19,6 +19,7 @@ const settings = {
   chatWidth: 350,
   chatFilters: "",
   playerPosition: "center center",
+  hideTimestamps: true,
   grayTheme: false,
   
   hideHeader: true,
@@ -151,6 +152,16 @@ ${rcol} .video-chat__sync-button {
 #root[data-a-page-loaded-name="VideoWatchPage"] ${rcolBlur}:not(.right-column--collapsed) .right-column__toggle-visibility {
   display: none !important;
 }
+
+${settings.hideTimestamps ? `@#css{{
+  ${rcol} .vod-message--timestamp .tw-tooltip-wrapper {
+    display: none !important;
+  }
+  
+  ${rcol} .vod-message--timestamp {
+    padding-left: 0.5rem;
+  }
+@#css}}` : ``}
 
 ${settings.hideHeader ? `@#css{{
   ${rcolBlur} .stream-chat-header {
@@ -815,6 +826,7 @@ function createSettingsModal(){
       "bottom center": "Bottom Center",
       "bottom right":  "Bottom Right"
     })}
+    ${generateToggle("Hide Timestamps", "hideTimestamps", true)}
     ${generateToggle("Gray Theme", "grayTheme")}
   </div>
 
