@@ -82,6 +82,8 @@ function generateCustomCSS(){
   const fullWidth = ".ttc-rcol-collapsed";
   const fullScreen = ".ttc-player-fullscreen";
   
+  const isChatLeft = settings.chatLeftSide && settings.transparentChat;
+  
   let style = document.getElementById("chylex-ttc-style-custom");
   
   if (!style){
@@ -112,7 +114,7 @@ ${isFirefox ? `@#css{{
 // general player styles
 
 ${isTheatre} .video-player video {
-  object-position: ${settings.playerPosition} !important;
+  object-position: ${settings.playerPosition == "#opposite-chat" ? (isChatLeft ? "center right" : "center left") : settings.playerPosition} !important;
 }
 
 // general chat styles
@@ -282,7 +284,7 @@ ${settings.hideConversations ? `@#css{{
 
 // chat on left side
 
-${settings.chatLeftSide && settings.transparentChat ? `@#css{{
+${isChatLeft ? `@#css{{
   ${isTheatre} .side-nav {
     display: none !important;
   }
@@ -816,15 +818,16 @@ function createSettingsModal(){
     ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 600, step: 25, wait: 500, text: "px" })}
     ${generateTxtbox("Chat Filters", "chatFilters", { wait: 500, placeholder: "Example: kappa, *abc*" })}
     ${generateSelect("Player Position", "playerPosition", {
-      "top left":      "Top Left",
-      "top center":    "Top Center",
-      "top right":     "Top Right",
-      "center left":   "Center Left",
-      "center center": "Center",
-      "center right":  "Center Right",
-      "bottom left":   "Bottom Left",
-      "bottom center": "Bottom Center",
-      "bottom right":  "Bottom Right"
+      "#opposite-chat": "Opposite of Chat",
+      "top left":       "Top Left",
+      "top center":     "Top Center",
+      "top right":      "Top Right",
+      "center left":    "Center Left",
+      "center center":  "Center",
+      "center right":   "Center Right",
+      "bottom left":    "Bottom Left",
+      "bottom center":  "Bottom Center",
+      "bottom right":   "Bottom Right"
     })}
     ${generateToggle("Hide Timestamps", "hideTimestamps", true)}
     ${generateToggle("Gray Theme", "grayTheme")}
