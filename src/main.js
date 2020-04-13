@@ -101,6 +101,12 @@ ${rcolBlur} .chat-list__lines .simplebar-track.vertical {
   visibility: hidden !important;
 }
 
+// fix sidebar popping into foreground
+
+${isTheatre} .side-nav {
+  display: none !important;
+}
+
 @#css}}
 
 ${isFirefox ? `@#css{{
@@ -285,10 +291,6 @@ ${settings.hideConversations ? `@#css{{
 // chat on left side
 
 ${isChatLeft ? `@#css{{
-  ${isTheatre} .side-nav {
-    display: none !important;
-  }
-  
   ${rcol}${wa}, ${rcol} .chat-list__lines .simplebar-track.vertical {
     left: 0 !important;
     right: auto !important;
