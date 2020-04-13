@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.4.3
+// @version      1.4.4
 // @namespace    https://chylex.com
 // @homepageURL  https://github.com/chylex/Transparent-Twitch-Chat
 // @supportURL   https://github.com/chylex/Transparent-Twitch-Chat/issues
-// @updateURL    https://github.com/chylex/Transparent-Twitch-Chat/raw/master/dist/TransparentTwitchChat.user.js
+// @downloadURL  https://github.com/chylex/Transparent-Twitch-Chat/raw/master/dist/TransparentTwitchChat.user.js
 // @include      https://www.twitch.tv/*
 // @run-at       document-end
 // @grant        GM_getValue
@@ -82,6 +82,8 @@ function generateCustomCSS(){
   const fullWidth = ".ttc-rcol-collapsed";
   const fullScreen = ".ttc-player-fullscreen";
   
+  const isChatLeft = settings.chatLeftSide && settings.transparentChat;
+  
   let style = document.getElementById("chylex-ttc-style-custom");
   
   if (!style){
@@ -91,12 +93,13 @@ function generateCustomCSS(){
   
   style.innerHTML = `
 ${rcolBlur} .chat-list__lines .simplebar-track.vertical {visibility:hidden!important}
+${isTheatre} .side-nav {display:none!important}
 
 ${isFirefox ? `
 ${rcol} .video-chat__message-list-wrapper:not(.video-chat__message-list-wrapper--unsynced) {overflow-y:hidden!important}
 ` : ``}
 
-${isTheatre} .video-player video {object-position:${settings.playerPosition}!important}
+${isTheatre} .video-player video {object-position:${settings.playerPosition == "#opposite-chat" ? (isChatLeft ? "center right" : "center left") : settings.playerPosition}!important}
 ${rcolBlur} .channel-root__right-column${wa} {background:rgba(14, 12, 19, ${settings.backgroundOpacity * 0.01})!important}
 ${rcol}${wa}, ${rcol} .channel-root__right-column${wa} {width:${settings.chatWidth - 10}px!important}
 ${rcol} .video-chat {flex-basis:auto!important}
@@ -143,8 +146,7 @@ right: ${settings.chatWidth - 10}px !important;
 ${settings.hideConversations ? `
 .whispers--theatre-mode${wa} {display:none!important}
 .video-player__container--theatre-whispers, .highwind-video-player__container--theatre-whispers {bottom:1px!important; // allows hiding player controls in fullscreen by moving cursor all the way down}` : ``}
-${settings.chatLeftSide && settings.transparentChat ? `
-${isTheatre} .side-nav {display:none!important}
+${isChatLeft ? `
 ${rcol}${wa}, ${rcol} .chat-list__lines .simplebar-track.vertical {left:0!important;right:auto!important}
 ${rcol} .channel-root__right-column${wa} {border-left:none!important;border-right:var(--border-width-default) solid var(--color-border-base)!important}
 body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .top-bar {padding-left:${settings.chatWidth}px;padding-right:0}
@@ -461,15 +463,16 @@ function createSettingsModal(){
     ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 600, step: 25, wait: 500, text: "px" })}
     ${generateTxtbox("Chat Filters", "chatFilters", { wait: 500, placeholder: "Example: kappa, *abc*" })}
     ${generateSelect("Player Position", "playerPosition", {
-      "top left":      "Top Left",
-      "top center":    "Top Center",
-      "top right":     "Top Right",
-      "center left":   "Center Left",
-      "center center": "Center",
-      "center right":  "Center Right",
-      "bottom left":   "Bottom Left",
-      "bottom center": "Bottom Center",
-      "bottom right":  "Bottom Right"
+      "#opposite-chat": "Opposite of Chat",
+      "top left":       "Top Left",
+      "top center":     "Top Center",
+      "top right":      "Top Right",
+      "center left":    "Center Left",
+      "center center":  "Center",
+      "center right":   "Center Right",
+      "bottom left":    "Bottom Left",
+      "bottom center":  "Bottom Center",
+      "bottom right":   "Bottom Right"
     })}
     ${generateToggle("Hide Timestamps", "hideTimestamps", true)}
     ${generateToggle("Gray Theme", "grayTheme")}
