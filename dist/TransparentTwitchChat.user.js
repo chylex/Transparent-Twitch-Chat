@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.4.4
+// @version      1.4.5
 // @namespace    https://chylex.com
 // @homepageURL  https://github.com/chylex/Transparent-Twitch-Chat
 // @supportURL   https://github.com/chylex/Transparent-Twitch-Chat/issues
@@ -127,7 +127,7 @@ ${settings.hidePinnedCheer ? `
 ` : ``}
 ${settings.transparentChat ? `
 body:not(${fullScreen}) .persistent-player--theatre {width:100%!important}
-body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .top-bar,body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .player-controls {padding-right:${settings.chatWidth - 10}px}
+body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .top-bar,body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre div[data-a-target="player-controls"] {padding-right:${settings.chatWidth - 10}px}
 body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .player-overlay-background > div {right:${settings.chatWidth - 10}px!important}
 ${rcol} .chat-room {background:transparent!important}
 ${rcolBlur} .chylex-ttc-chat-container {color:#ece8f3!important}
@@ -150,7 +150,7 @@ ${isChatLeft ? `
 ${rcol}${wa}, ${rcol} .chat-list__lines .simplebar-track.vertical {left:0!important;right:auto!important}
 ${rcol} .channel-root__right-column${wa} {border-left:none!important;border-right:var(--border-width-default) solid var(--color-border-base)!important}
 body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .top-bar {padding-left:${settings.chatWidth}px;padding-right:0}
-body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .player-controls {padding-left:${settings.chatWidth - 10}px;padding-right:0}
+body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre div[data-a-target="player-controls"] {padding-left:${settings.chatWidth - 10}px;padding-right:0}
 body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .player-overlay-background > div {left:${settings.chatWidth - 10}px!important;right:0!important}
 .whispers--theatre-mode.whispers--right-column-expanded-beside {right:0px!important}
 ${rcol} .right-column__toggle-visibility {transform:rotate(180deg)!important}
