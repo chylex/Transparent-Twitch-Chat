@@ -202,7 +202,7 @@ ${settings.transparentChat ? `@#css{{
   }
 
   body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .top-bar,
-  body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .player-controls {
+  body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre div[data-a-target="player-controls"] {
     padding-right: ${settings.chatWidth - 10}px;
   }
 
@@ -306,7 +306,7 @@ ${isChatLeft ? `@#css{{
     padding-right: 0;
   }
 
-  body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .player-controls {
+  body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre div[data-a-target="player-controls"] {
     padding-left: ${settings.chatWidth - 10}px;
     padding-right: 0;
   }
