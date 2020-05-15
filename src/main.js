@@ -125,12 +125,12 @@ ${isTheatre} .video-player video {
 
 // general chat styles
 
-${rcolBlur} .channel-root__right-column${wa} {
-  background: rgba(14, 12, 19, ${settings.backgroundOpacity * 0.01}) !important;
-}
-
 ${rcol}${wa}, ${rcol} .channel-root__right-column${wa} {
   width: ${settings.chatWidth - 10}px !important;
+}
+
+${rcol} .chat-shell__expanded {
+  min-width: 0 !important;
 }
 
 ${rcol} .video-chat {
@@ -211,6 +211,10 @@ ${settings.transparentChat ? `@#css{{
   }
 
   // chat container transparency
+
+  ${rcolBlur} .channel-root__right-column${wa} /*LEGACY*/, ${rcolBlur} .tw-c-background-base {
+    background: rgba(14, 12, 19, ${settings.backgroundOpacity * 0.01}) !important;
+  }
 
   ${rcol} .chat-room {
     background: transparent !important;
