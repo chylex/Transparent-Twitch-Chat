@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.4.5
+// @version      1.4.6
 // @namespace    https://chylex.com
 // @homepageURL  https://github.com/chylex/Transparent-Twitch-Chat
 // @supportURL   https://github.com/chylex/Transparent-Twitch-Chat/issues
@@ -100,8 +100,8 @@ ${rcol} .video-chat__message-list-wrapper:not(.video-chat__message-list-wrapper-
 ` : ``}
 
 ${isTheatre} .video-player video {object-position:${settings.playerPosition == "#opposite-chat" ? (isChatLeft ? "center right" : "center left") : settings.playerPosition}!important}
-${rcolBlur} .channel-root__right-column${wa} {background:rgba(14, 12, 19, ${settings.backgroundOpacity * 0.01})!important}
 ${rcol}${wa}, ${rcol} .channel-root__right-column${wa} {width:${settings.chatWidth - 10}px!important}
+${rcol} .chat-shell__expanded {min-width:0!important}
 ${rcol} .video-chat {flex-basis:auto!important}
 ${rcol} .video-chat__header {display:none!important}
 ${rcol} .room-picker {width:${settings.chatWidth - 10}px}
@@ -129,6 +129,7 @@ ${settings.transparentChat ? `
 body:not(${fullScreen}) .persistent-player--theatre {width:100%!important}
 body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .top-bar,body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre div[data-a-target="player-controls"] {padding-right:${settings.chatWidth - 10}px}
 body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .player-overlay-background > div {right:${settings.chatWidth - 10}px!important}
+${rcolBlur} .channel-root__right-column${wa} /*LEGACY*/, ${rcolBlur} .tw-c-background-base {background:rgba(14, 12, 19, ${settings.backgroundOpacity * 0.01})!important}
 ${rcol} .chat-room {background:transparent!important}
 ${rcolBlur} .chylex-ttc-chat-container {color:#ece8f3!important}
 ${rcolBlur} .rooms-header, ${rcolBlur} .leaderboard-header-tabbed-layout {background:transparent!important}
