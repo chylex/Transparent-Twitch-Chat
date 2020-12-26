@@ -48,7 +48,7 @@ if (typeof GM_getValue !== "undefined"){
   }
 }
 
-const isFirefox = "mozPaintCount" in window;
+const isFirefox = navigator.userAgent.includes(" Gecko/") || "mozFullScreen" in document;
 
 function tryRemoveElement(ele){
   if (ele && ele.parentNode){
