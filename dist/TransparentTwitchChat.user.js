@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.4.6
+// @version      1.4.7
 // @namespace    https://chylex.com
 // @homepageURL  https://github.com/chylex/Transparent-Twitch-Chat
 // @supportURL   https://github.com/chylex/Transparent-Twitch-Chat/issues
@@ -48,7 +48,7 @@ if (typeof GM_getValue !== "undefined"){
   }
 }
 
-const isFirefox = "mozPaintCount" in window;
+const isFirefox = navigator.userAgent.includes(" Gecko/") || "mozFullScreen" in document;
 
 function tryRemoveElement(ele){
   if (ele && ele.parentNode){
@@ -112,7 +112,7 @@ ${rcol} .video-chat__sync-button {width:${settings.chatWidth - 50}px;z-index:10;
 display: none !important;
 }
 ${settings.hideTimestamps ? `
-${rcol} .vod-message--timestamp .tw-tooltip-wrapper {display:none!important}
+${rcol} .vod-message--timestamp .tw-tooltip-wrapper,${rcol} .vod-message div[data-test-selector="message-timestamp"] {display:none!important}
 ${rcol} .vod-message--timestamp {padding-left:0.5rem}
 ` : ``}
 ${settings.hideHeader ? `
