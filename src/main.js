@@ -478,10 +478,10 @@ function generateSettingsCSS(){
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 870px;
-  height: 294px;
-  margin-left: -435px;
-  margin-top: -147px;
+  width: 890px;
+  height: 296px;
+  margin-left: -445px;
+  margin-top: -148px;
   z-index: 10000;
   background-color: @#hex(111c);
 }
@@ -828,7 +828,7 @@ function createSettingsModal(){
 </h2>
 
 <div class="ttc-flex-container">
-  <div style="flex: 0 0 23%">
+  <div style="flex: 0 0 25%">
     <p>General</p>
     ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 600, step: 25, wait: 500, text: "px" })}
     ${generateTxtbox("Chat Filters", "chatFilters", { wait: 500, placeholder: "Example: kappa, *abc*" })}
@@ -848,7 +848,7 @@ function createSettingsModal(){
     ${generateToggle("Gray Theme", "grayTheme")}
   </div>
 
-  <div style="flex: 0 0 21%">
+  <div style="flex: 0 0 18%">
     <p>Transparency</p>
     ${generateToggle("Transparent Chat", "transparentChat")}
     ${generateToggle("Smooth Text Shadow", "smoothTextShadow")}
@@ -872,7 +872,7 @@ function createSettingsModal(){
     ${generateToggle("Hide VIP Badge", "hideBadgeVIP")}
   </div>
 
-  <div style="flex: 0 0 21%">
+  <div style="flex: 0 0 22%">
     <p style="visibility: hidden">Badges</p>
     ${generateToggle("Hide Sub Gift Badge", "hideBadgeSubGift")}
     ${generateToggle("Hide Bit Cheer Badge", "hideBadgeBitCheer")}
