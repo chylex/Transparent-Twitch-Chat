@@ -258,6 +258,14 @@ ${settings.transparentChat ? `@#css{{
   ${rcolBlur} .chat-line__message a {
     color: #cdb9f5 !important;
   }
+  
+  ${rcolBlur} .user-notice-line {
+    background-color: rgba(31, 31, 35, 0.45) !important;
+  }
+  
+  ${rcolBlur} .user-notice-line--highlighted {
+    border-left-color: transparent !important;
+  }
 
   // conversation menu
 
