@@ -213,11 +213,11 @@ ${settings.transparentChat ? `@#css{{
 
   // chat container transparency
 
-  ${rcolBlur} .channel-root__right-column${wa} /*LEGACY*/, ${rcolBlur} .tw-c-background-base {
+  ${rcolBlur} .channel-root__right-column${wa} {
     background: rgba(14, 12, 19, ${settings.backgroundOpacity * 0.01}) !important;
   }
 
-  ${rcol} .chat-room {
+  ${rcolBlur} .channel-root__right-column${wa} > div, ${rcol} .chat-room {
     background: transparent !important;
   }
 
