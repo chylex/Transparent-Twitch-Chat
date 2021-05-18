@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.4.7
+// @version      1.4.8
 // @namespace    https://chylex.com
 // @homepageURL  https://github.com/chylex/Transparent-Twitch-Chat
 // @supportURL   https://github.com/chylex/Transparent-Twitch-Chat/issues
@@ -129,13 +129,15 @@ ${settings.transparentChat ? `
 body:not(${fullScreen}) .persistent-player--theatre {width:100%!important}
 body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .top-bar,body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre div[data-a-target="player-controls"] {padding-right:${settings.chatWidth - 10}px}
 body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .player-overlay-background > div {right:${settings.chatWidth - 10}px!important}
-${rcolBlur} .channel-root__right-column${wa} /*LEGACY*/, ${rcolBlur} .tw-c-background-base {background:rgba(14, 12, 19, ${settings.backgroundOpacity * 0.01})!important}
-${rcol} .chat-room {background:transparent!important}
+${rcolBlur} .channel-root__right-column${wa} {background:rgba(14, 12, 19, ${settings.backgroundOpacity * 0.01})!important}
+${rcolBlur} .channel-root__right-column${wa} > div, ${rcol} .chat-room {background:transparent!important}
 ${rcolBlur} .chylex-ttc-chat-container {color:#ece8f3!important}
 ${rcolBlur} .rooms-header, ${rcolBlur} .leaderboard-header-tabbed-layout {background:transparent!important}
 ${rcolBlur} .chat-input {opacity:0.6}
 ${rcolBlur} .chylex-ttc-chat-container {${settings.smoothTextShadow ? `text-shadow:0 0 2px rgba(0,0,0,0.86328125), -1px 0 1px rgba(0,0,0,0.3984375), 0 -1px 1px rgba(0,0,0,0.3984375), 1px 0 1px rgba(0,0,0,0.3984375), 0 1px 1px rgba(0,0,0,0.3984375);` : `text-shadow:-1px 0 0 rgba(0,0,0,0.6640625), 0 -1px 0 rgba(0,0,0,0.6640625), 1px 0 0 rgba(0,0,0,0.6640625), 0 1px 0 rgba(0,0,0,0.6640625);`}}${rcolBlur} .chat-author__display-name, ${rcolBlur} .vod-message__timestamp {${settings.smoothTextShadow ? `text-shadow:-1px 0 1px rgba(0,0,0,0.3984375), 0 -1px 1px rgba(0,0,0,0.3984375), 1px 0 1px rgba(0,0,0,0.3984375), 0 1px 1px rgba(0,0,0,0.3984375);` : `text-shadow:-1px 0 0 rgba(0,0,0,0.53125), 0 -1px 0 rgba(0,0,0,0.53125), 1px 0 0 rgba(0,0,0,0.53125), 0 1px 0 rgba(0,0,0,0.53125);`}}${rcolBlur} .chat-line__message--mention-recipient {text-shadow:none}
 ${rcolBlur} .chat-line__message a {color:#cdb9f5!important}
+${rcolBlur} .user-notice-line {background-color:rgba(31, 31, 35, 0.45)!important}
+${rcolBlur} .user-notice-line--highlighted {border-left-color:transparent!important}
 .whispers--theatre-mode .whispers-threads-box__container:not(.whispers-threads-box__container--open):not(:hover) {opacity:${Math.max(0.1, settings.backgroundOpacity * 0.01)}}
 ` : `
 body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre {width:calc(100% - ${settings.chatWidth - 10}px)!important}
@@ -206,7 +208,7 @@ function generateSettingsCSS(){
 #chylex-ttc-settings-btn svg {width:100%;height:100%}
 #chylex-ttc-settings-btn:hover {fill:#fff}
 .right-column--theatre:hover #chylex-ttc-settings-btn {display:block}
-#chylex-ttc-settings-modal {position:absolute;left:50%;top:50%;width:870px;height:294px;margin-left:-435px;margin-top:-147px;z-index:10000;background-color:rgba(17,17,17,0.796875)}
+#chylex-ttc-settings-modal {position:absolute;left:50%;top:50%;width:890px;height:296px;margin-left:-445px;margin-top:-148px;z-index:10000;background-color:rgba(17,17,17,0.796875)}
 #chylex-ttc-settings-modal #ttc-opt-global-wrapper {position:absolute;margin:5px 0 0 -69px;display:inline-block}
 #chylex-ttc-settings-modal h2 {color:rgba(255,255,255,0.9296875);font-size:24px;text-align:center;margin:0;padding:14px 0 13px;background-color:rgba(0,0,0,0.59765625)}
 #chylex-ttc-settings-modal .ttc-flex-container {display:flex;flex-direction:row;justify-content:space-between;padding:8px 4px}
@@ -459,7 +461,7 @@ function createSettingsModal(){
 </h2>
 
 <div class="ttc-flex-container">
-  <div style="flex: 0 0 23%">
+  <div style="flex: 0 0 25%">
     <p>General</p>
     ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 600, step: 25, wait: 500, text: "px" })}
     ${generateTxtbox("Chat Filters", "chatFilters", { wait: 500, placeholder: "Example: kappa, *abc*" })}
@@ -479,7 +481,7 @@ function createSettingsModal(){
     ${generateToggle("Gray Theme", "grayTheme")}
   </div>
 
-  <div style="flex: 0 0 21%">
+  <div style="flex: 0 0 18%">
     <p>Transparency</p>
     ${generateToggle("Transparent Chat", "transparentChat")}
     ${generateToggle("Smooth Text Shadow", "smoothTextShadow")}
@@ -503,7 +505,7 @@ function createSettingsModal(){
     ${generateToggle("Hide VIP Badge", "hideBadgeVIP")}
   </div>
 
-  <div style="flex: 0 0 21%">
+  <div style="flex: 0 0 22%">
     <p style="visibility: hidden">Badges</p>
     ${generateToggle("Hide Sub Gift Badge", "hideBadgeSubGift")}
     ${generateToggle("Hide Bit Cheer Badge", "hideBadgeBitCheer")}
