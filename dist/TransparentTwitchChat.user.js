@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.4.8
+// @version      1.4.9
 // @namespace    https://chylex.com
 // @homepageURL  https://github.com/chylex/Transparent-Twitch-Chat
 // @supportURL   https://github.com/chylex/Transparent-Twitch-Chat/issues
@@ -171,7 +171,7 @@ ${settings.hideBadgeTurbo ? `
 ${rcol} .chat-badge[alt="Turbo"] {display:none}
 ` : ``}
 ${settings.hideBadgePrime ? `
-${rcol} .chat-badge[alt$="Prime"] {display:none}
+${rcol} .chat-badge[alt="Prime Gaming"] {display:none}
 ` : ``}
 ${settings.hideBadgeSubscriber ? `
 ${rcol} .chat-badge[alt~="Subscriber"] {display:none}
@@ -285,7 +285,7 @@ var filtersObserver = new MutationObserver(function(mutations){
 });
 
 function refreshChatFilters(){
-  const chat = document.querySelector(".chat-list__lines .simplebar-content > div, .video-chat__message-list-wrapper ul");
+  const chat = document.querySelector(".chat-scrollable-area__message-container, .video-chat__message-list-wrapper ul");
   
   if (!chat){
     return false;
