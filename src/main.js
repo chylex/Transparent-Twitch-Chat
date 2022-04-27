@@ -383,7 +383,7 @@ ${settings.hideBadgeTurbo ? `@#css{{
 @#css}}` : ``}
 
 ${settings.hideBadgePrime ? `@#css{{
-  ${rcol} .chat-badge[alt$="Prime"] {
+  ${rcol} .chat-badge[alt="Prime Gaming"] {
    display: none;
   }
 @#css}}` : ``}
