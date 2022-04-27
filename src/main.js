@@ -652,7 +652,7 @@ var filtersObserver = new MutationObserver(function(mutations){
 });
 
 function refreshChatFilters(){
-  const chat = document.querySelector(".chat-list__lines .simplebar-content > div, .video-chat__message-list-wrapper ul");
+  const chat = document.querySelector(".chat-scrollable-area__message-container, .video-chat__message-list-wrapper ul");
   
   if (!chat){
     return false;
