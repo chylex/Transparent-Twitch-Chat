@@ -304,7 +304,7 @@ ${isChatLeft ? `@#css{{
     right: auto !important;
   }
 
-  ${rcol} .channel-root__right-column${wa} {
+  ${rcol} .channel-root__right-column${wa} > div {
     border-left: none !important;
     border-right: var(--border-width-default) solid var(--color-border-base) !important;
   }
