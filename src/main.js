@@ -580,9 +580,9 @@ function generateSettingsCSS(){
 #chylex-ttc-settings-modal output {
   color: @#hex(fffc);
   display: inline-block;
-  flex: 1 1 42px;
-  padding-left: 6px;
-  text-align: left;
+  flex: 0 0 auto;
+  padding-left: 5px;
+  text-align: right;
 }
 
 #chylex-ttc-settings-modal .tw-toggle__button {
@@ -804,7 +804,7 @@ function createSettingsModal(){
     
     return generateOptionBase(title, `
   <input id="ttc-opt-${option}" type="range" min="${cfg.min}" max="${cfg.max}" step="${cfg.step}" value="${settings[option]}">
-  <output id="ttc-optval-${option}" for="ttc-opt-${option}">${settings[option]}${cfg.text}</option>
+  <output id="ttc-optval-${option}" for="ttc-opt-${option}" style="min-width:${cfg.width}px;">${settings[option]}${cfg.text}</option>
 `, { itemClasses: "ttc-setting-small-margin" });
   };
   
@@ -825,7 +825,7 @@ function createSettingsModal(){
 <div class="ttc-flex-container">
   <div style="flex: 0 0 25%">
     <p>General</p>
-    ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 600, step: 25, wait: 500, text: "px" })}
+    ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 600, step: 25, wait: 500, width: 48, text: "px" })}
     ${generateTxtbox("Chat Filters", "chatFilters", { wait: 500, placeholder: "Example: kappa, *abc*" })}
     ${generateSelect("Player Position", "playerPosition", {
       "#opposite-chat": "Opposite of Chat",
@@ -848,7 +848,7 @@ function createSettingsModal(){
     ${generateToggle("Transparent Chat", "transparentChat")}
     ${generateToggle("Smooth Text Shadow", "smoothTextShadow")}
     ${generateToggle("Chat on Left Side", "chatLeftSide")}
-    ${generateSlider("Background Opacity", "backgroundOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
+    ${generateSlider("Background Opacity", "backgroundOpacity", { min: 0, max: 100, step: 5, wait: 100, width: 42, text: "%" })}
   </div>
 
   <div style="flex: 0 0 16%">
@@ -872,7 +872,7 @@ function createSettingsModal(){
     ${generateToggle("Hide Sub Gift Badge", "hideBadgeSubGift")}
     ${generateToggle("Hide Bit Cheer Badge", "hideBadgeBitCheer")}
     ${generateToggle("Hide Gift/Bit Leader Badge", "hideBadgeLeader")}
-    ${generateSlider("Badge Opacity", "badgeOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
+    ${generateSlider("Badge Opacity", "badgeOpacity", { min: 0, max: 100, step: 5, wait: 100, width: 42, text: "%" })}
   </div>
 </div>
 `;
