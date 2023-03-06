@@ -825,7 +825,7 @@ function createSettingsModal(){
 <div class="ttc-flex-container">
   <div style="flex: 0 0 25%">
     <p>General</p>
-    ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 600, step: 25, wait: 500, width: 48, text: "px" })}
+    ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 800, step: 25, wait: 500, width: 48, text: "px" })}
     ${generateTxtbox("Chat Filters", "chatFilters", { wait: 500, placeholder: "Example: kappa, *abc*" })}
     ${generateSelect("Player Position", "playerPosition", {
       "#opposite-chat": "Opposite of Chat",
