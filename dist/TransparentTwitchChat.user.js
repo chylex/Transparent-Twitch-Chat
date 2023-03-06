@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Transparent Twitch Chat
 // @description  Why decide between missing a PogChamp or sacrificing precious screen space, when you can have the best of both worlds!
-// @version      1.4.9
+// @version      1.5.0
 // @namespace    https://chylex.com
 // @homepageURL  https://github.com/chylex/Transparent-Twitch-Chat
 // @supportURL   https://github.com/chylex/Transparent-Twitch-Chat/issues
@@ -100,20 +100,19 @@ ${rcol} .video-chat__message-list-wrapper:not(.video-chat__message-list-wrapper-
 ` : ``}
 
 ${isTheatre} .video-player video {object-position:${settings.playerPosition == "#opposite-chat" ? (isChatLeft ? "center right" : "center left") : settings.playerPosition}!important}
-${rcol}${wa}, ${rcol} .channel-root__right-column${wa} {width:${settings.chatWidth - 10}px!important}
+${rcol}${wa}, ${rcol} .channel-root__right-column${wa} {width:${settings.chatWidth}px!important}
 ${rcol} .chat-shell__expanded {min-width:0!important}
 ${rcol} .video-chat {flex-basis:auto!important}
 ${rcol} .video-chat__header {display:none!important}
-${rcol} .room-picker {width:${settings.chatWidth - 10}px}
+${rcol} .room-picker {width:${settings.chatWidth}px}
 ${rcol} .hidden {display:none}
-${rcol} .video-chat__sync-button {width:${settings.chatWidth - 50}px;z-index:10;background-color:#b8b5c0!important}
+${rcol} .video-chat__sync-button {width:${Math.max(0, settings.chatWidth - 40)}px;z-index:10;background-color:#b8b5c0!important}
 
 #root[data-a-page-loaded-name="VideoWatchPage"] ${rcolBlur}:not(.right-column--collapsed) .right-column__toggle-visibility {
 display: none !important;
 }
 ${settings.hideTimestamps ? `
-${rcol} .vod-message--timestamp .tw-tooltip-wrapper,${rcol} .vod-message div[data-test-selector="message-timestamp"] {display:none!important}
-${rcol} .vod-message--timestamp {padding-left:0.5rem}
+${rcol} .vod-message__header div[class*="ScAttachedTooltipWrapper-"] {display:none!important}
 ` : ``}
 ${settings.hideHeader ? `
 ${rcolBlur} .stream-chat-header {display:none!important}
@@ -127,8 +126,8 @@ ${settings.hidePinnedCheer ? `
 ` : ``}
 ${settings.transparentChat ? `
 body:not(${fullScreen}) .persistent-player--theatre {width:100%!important}
-body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .top-bar,body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre div[data-a-target="player-controls"] {padding-right:${settings.chatWidth - 10}px}
-body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .player-overlay-background > div {right:${settings.chatWidth - 10}px!important}
+body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .top-bar,body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre div[data-a-target="player-controls"] {padding-right:${settings.chatWidth}px}
+body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .player-overlay-background > div {right:${settings.chatWidth}px!important}
 ${rcolBlur} .channel-root__right-column${wa} {background:rgba(14, 12, 19, ${settings.backgroundOpacity * 0.01})!important}
 ${rcolBlur} .channel-root__right-column${wa} > div, ${rcol} .chat-room {background:transparent!important}
 ${rcolBlur} .chylex-ttc-chat-container {color:#ece8f3!important}
@@ -140,21 +139,21 @@ ${rcolBlur} .user-notice-line {background-color:rgba(31, 31, 35, 0.45)!important
 ${rcolBlur} .user-notice-line--highlighted {border-left-color:transparent!important}
 .whispers--theatre-mode .whispers-threads-box__container:not(.whispers-threads-box__container--open):not(:hover) {opacity:${Math.max(0.1, settings.backgroundOpacity * 0.01)}}
 ` : `
-body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre {width:calc(100% - ${settings.chatWidth - 10}px)!important}
+body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre {width:calc(100% - ${settings.chatWidth}px)!important}
 body:not(${fullScreen}) .persistent-player--theatre .player-streamstatus {margin-right:20px!important}
 `}
 .whispers--theatre-mode.whispers--right-column-expanded-beside {
-right: ${settings.chatWidth - 10}px !important;
+right: ${settings.chatWidth}px !important;
 }
 ${settings.hideConversations ? `
 .whispers--theatre-mode${wa} {display:none!important}
 .video-player__container--theatre-whispers, .highwind-video-player__container--theatre-whispers {bottom:1px!important; // allows hiding player controls in fullscreen by moving cursor all the way down}` : ``}
 ${isChatLeft ? `
 ${rcol}${wa}, ${rcol} .chat-list__lines .simplebar-track.vertical {left:0!important;right:auto!important}
-${rcol} .channel-root__right-column${wa} {border-left:none!important;border-right:var(--border-width-default) solid var(--color-border-base)!important}
-body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .top-bar {padding-left:${settings.chatWidth}px;padding-right:0}
-body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre div[data-a-target="player-controls"] {padding-left:${settings.chatWidth - 10}px;padding-right:0}
-body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .player-overlay-background > div {left:${settings.chatWidth - 10}px!important;right:0!important}
+${rcol} .channel-root__right-column${wa} > div {border-left:none!important;border-right:var(--border-width-default) solid var(--color-border-base)!important}
+body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .top-bar {padding-left:${settings.chatWidth + 10}px;padding-right:0}
+body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre div[data-a-target="player-controls"] {padding-left:${settings.chatWidth}px;padding-right:0}
+body:not(${fullWidth}):not(${fullScreen}) .persistent-player--theatre .player-overlay-background > div {left:${settings.chatWidth}px!important;right:0!important}
 .whispers--theatre-mode.whispers--right-column-expanded-beside {right:0px!important}
 ${rcol} .right-column__toggle-visibility {transform:rotate(180deg)!important}
 ${rcol}.right-column--collapsed .right-column__toggle-visibility {left:0.5rem}
@@ -189,7 +188,7 @@ ${settings.hideBadgeLeader ? `
 ${rcol} .chat-badge[alt*="Bits Leader"], ${rcol} .chat-badge[alt*="Gifter Leader"] {display:none}
 ` : ``}
 
-#chylex-ttc-settings-btn {margin-left:${settings.chatWidth - 60}px}
+#chylex-ttc-settings-btn {margin-left:${settings.chatWidth - 50}px}
 `;
   
   document.head.appendChild(style);
@@ -209,8 +208,9 @@ function generateSettingsCSS(){
 #chylex-ttc-settings-btn:hover {fill:#fff}
 .right-column--theatre:hover #chylex-ttc-settings-btn {display:block}
 #chylex-ttc-settings-modal {position:absolute;left:50%;top:50%;width:890px;height:296px;margin-left:-445px;margin-top:-148px;z-index:10000;background-color:rgba(17,17,17,0.796875)}
-#chylex-ttc-settings-modal #ttc-opt-global-wrapper {position:absolute;margin:5px 0 0 -69px;display:inline-block}
-#chylex-ttc-settings-modal h2 {color:rgba(255,255,255,0.9296875);font-size:24px;text-align:center;margin:0;padding:14px 0 13px;background-color:rgba(0,0,0,0.59765625)}
+#chylex-ttc-settings-modal-header {display:flex;justify-content:center;gap:12px;padding:14px 0 13px;background-color:rgba(0,0,0,0.59765625)}
+#chylex-ttc-settings-modal-header input {flex:0 0 auto}
+#chylex-ttc-settings-modal-header h2 {flex:0 0 auto;color:rgba(255,255,255,0.9296875);font-size:24px;margin:0}
 #chylex-ttc-settings-modal .ttc-flex-container {display:flex;flex-direction:row;justify-content:space-between;padding:8px 4px}
 #chylex-ttc-settings-modal p {color:rgba(255,255,255,0.86328125);font-size:14px;margin-top:8px;padding:0 9px}
 #chylex-ttc-settings-modal p:first-of-type {margin:0 0 4px}
@@ -227,9 +227,8 @@ function generateSettingsCSS(){
 #chylex-ttc-settings-modal input[type="text"] {width:100%;padding:1px 4px}
 #chylex-ttc-settings-modal input[type="range"] {width:100%}
 #chylex-ttc-settings-modal select {width:100%;padding:1px 0}
-#chylex-ttc-settings-modal output {color:rgba(255,255,255,0.796875);display:inline-block;flex:1 1 42px;padding-left:6px;text-align:left}
-#chylex-ttc-settings-modal .tw-toggle__button {width:4rem}
-#chylex-ttc-settings-modal .tw-toggle__button, #chylex-ttc-settings-modal .tw-toggle__button::after {border-radius:0}
+#chylex-ttc-settings-modal output {color:rgba(255,255,255,0.796875);display:inline-block;flex:0 0 auto;padding-left:5px;text-align:right}
+#chylex-ttc-settings-modal .editable:hover {cursor:pointer;text-decoration:underline}
 `;
   
   document.head.appendChild(style);
@@ -402,9 +401,9 @@ function createSettingsModal(){
     });
     
     return generateOptionBase(title, `
-<div class="tw-toggle">
-  <input class="tw-toggle__input" id="ttc-opt-${option}" value="${settings[option] ? "on" : "off"}" type="checkbox"${settings[option] ? " checked" : ""}>
-  <label for="ttc-opt-${option}" class="tw-toggle__button"></label>
+<div>
+  <input id="ttc-opt-${option}" value="${settings[option] ? "on" : "off"}" type="checkbox"${settings[option] ? " checked" : ""}>
+  <label for="ttc-opt-${option}"></label>
 </div>`, floatLeft ? { floatLeft: true } : {});
   };
   
@@ -430,19 +429,47 @@ function createSettingsModal(){
   };
   
   const generateSlider = function(title, option, cfg){
-    prepareOptionEvent(option, function(ele){
+    prepareOptionEvent(option, function(ele) {
       const regenerate = debounce(onSettingsUpdated, cfg.wait);
-      
-      ele.addEventListener("input", function(){
-        settings[option] = parseInt(ele.value, 10);
-        document.getElementById("ttc-optval-" + option).value = ele.value + cfg.text;
+  
+      function setSliderValue(value) {
+        settings[option] = value;
+        document.getElementById("ttc-optval-" + option).value = value + cfg.text;
         regenerate();
+      }
+  
+      ele.addEventListener("input", function() {
+        setSliderValue(ele.value, parseInt(ele.value, 10));
       });
+  
+      if (cfg.editable) {
+        ele.nextElementSibling.classList.add("editable");
+        ele.nextElementSibling.addEventListener("click", function() {
+          let customValue = prompt("Set custom value:", settings[option]);
+          if (customValue === null) {
+            return;
+          }
+      
+          customValue = customValue.trim();
+      
+          if (customValue.endsWith(cfg.text)) {
+            customValue = customValue.slice(0, -cfg.text.length).trim();
+          }
+      
+          if (/^\d+$/.test(customValue) === false) {
+            alert("Invalid value.");
+            return;
+          }
+      
+          setSliderValue(parseInt(customValue, 10));
+          ele.value = customValue;
+        });
+      }
     });
     
     return generateOptionBase(title, `
   <input id="ttc-opt-${option}" type="range" min="${cfg.min}" max="${cfg.max}" step="${cfg.step}" value="${settings[option]}">
-  <output id="ttc-optval-${option}" for="ttc-opt-${option}">${settings[option]}${cfg.text}</option>
+  <output id="ttc-optval-${option}" for="ttc-opt-${option}" style="min-width:${cfg.width}px;">${settings[option]}${cfg.text}</option>
 `, { itemClasses: "ttc-setting-small-margin" });
   };
   
@@ -451,19 +478,15 @@ function createSettingsModal(){
   const modal = document.createElement("div");
   modal.id = "chylex-ttc-settings-modal";
   modal.innerHTML = `
-<h2>
-  <div id="ttc-opt-global-wrapper" class="tw-toggle">
-    <input class="tw-toggle__input" id="ttc-opt-global" value="${settings.globalSwitch ? "on" : "off"}" type="checkbox"${settings.globalSwitch ? " checked" : ""}>
-    <label for="ttc-opt-global" class="tw-toggle__button"></label>
-  </div>
-
-  <span>Transparent Twitch Chat</span>
-</h2>
+<div id="chylex-ttc-settings-modal-header">
+  <input id="ttc-opt-global" value="${settings.globalSwitch ? "on" : "off"}" type="checkbox"${settings.globalSwitch ? " checked" : ""}>
+  <h2>Transparent Twitch Chat</h2>
+</div>
 
 <div class="ttc-flex-container">
   <div style="flex: 0 0 25%">
     <p>General</p>
-    ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 600, step: 25, wait: 500, text: "px" })}
+    ${generateSlider("Chat Width", "chatWidth", { min: 250, max: 800, step: 25, wait: 500, width: 48, text: "px", editable: true })}
     ${generateTxtbox("Chat Filters", "chatFilters", { wait: 500, placeholder: "Example: kappa, *abc*" })}
     ${generateSelect("Player Position", "playerPosition", {
       "#opposite-chat": "Opposite of Chat",
@@ -486,7 +509,7 @@ function createSettingsModal(){
     ${generateToggle("Transparent Chat", "transparentChat")}
     ${generateToggle("Smooth Text Shadow", "smoothTextShadow")}
     ${generateToggle("Chat on Left Side", "chatLeftSide")}
-    ${generateSlider("Background Opacity", "backgroundOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
+    ${generateSlider("Background Opacity", "backgroundOpacity", { min: 0, max: 100, step: 5, wait: 100, width: 42, text: "%" })}
   </div>
 
   <div style="flex: 0 0 16%">
@@ -510,7 +533,7 @@ function createSettingsModal(){
     ${generateToggle("Hide Sub Gift Badge", "hideBadgeSubGift")}
     ${generateToggle("Hide Bit Cheer Badge", "hideBadgeBitCheer")}
     ${generateToggle("Hide Gift/Bit Leader Badge", "hideBadgeLeader")}
-    ${generateSlider("Badge Opacity", "badgeOpacity", { min: 0, max: 100, step: 5, wait: 100, text: "%" })}
+    ${generateSlider("Badge Opacity", "badgeOpacity", { min: 0, max: 100, step: 5, wait: 100, width: 42, text: "%" })}
   </div>
 </div>
 `;
