@@ -481,19 +481,23 @@ function generateSettingsCSS(){
   background-color: @#hex(111c);
 }
 
-#chylex-ttc-settings-modal #ttc-opt-global-wrapper {
-  position: absolute;
-  margin: 5px 0 0 -69px;
-  display: inline-block;
-}
-
-#chylex-ttc-settings-modal h2 {
-  color: @#hex(fffe);
-  font-size: 24px;
-  text-align: center;
-  margin: 0;
+#chylex-ttc-settings-modal-header {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
   padding: 14px 0 13px;
   background-color: @#hex(0009);
+}
+
+#chylex-ttc-settings-modal-header input {
+  flex: 0 0 auto;
+}
+
+#chylex-ttc-settings-modal-header h2 {
+  flex: 0 0 auto;
+  color: @#hex(fffe);
+  font-size: 24px;
+  margin: 0;
 }
 
 #chylex-ttc-settings-modal .ttc-flex-container {
@@ -588,14 +592,6 @@ function generateSettingsCSS(){
 #chylex-ttc-settings-modal .editable:hover {
   cursor: pointer;
   text-decoration: underline;
-}
-
-#chylex-ttc-settings-modal .tw-toggle__button {
-  width: 4rem;
-}
-
-#chylex-ttc-settings-modal .tw-toggle__button, #chylex-ttc-settings-modal .tw-toggle__button::after {
-  border-radius: 0;
 }
 @#css}}@#rem}}`;
   
@@ -769,9 +765,9 @@ function createSettingsModal(){
     });
     
     return generateOptionBase(title, `
-<div class="tw-toggle">
-  <input class="tw-toggle__input" id="ttc-opt-${option}" value="${settings[option] ? "on" : "off"}" type="checkbox"${settings[option] ? " checked" : ""}>
-  <label for="ttc-opt-${option}" class="tw-toggle__button"></label>
+<div>
+  <input id="ttc-opt-${option}" value="${settings[option] ? "on" : "off"}" type="checkbox"${settings[option] ? " checked" : ""}>
+  <label for="ttc-opt-${option}"></label>
 </div>`, floatLeft ? { floatLeft: true } : {});
   };
   
@@ -846,14 +842,10 @@ function createSettingsModal(){
   const modal = document.createElement("div");
   modal.id = "chylex-ttc-settings-modal";
   modal.innerHTML = `
-<h2>
-  <div id="ttc-opt-global-wrapper" class="tw-toggle">
-    <input class="tw-toggle__input" id="ttc-opt-global" value="${settings.globalSwitch ? "on" : "off"}" type="checkbox"${settings.globalSwitch ? " checked" : ""}>
-    <label for="ttc-opt-global" class="tw-toggle__button"></label>
-  </div>
-
-  <span>Transparent Twitch Chat</span>
-</h2>
+<div id="chylex-ttc-settings-modal-header">
+  <input id="ttc-opt-global" value="${settings.globalSwitch ? "on" : "off"}" type="checkbox"${settings.globalSwitch ? " checked" : ""}>
+  <h2>Transparent Twitch Chat</h2>
+</div>
 
 <div class="ttc-flex-container">
   <div style="flex: 0 0 25%">
