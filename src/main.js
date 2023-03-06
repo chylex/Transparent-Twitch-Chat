@@ -162,13 +162,8 @@ ${rcol} .video-chat__sync-button {
 }
 
 ${settings.hideTimestamps ? `@#css{{
-  ${rcol} .vod-message--timestamp .tw-tooltip-wrapper,
-  ${rcol} .vod-message div[data-test-selector="message-timestamp"] {
+  ${rcol} .vod-message__header div[class*="ScAttachedTooltipWrapper-"] {
     display: none !important;
-  }
-  
-  ${rcol} .vod-message--timestamp {
-    padding-left: 0.5rem;
   }
 @#css}}` : ``}
 
